@@ -1,0 +1,112 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: Vadim
+  Date: 01.05.2021
+  Time: 23:29
+  To change this template use File | Settings | File Templates.
+--%>
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="<c:url value="/resources/images/logo/favicon.png"/>" type="image/x-icon">
+
+    <style>
+        p {
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            font-size: 1pt; /* Размер шрифта в пунктах */
+        }
+    </style>
+
+
+    <!-- Locale -->
+    <fmt:setLocale value="${sessionScope.locale}"/>
+    <fmt:setBundle basename="langs.labels" var="loc"/>
+
+    <fmt:message bundle="${loc}" key="signIn.button" var="logout"/>
+    <fmt:message bundle="${loc}" key="signUp.button" var="signUp"/>
+
+    <fmt:message bundle="${loc}" key="label.login" var="login"/>
+    <fmt:message bundle="${loc}" key="label.password" var="password"/>
+
+    <fmt:message bundle="${loc}" key="login.input.title" var="loginTitle"/>
+    <fmt:message bundle="${loc}" key="password.input.title" var="passwordTitle"/>
+
+    <fmt:message bundle="${loc}" key="login.input.placeholder" var="loginPlaceholder"/>
+    <fmt:message bundle="${loc}" key="password.input.placeholder" var="passwordPlaceholder"/>
+
+    <fmt:message bundle="${loc}" key="page.signIn" var="pageTitle"/>
+
+    <c:if test="${requestScope.message ne null}">
+        <fmt:message bundle="${loc}" key="${requestScope.message}" var="messageText"/>
+    </c:if>
+
+    <!-- Page Title -->
+    <title>${pageTitle}</title>
+</head>
+<body>
+<c:import url="parts/header.jsp"/>
+
+<!-- Preloader Starts -->
+<div class="preloader">
+    <div class="spinner"></div>
+</div>
+<!-- Preloader End -->
+
+<!-- Contact Form Starts -->
+<section class="contact-form section-padding3">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 mb-5 mb-lg-0">
+                <div class="d-flex">
+                    <div class="info-text">
+                        <p></p>
+                        <h4>${login}</h4>
+                        <p></p>
+                    </div>
+                </div>
+                <br>
+                <div class="d-flex">
+                    <div class="info-text">
+                        <p></p>
+                        <h4>${password}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <form action="Controller" method="post">
+                    <div class="left">
+                        <input type="hidden" name="command" value="sign_in"/>
+                        <input type="text"
+                               pattern="${"^([0-9a-zA-Z]([-.\\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\\w]*[0-9a-zA-Z]\\.)+[a-zA-Z]{2,9})$"}"
+                               title="${loginTitle}"
+                               placeholder="${loginPlaceholder}" name="login"
+                               onfocus="this.placeholder = 'example@gmail.com'"
+                               onblur="this.placeholder = '${loginPlaceholder}'" required>
+                        <p></p>
+                        <input type="password"
+                               pattern="${"^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])\\w{6,20}$"}"
+                               title="${passwordTitle}"
+                               maxlength="20" placeholder="${passwordPlaceholder}" name="password" id="newPassword"
+                               onfocus="this.placeholder = 'Password1'"
+                               onblur="this.placeholder = '${passwordPlaceholder}'" required>
+                    </div>
+                    <br>
+                    <button type="submit" class="template-btn">${logout}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Contact Form End -->
+
+<div id="wrapper"></div>
+
+<!-- Footer Area -->
+<c:import url="parts/footer.jsp"/>
+</body>
+</html>

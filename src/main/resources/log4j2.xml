@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Properties>
+        <Property name="patternfull">
+            %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{5} - %msg%n
+        </Property>
+        <Property name="patternshort">
+            %d{HH:mm:ss.SSS} [%t] %-5level %logger{1} - %msg%n
+        </Property>
+    </Properties>
+    <Appenders>
+        <File name="TxtFile" fileName="logs/enterpriseApp.log" bufferedIO="true">
+            <PatternLayout pattern="${patternfull}"/>
+        </File>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${patternshort}"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="all">
+            <AppenderRef ref="TxtFile"/>
+        </Root>
+
+        <!-- Log everything in hibernate -->
+        <Logger name="org.hibernate" level="error" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+
+        <!-- Log all SQL statements -->
+        <Logger name="org.hibernate.SQL" level="error" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+
+        <Logger name="by.bsuir.diplom.dao.utilities.HibernateUtil" level="all"
+                additivity="true">
+            <AppenderRef ref="TxtFile"/>
+        </Logger>
+        <Logger name="by.bsuir.diplom.controller.command.impl.DeleteUser" level="all"
+                additivity="true">
+            <AppenderRef ref="TxtFile"/>
+        </Logger>
+        <Logger name="by.bsuir.diplom.controller.command.impl.EditUser" level="all"
+                additivity="true">
+            <AppenderRef ref="TxtFile"/>
+        </Logger>
+        <Logger name="by.bsuir.diplom.controller.command.impl.GoToEditUserPage" level="all"
+                additivity="true">
+            <AppenderRef ref="TxtFile"/>
+        </Logger>
+        <Logger name="by.bsuir.diplom.controller.command.impl.GoToHomePage" level="all"
+                additivity="true">
+            <AppenderRef ref="TxtFile"/>
+        </Logger>
+        <Logger name="by.bsuir.diplom.controller.command.impl.GoToUsersPage" level="all"
+                additivity="true">
+            <AppenderRef ref="TxtFile"/>
+        </Logger>
+        <Logger name="by.bsuir.diplom.controller.command.impl.SignIn" level="all"
+                additivity="true">
+            <AppenderRef ref="TxtFile"/>
+        </Logger>
+        <Logger name="by.bsuir.diplom.controller.command.impl.SignUp" level="all"
+                additivity="true">
+            <AppenderRef ref="TxtFile"/>
+        </Logger>
+        <Logger name="by.bsuir.diplom.controller.filter.SecurityFilter" level="all"
+                additivity="true">
+            <AppenderRef ref="TxtFile"/>
+        </Logger>
+
+        <Logger name="main.Main" level="all"
+                additivity="true">
+            <AppenderRef ref="Console"/>
+        </Logger>
+    </Loggers>
+</Configuration>
