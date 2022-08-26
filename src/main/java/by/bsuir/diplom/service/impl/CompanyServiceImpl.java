@@ -8,7 +8,6 @@ import by.bsuir.diplom.dao.exception.DaoException;
 import by.bsuir.diplom.dao.utilities.SessionUtil;
 import by.bsuir.diplom.service.api.*;
 import by.bsuir.diplom.service.ServiceException;
-import by.bsuir.diplom.service.calc.CalcIndicators;
 import by.bsuir.diplom.service.calc.DataCalculation;
 import by.bsuir.diplom.service.calc.DataManipulation;
 
@@ -202,13 +201,13 @@ public class CompanyServiceImpl extends SessionUtil implements CompanyService {
     }
     //My modification
     @Override
-    public List<Company> getAdvancedSearchResult(String[] parameters, String[] statuses, String[] types, String[] values, int[] operationsCounter) throws DaoException {
+    public List<Company> getAdvancedSearchResult(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, int operationsCounter) throws DaoException {
         List<Company> list = null;
         CompanyDao companyDao = DaoFactory.getInstance().getCompanyDao();
         try {
             openTransactionSession();
             companyDao.setSession(getSession());
-            list = companyDao.getAdvancedSearchResult(parameters, statuses, types, values, operationsCounter);
+            list = companyDao.getAdvancedSearchResult(parameters, statuses, types, values, text_values, operationsCounter);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();

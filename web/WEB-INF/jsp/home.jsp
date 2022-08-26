@@ -134,21 +134,22 @@
                                 <div class="single-job d-lg-flex justify-content-between">
                                     <div class="job-text" style="width: 100%">
                                         <h4>Расширенный поиск</h4>
-                                        <h5>Выберите степень сложности запроса:
-                                            <input id="firstdiff" type="radio" name="difficult" checked>1 запрос&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <input id="seconddiff" type="radio" name="difficult">2 запроса&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <input id="thirddiff" type="radio" name="difficult">3 запроса
+                                        <h5>Выберите степень сложности запроса:</h5>
+                                        <h5 class="ml-5"><input class="form-check-input" id="firstdiff" type="radio" name="difficult" checked>1 запрос&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <input class="form-check-input" id="seconddiff" type="radio" name="difficult">2 запроса&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <input class="form-check-input" id="thirddiff" type="radio" name="difficult">3 запроса
                                         </h5>
                                         <form action="Controller" method="post">
-                                            <input type="hidden" name="command" value="advanced_search">
+                                            <input class="form-control" type="hidden" name="command" value="advanced_search">
                                             <div class="single-content1" id="diff1div" >
                                                 <div class="single-job d-lg-flex justify-content-between">
                                                     <div class="job-text">
                                                         <ul>
                                                             <li>
                                                                 <h5>Категория:
-                                                                    <select name="category" id="cat1">
+                                                                    <select class="form-control" name="category" id="cat1">
                                                                         <option selected disabled>Выберите категорию...</option>
+                                                                        <option value="0">Текстовая информация</option>
                                                                         <option value="1">Основная информация о предприятии</option>
                                                                         <option value="2">Капитал предприятия</option>
                                                                         <option value="3">Коэффициенты предприятия (На конец отчетного периода)</option>
@@ -161,14 +162,14 @@
                                                             </li>
                                                             <li>
                                                                 <h5>Параметр:<br>
-                                                                    <select name="parameter" id="param1">
+                                                                    <select class="form-control" name="parameter" id="param1">
                                                                         <option selected disabled>Сначала выберите категорию...</option>
                                                                     </select>
                                                                 </h5>
                                                             </li>
-                                                            <li>
+                                                            <li id="statusli1">
                                                                 <h5>Статус:
-                                                                    <select name="status" id="stat1">
+                                                                    <select class="form-control" name="status" id="stat1">
                                                                         <option selected disabled>Выберите статус...</option>
                                                                         <option value="sort" id="sortoption1">Сортировать...</option>
                                                                         <option value="morethan">Больше чем...</option>
@@ -180,16 +181,17 @@
                                                                     </select>
                                                                 </h5>
                                                             </li>
+                                                            <li id="textvalueli1" hidden><h5>Текстовое значение: <input class="form-control" id="textvalue1" type="text" size="30" name="text_value" placeholder="Текст"></h5></li>
                                                             <li id="typeli1" hidden>
                                                                 <h5>Тип:
-                                                                    <select name="type" id="type1">
+                                                                    <select class="form-control" name="type" id="type1">
                                                                         <option selected disabled value="0">Выберите тип сортировки...</option>
                                                                         <option value="asc">По возрастанию</option>
                                                                         <option value="desc">По убыванию</option>
                                                                     </select>
                                                                 </h5>
                                                             </li>
-                                                            <li id="numli1" hidden><h5>Значение: <input id="number1" type="number" size="10" name="val" placeholder="Число"></h5></li>
+                                                            <li id="numli1" hidden><h5>Значение: <input class="form-control" id="number1" type="number" size="10" name="val" placeholder="Число"></h5></li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -201,8 +203,9 @@
                                                         <ul>
                                                             <li>
                                                                 <h5>Категория:
-                                                                    <select name="category" id="cat2">
+                                                                    <select class="form-control" name="category" id="cat2">
                                                                         <option selected disabled>Выберите категорию...</option>
+                                                                        <option value="0">Текстовая информация</option>
                                                                         <option value="1">Основная информация о предприятии</option>
                                                                         <option value="2">Капитал предприятия</option>
                                                                         <option value="3">Коэффициенты предприятия (На конец отчетного периода)</option>
@@ -213,12 +216,12 @@
                                                                     </select>
                                                                 </h5>
                                                             </li>
-                                                            <li><h5>Параметр:<br> <select name="parameter" id="param2">
+                                                            <li><h5>Параметр:<br> <select class="form-control" name="parameter" id="param2">
                                                                 <option selected disabled>Сначала выберите категорию...</option>
                                                             </select></h5></li>
-                                                            <li>
+                                                            <li id="statusli2">
                                                                 <h5>Статус:
-                                                                    <select name="status" id="stat2">
+                                                                    <select class="form-control" name="status" id="stat2">
                                                                         <option selected disabled>Выберите статус...</option>
                                                                         <option value="sort" id="sortoption2">Сортировать...</option>
                                                                         <option value="morethan">Больше чем...</option>
@@ -230,16 +233,17 @@
                                                                     </select>
                                                                 </h5>
                                                             </li>
+                                                            <li id="textvalueli2" hidden><h5>Текстовое значение: <input class="form-control" id="textvalue2" type="text" size="30" name="text_value" placeholder="Текст"></h5></li>
                                                             <li id="typeli2" hidden>
                                                                 <h5>Тип:
-                                                                    <select name="type" id="type2">
+                                                                    <select class="form-control" name="type" id="type2">
                                                                         <option selected disabled value="0">Выберите тип сортировки...</option>
                                                                         <option value="asc">По возрастанию</option>
                                                                         <option value="desc">По убыванию</option>
                                                                     </select>
                                                                 </h5>
                                                             </li>
-                                                            <li id="numli2" hidden><h5>Значение: <input id="number2" type="number" size="10" name="val" placeholder="Число"></h5></li>
+                                                            <li id="numli2" hidden><h5>Значение: <input class="form-control" id="number2" type="number" size="10" name="val" placeholder="Число"></h5></li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -251,8 +255,9 @@
                                                         <ul>
                                                             <li>
                                                                 <h5>Категория:
-                                                                    <select name="category" id="cat3">
+                                                                    <select class="form-control" name="category" id="cat3">
                                                                         <option selected disabled>Выберите категорию...</option>
+                                                                        <option value="0">Текстовая информация</option>
                                                                         <option value="1">Основная информация о предприятии</option>
                                                                         <option value="2">Капитал предприятия</option>
                                                                         <option value="3">Коэффициенты предприятия (На конец отчетного периода)</option>
@@ -263,12 +268,12 @@
                                                                     </select>
                                                                 </h5>
                                                             </li>
-                                                            <li><h5>Параметр:<br> <select name="parameter" id="param3">
+                                                            <li><h5>Параметр:<br> <select class="form-control" name="parameter" id="param3">
                                                                 <option selected disabled>Сначала выберите категорию...</option>
                                                             </select></h5></li>
-                                                            <li>
+                                                            <li id="statusli3">
                                                                 <h5>Статус:
-                                                                    <select name="status" id="stat3">
+                                                                    <select class="form-control" name="status" id="stat3">
                                                                         <option selected disabled>Выберите статус...</option>
                                                                         <option value="sort" id="sortoption3">Сортировать...</option>
                                                                         <option value="morethan">Больше чем...</option>
@@ -280,22 +285,23 @@
                                                                     </select>
                                                                 </h5>
                                                             </li>
+                                                            <li id="textvalueli3" hidden><h5>Текстовое значение: <input class="form-control" id="textvalue3" type="text" size="30" name="text_value" placeholder="Текст"></h5></li>
                                                             <li id="typeli3" hidden>
                                                                 <h5>Тип:
-                                                                    <select name="type" id="type3">
+                                                                    <select class="form-control" name="type" id="type3">
                                                                         <option selected disabled value="0">Выберите тип сортировки...</option>
                                                                         <option value="asc">По возрастанию</option>
                                                                         <option value="desc">По убыванию</option>
                                                                     </select>
                                                                 </h5>
                                                             </li>
-                                                            <li id="numli3" hidden><h5>Значение: <input id="number3" type="number" size="10" name="val" placeholder="Число"></h5></li>
+                                                            <li id="numli3" hidden><h5>Значение: <input class="form-control" id="number3" type="number" size="10" name="val" placeholder="Число"></h5></li>
                                                         </ul>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <input type="submit">
-                                            <input type="reset" id="resetbutton">
+                                            <input class="btn btn-primary mb-2" type="submit">
+                                            <input class="btn mb-2" type="reset" id="resetbutton">
                                         </form>
                                     </div>
                                 </div>
@@ -573,7 +579,24 @@
     var stat1 = document.getElementById('stat1');
     var stat2 = document.getElementById('stat2');
     var stat3 = document.getElementById('stat3');
+    var num1 = document.getElementById('number1');
+    var num2 = document.getElementById('number2');
+    var num3 = document.getElementById('number3');
+    var textval1 = document.getElementById('textvalue1');
+    var textval2 = document.getElementById('textvalue2');
+    var textval3 = document.getElementById('textvalue3');
     //В parameters2 разобраться с чистой прибылью
+
+    let options0 = [{"text":"Наименование","value":"company.name"},
+        {"text":"Полное наименование","value":"company.full_name"},
+        {"text":"Адрес","value":"address.address"},
+        {"text":"Вид деятельности","value":"company.activity_type"},
+        {"text":"Наименование района","value":"address.district"},
+        {"text":"Наименование области","value":"address.area"},
+        {"text":"Наименование отрасли","value":"company_info.industry_name"},
+        {"text":"Наименование управления","value":"company_info.department_name"},
+        {"text":"Наименование объединения","value":"company_info.association_name"},
+        {"text":"Наименование вида собственности","value":"company_info.ownership_type"}];
 
     let options1 = [{"text":"Код ОКПО","value":"company.okpo"},
         {"text":"Код УНН","value":"company.ynn"},
@@ -988,7 +1011,28 @@
 
 
     category1.onclick = function (event){
+        textval1.value='';
+        num1.value='';
+        if (category1.value=='0'){
+            document.getElementById("statusli1").hidden=true;
+            document.getElementById("typeli1").hidden=true;
+            document.getElementById("numli1").hidden=true;
+            document.getElementById("textvalueli1").hidden=false;
+
+            stat1.value = 'morethan';<%--Костыль--%>
+
+            param1.innerHTML='';
+            for(var i = 0; i < options0.length; i++) {
+                var opt = options0[i];
+                var el = document.createElement("option");
+                el.text = opt.text;
+                el.value = opt.value;
+                param1.appendChild(el);
+            }
+        }
         if (category1.value=='1'){
+            document.getElementById("statusli1").hidden=false;
+            document.getElementById("textvalueli1").hidden=true;
             param1.innerHTML='';
             for(var i = 0; i < options1.length; i++) {
                 var opt = options1[i];
@@ -999,6 +1043,8 @@
             }
         }
         if (category1.value=='2'){
+            document.getElementById("statusli1").hidden=false;
+            document.getElementById("textvalueli1").hidden=true;
             param1.innerHTML='';
             for(var i = 0; i < options2.length; i++) {
                 var opt = options2[i];
@@ -1009,6 +1055,8 @@
             }
         }
         if (category1.value=='3'){
+            document.getElementById("statusli1").hidden=false;
+            document.getElementById("textvalueli1").hidden=true;
             param1.innerHTML='';
             for(var i = 0; i < options3.length; i++) {
                 var opt = options3[i];
@@ -1019,6 +1067,8 @@
             }
         }
         if (category1.value=='4'){
+            document.getElementById("statusli1").hidden=false;
+            document.getElementById("textvalueli1").hidden=true;
             param1.innerHTML='';
             for(var i = 0; i < options4.length; i++) {
                 var opt = options4[i];
@@ -1029,6 +1079,8 @@
             }
         }
         if (category1.value=='5'){
+            document.getElementById("statusli1").hidden=false;
+            document.getElementById("textvalueli1").hidden=true;
             param1.innerHTML='';
             for(var i = 0; i < options5.length; i++) {
                 var opt = options5[i];
@@ -1039,6 +1091,8 @@
             }
         }
         if (category1.value=='6'){
+            document.getElementById("statusli1").hidden=false;
+            document.getElementById("textvalueli1").hidden=true;
             param1.innerHTML='';
             for(var i = 0; i < options6.length; i++) {
                 var opt = options6[i];
@@ -1049,6 +1103,8 @@
             }
         }
         if (category1.value=='7'){
+            document.getElementById("statusli1").hidden=false;
+            document.getElementById("textvalueli1").hidden=true;
             param1.innerHTML='';
             for(var i = 0; i < options7.length; i++) {
                 var opt = options7[i];
@@ -1060,7 +1116,26 @@
         }
     };
     category2.onclick = function (event){
+        textval2.value='';
+        num2.value='';
+        if (category2.value=='0'){
+            document.getElementById("statusli2").hidden=true;
+            document.getElementById("typeli2").hidden=true;
+            document.getElementById("numli2").hidden=true;
+            document.getElementById("textvalueli2").hidden=false;
+            param2.innerHTML='';
+            stat2.value = 'morethan';<%--Костыль--%>
+            for(var i = 0; i < options0.length; i++) {
+                var opt = options0[i];
+                var el = document.createElement("option");
+                el.text = opt.text;
+                el.value = opt.value;
+                param2.appendChild(el);
+            }
+        }
         if (category2.value=='1'){
+            document.getElementById("statusli2").hidden=false;
+            document.getElementById("textvalueli2").hidden=true;
             param2.innerHTML='';
             for(var i = 0; i < options1.length; i++) {
                 var opt = options1[i];
@@ -1071,6 +1146,8 @@
             }
         }
         if (category2.value=='2'){
+            document.getElementById("statusli2").hidden=false;
+            document.getElementById("textvalueli2").hidden=true;
             param2.innerHTML='';
             for(var i = 0; i < options2.length; i++) {
                 var opt = options2[i];
@@ -1081,6 +1158,8 @@
             }
         }
         if (category2.value=='3'){
+            document.getElementById("statusli2").hidden=false;
+            document.getElementById("textvalueli2").hidden=true;
             param2.innerHTML='';
             for(var i = 0; i < options3.length; i++) {
                 var opt = options3[i];
@@ -1091,6 +1170,8 @@
             }
         }
         if (category2.value=='4'){
+            document.getElementById("statusli2").hidden=false;
+            document.getElementById("textvalueli2").hidden=true;
             param2.innerHTML='';
             for(var i = 0; i < options4.length; i++) {
                 var opt = options4[i];
@@ -1101,6 +1182,8 @@
             }
         }
         if (category2.value=='5'){
+            document.getElementById("statusli2").hidden=false;
+            document.getElementById("textvalueli2").hidden=true;
             param2.innerHTML='';
             for(var i = 0; i < options5.length; i++) {
                 var opt = options5[i];
@@ -1111,6 +1194,8 @@
             }
         }
         if (category2.value=='6'){
+            document.getElementById("statusli2").hidden=false;
+            document.getElementById("textvalueli2").hidden=true;
             param2.innerHTML='';
             for(var i = 0; i < options6.length; i++) {
                 var opt = options6[i];
@@ -1121,6 +1206,8 @@
             }
         }
         if (category2.value=='7'){
+            document.getElementById("statusli2").hidden=false;
+            document.getElementById("textvalueli2").hidden=true;
             param2.innerHTML='';
             for(var i = 0; i < options7.length; i++) {
                 var opt = options7[i];
@@ -1132,7 +1219,26 @@
         }
     };
     category3.onclick = function (event){
+        textval3.value='';
+        num3.value='';
+        if (category3.value=='0'){
+            document.getElementById("statusli3").hidden=true;
+            document.getElementById("typeli3").hidden=true;
+            document.getElementById("numli3").hidden=true;
+            document.getElementById("textvalueli3").hidden=false;
+            param3.innerHTML='';
+            stat3.value = 'morethan';<%--Костыль--%>
+            for(var i = 0; i < options0.length; i++) {
+                var opt = options0[i];
+                var el = document.createElement("option");
+                el.text = opt.text;
+                el.value = opt.value;
+                param3.appendChild(el);
+            }
+        }
         if (category3.value=='1'){
+            document.getElementById("statusli3").hidden=false;
+            document.getElementById("textvalueli3").hidden=true;
             param3.innerHTML='';
             for(var i = 0; i < options1.length; i++) {
                 var opt = options1[i];
@@ -1143,6 +1249,8 @@
             }
         }
         if (category3.value=='2'){
+            document.getElementById("statusli3").hidden=false;
+            document.getElementById("textvalueli3").hidden=true;
             param3.innerHTML='';
             for(var i = 0; i < options2.length; i++) {
                 var opt = options2[i];
@@ -1153,6 +1261,8 @@
             }
         }
         if (category3.value=='3'){
+            document.getElementById("statusli3").hidden=false;
+            document.getElementById("textvalueli3").hidden=true;
             param3.innerHTML='';
             for(var i = 0; i < options3.length; i++) {
                 var opt = options3[i];
@@ -1163,6 +1273,8 @@
             }
         }
         if (category3.value=='4'){
+            document.getElementById("statusli3").hidden=false;
+            document.getElementById("textvalueli3").hidden=true;
             param3.innerHTML='';
             for(var i = 0; i < options4.length; i++) {
                 var opt = options4[i];
@@ -1173,6 +1285,8 @@
             }
         }
         if (category3.value=='5'){
+            document.getElementById("statusli3").hidden=false;
+            document.getElementById("textvalueli3").hidden=true;
             param3.innerHTML='';
             for(var i = 0; i < options5.length; i++) {
                 var opt = options5[i];
@@ -1183,6 +1297,8 @@
             }
         }
         if (category3.value=='6'){
+            document.getElementById("statusli3").hidden=false;
+            document.getElementById("textvalueli3").hidden=true;
             param3.innerHTML='';
             for(var i = 0; i < options6.length; i++) {
                 var opt = options6[i];
@@ -1193,6 +1309,8 @@
             }
         }
         if (category3.value=='7'){
+            document.getElementById("statusli3").hidden=false;
+            document.getElementById("textvalueli3").hidden=true;
             param3.innerHTML='';
             for(var i = 0; i < options7.length; i++) {
                 var opt = options7[i];
@@ -1206,7 +1324,7 @@
 
     stat1.onclick = function (event) {
         document.getElementById('type1').value = '0';
-        document.getElementById('number1').value = '';
+        num1.value = '';
         if (stat1.value == 'sort'){
             document.getElementById('typeli1').hidden = false;
             document.getElementById('numli1').hidden = true;
@@ -1222,7 +1340,7 @@
     };
     stat2.onclick = function (event) {
         document.getElementById('type2').value = '0';
-        document.getElementById('number2').value = '';
+        num2.value = '';
         if (stat2.value == 'sort'){
             document.getElementById('typeli2').hidden = false;
             document.getElementById('numli2').hidden = true;
@@ -1238,7 +1356,7 @@
     };
     stat3.onclick = function (event) {
         document.getElementById('type3').value = '0';
-        document.getElementById('number3').value = '';
+        num3.value = '';
         if (stat3.value == 'sort'){
             document.getElementById('typeli3').hidden = false;
             document.getElementById('numli3').hidden = true;

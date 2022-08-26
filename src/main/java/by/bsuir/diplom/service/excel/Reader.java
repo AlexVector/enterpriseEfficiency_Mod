@@ -22,7 +22,8 @@ import java.util.List;
 public class Reader extends SessionUtil {
     public void read(String filename) throws ServiceException {
         Workbook workbook = loadWorkbook(filename);
-        processSheet(workbook.getSheet("160921 Ф (0_1_2_4_5_5А_6А_7 (2"));
+        //processSheet(workbook.getSheet("160921 Ф (0_1_2_4_5_5А_6А_7 (2"));
+        processSheet(workbook.getSheetAt(workbook.getActiveSheetIndex()));
     }
 
     private Workbook loadWorkbook(String filename) throws ServiceException {

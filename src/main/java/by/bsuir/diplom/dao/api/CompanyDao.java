@@ -58,76 +58,93 @@ public class CompanyDao extends AbstractDao<Integer, Company> {
     }
     //My modification
 
-    public String joinsGenerator(String[] parameters, String[] statuses, String[] types, String[] values, String createQuery){
+    public String specialJoins(String createQuery, String[] parameters, String[] statuses){
+        for (int i=0; i<parameters.length; i++){
+            if (parameters[i]!=null && (statuses[i].equals("min") || statuses[i].equals("max")) && !parameters[i].substring(0, parameters[i].indexOf(".")).equals("company")){
+                createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) + " on company.ynn = " + parameters[i].substring(0, parameters[i].indexOf(".")) + ".ynn ";
+            }
+        }
+        return createQuery + " where ";
+    }
+    public String standartJoins(String createQuery, String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, boolean has_minmax, String innerJoinConnector){
         for (int i=0;i<parameters.length;i++){
-            if (!parameters[i].substring(0, parameters[i].indexOf(".")).equals("company")){
-                if (parameters[i]!=null && statuses[i].equals("sort") && types[i]!=null)
-                    createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) + " on company.ynn = " + parameters[i].substring(0, parameters[i].indexOf(".")) + ".ynn ";
-                if (parameters[i]!=null && (statuses[i].equals("morethan") || statuses[i].equals("lessthan") || statuses[i].equals("equal")) && values[i]!="")
-                    createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) + " on company.ynn = " + parameters[i].substring(0, parameters[i].indexOf(".")) + ".ynn ";
-                if (parameters[i]!=null && (statuses[i].equals("min") || statuses[i].equals("max") || statuses[i].equals("isnull")))
+            if (!(statuses[i].equals("min") || statuses[i].equals("max")) && has_minmax && !innerJoinConnector.substring(innerJoinConnector.indexOf(" on "), innerJoinConnector.indexOf(".")).equals(parameters[i].substring(0, parameters[i].indexOf("."))) && !createQuery.contains("join " + parameters[i].substring(0, parameters[i].indexOf("."))+" on"))
+                createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) + innerJoinConnector + parameters[i].substring(0, parameters[i].indexOf(".")) + ".ynn ";
+            if (!has_minmax && !parameters[i].substring(0, parameters[i].indexOf(".")).equals("company") && !createQuery.contains("join " + parameters[i].substring(0, parameters[i].indexOf("."))+" on")){
+                if (parameters[i]!=null && (text_values[i]!="" || (statuses[i].equals("sort") && types[i]!=null) || ((statuses[i].equals("morethan") || statuses[i].equals("lessthan") || statuses[i].equals("equal")) && values[i]!="") || statuses[i].equals("isnull")))
                     createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) + " on company.ynn = " + parameters[i].substring(0, parameters[i].indexOf(".")) + ".ynn ";
             }
         }
-        return createQuery;
+        return createQuery + " where ";//возможно, where тут будет мешать
     }
 
-    public String sqlGenForSpecialParameters(String parameter, String status, String type, String sqlQuery){
-        System.out.println(1);
-        String[] res = parameter.split(" AND ",2);
-        System.out.println(2);
-        if (parameter!=null && status.equals("min"))
-            sqlQuery = sqlQuery + parameter + " = (select min(" + res[1] + ") from " + parameter.substring(0, parameter.indexOf(".")) + " and ";
-        if (parameter!=null && status.equals("max"))
-            sqlQuery = sqlQuery + parameter + " = (select max(" + res[1] + ") from " + parameter.substring(0, parameter.indexOf(".")) + " and ";
-        if (parameter!=null && status.equals("sort") && type!=null)
-            sqlQuery = sqlQuery + "order by " + res[1] + " " + type;
-        System.out.println(3);
-        return sqlQuery;
-    }
-
-
-
-    public String sqlGeneration(String[] parameters, String[] statuses, String[] types, String[] values, String createQuery){
+    public String commonSQLgen(String createQuery, String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values){
         for (int i=0; i<parameters.length; i++){
-            if (parameters[i]!=null && statuses[i].equals("morethan") && values[i]!="")
-                createQuery = createQuery + parameters[i] + " > " + values[i] + " and ";
-            if (parameters[i]!=null && statuses[i].equals("lessthan") && values[i]!="")
-                createQuery = createQuery + parameters[i] + " < " + values[i] + " and ";
-            if (parameters[i]!=null && statuses[i].equals("equal") && values[i]!="")
-                createQuery = createQuery + parameters[i] + " = " + values[i] + " and ";
-            if (parameters[i].contains(" AND ") && (statuses[i].equals("min") || statuses[i].equals("max"))) {
-                createQuery = sqlGenForSpecialParameters(parameters[i], statuses[i], null, createQuery);
-                System.out.println("alert");
+            if (parameters[i]!=null){
+                if (text_values[i]!="")
+                    createQuery = createQuery + parameters[i] + " like '%" + text_values[i] + "%' and ";
+                if (statuses[i].equals("morethan") && values[i]!="")
+                    createQuery = createQuery + parameters[i] + " > " + values[i] + " and ";
+                if (statuses[i].equals("lessthan") && values[i]!="")
+                    createQuery = createQuery + parameters[i] + " < " + values[i] + " and ";
+                if (statuses[i].equals("equal") && values[i]!="")
+                    createQuery = createQuery + parameters[i] + " = " + values[i] + " and ";
+                if (statuses[i].equals("isnull"))
+                    createQuery = createQuery + parameters[i] + " is null and ";
             }
-            if (parameters[i]!=null && !parameters[i].contains(" AND ") && statuses[i].equals("min"))
-                createQuery = createQuery + parameters[i] + " = (select min(" + parameters[i] + ") from " + parameters[i].substring(0, parameters[i].indexOf(".")) + " and ";
-            if (parameters[i]!=null && !parameters[i].contains(" AND ") && statuses[i].equals("max"))
-                createQuery = createQuery + parameters[i] + " = (select max(" + parameters[i] + ") from " + parameters[i].substring(0, parameters[i].indexOf(".")) + " and ";
-            if (parameters[i]!=null && statuses[i].equals("isnull"))
-                createQuery = createQuery + parameters[i] + " is null and ";
+        }
+        for (int i=0; i<parameters.length; i++){
             if (parameters[i]!=null && statuses[i].equals("sort") && types[i]!=null){
                 if (createQuery.substring(createQuery.length()-4, createQuery.length()).equals("and "))
                     createQuery = createQuery.substring(0, createQuery.length()-4);
                 if (createQuery.substring(createQuery.length()-6, createQuery.length()).equals("where "))
                     createQuery = createQuery.substring(0, createQuery.length()-6);
-                if (parameters[i].contains(" AND "))
-                    createQuery = sqlGenForSpecialParameters(parameters[i], statuses[i], types[i], createQuery);
-                else
+                if (parameters[i].contains(" AND ")){
+                    String[] res = parameters[i].split(" AND ",2);
+                    createQuery = createQuery + res[0] + " order by " + res[1] + " " + types[i];
+                }
+                else {
                     createQuery = createQuery + "order by " + parameters[i] + " " + types[i];
+                }
             }
         }
         return createQuery;
     }
 
-    public List<Company> getAdvancedSearchResult(String[] parameters, String[] statuses, String[] types, String[] values, int[] operationsCounter) throws DaoException {
+    public List<Company> getAdvancedSearchResult(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, int operationsSum) throws DaoException {
         try {
             String createQuery = "SELECT company.* FROM company ";
-            createQuery = joinsGenerator(parameters, statuses, types, values, createQuery);
-            createQuery = createQuery + "where ";
-            createQuery = sqlGeneration(parameters, statuses, types, values, createQuery);
+            boolean has_minmax = false;
+            String innerJoinConnector = null;
+            for (int i=0; i<parameters.length; i++){
+                if (parameters[i]!=null && (statuses[i].equals("min") || statuses[i].equals("max"))){
+                    has_minmax = true;
+                    createQuery = specialJoins(createQuery, parameters, statuses);
+                    innerJoinConnector = " on " + parameters[i].substring(0, parameters[i].indexOf(".")) + ".ynn = ";
+                    if (parameters[i].contains(" AND ")){
+                        String[] res = parameters[i].split(" AND ",2);
+                        if (parameters[i]!=null && statuses.equals("min"))
+                            createQuery = createQuery + parameters[i] + " = (select min(" + res[1] + ") from " + parameters[i].substring(0, parameters[i].indexOf(".")) + " ";
+                        if (parameters[i]!=null && statuses.equals("max"))
+                            createQuery = createQuery + parameters[i] + " = (select max(" + res[1] + ") from " + parameters[i].substring(0, parameters[i].indexOf(".")) + " ";
+                    }
+                    else {
+                        if (statuses[i].equals("min"))
+                            createQuery = createQuery + parameters[i] + " = (select min(" + parameters[i] + ") from " + parameters[i].substring(0, parameters[i].indexOf(".")) + " ";
+                        if (statuses[i].equals("max"))
+                            createQuery = createQuery + parameters[i] + " = (select max(" + parameters[i] + ") from " + parameters[i].substring(0, parameters[i].indexOf(".")) + " ";
+                    }
+                }
+            }
+            createQuery = standartJoins(createQuery, parameters, statuses, types, values, text_values, has_minmax, innerJoinConnector);
+            createQuery = commonSQLgen(createQuery, parameters, statuses, types, values, text_values);
             if (createQuery.substring(createQuery.length()-4, createQuery.length()).equals("and "))
                 createQuery = createQuery.substring(0, createQuery.length()-4);
+            if (createQuery.substring(createQuery.length()-6, createQuery.length()).equals("where "))
+                createQuery = createQuery.substring(0, createQuery.length()-6);
+            if (has_minmax)
+                createQuery = createQuery + ") ";
+            createQuery = createQuery + " COLLATE utf8mb4_general_ci ";
             System.out.println(createQuery);
             Query query = session.createNativeQuery(createQuery).addEntity(Company.class);
             return query.list();

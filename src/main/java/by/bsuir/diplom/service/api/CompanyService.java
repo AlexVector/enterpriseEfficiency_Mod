@@ -51,5 +51,5 @@ public interface CompanyService {
 
     List<Company> searchByName(String text) throws ServiceException;
 
-    List<Company> getAdvancedSearchResult(String[] parameters, String[] statuses, String[] types, String[] values, int[] operationsCounter) throws DaoException;
+    List<Company> getAdvancedSearchResult(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, int operationsCounter) throws DaoException;
 }

@@ -340,15 +340,15 @@
                                 <h3 class="mb-30 title_color">${staffLabel}</h3>
                                 <div class="progress-table-wrap">
                                     <div class="progress-table">
-                                        <div class="table-head">
+                                            <%--Style modification--%>
+                                        <div class="table-head table-bordered pl-4">
                                             <div class="percentage">${staffLabel}</div>
                                             <div class="country">${averageNumber}</div>
                                             <div class="country">${salaryFund}</div>
                                         </div>
                                         <c:forEach var="staff" items="${sessionScope.companyInfo.staff}">
-                                            <div class="table-row">
+                                            <div class="table-row table-bordered pl-4">
                                                 <c:choose>
-
                                                     <c:when test="${staff.index eq 107}">
                                                         <div class="percentage">${totalStaff}</div>
                                                     </c:when>
@@ -368,6 +368,7 @@
                                                         <div class="percentage">${specialists}</div>
                                                     </c:when>
                                                 </c:choose>
+                                                    <%--Style modification--%>
                                                 <div class="country">
                                                     <c:choose>
                                                         <c:when test="${staff.averageNumber eq null}">${noInfo}</c:when>
@@ -404,14 +405,14 @@
                                 <h3 class="mb-30 title_color">${products}</h3>
                                 <div class="progress-table-wrap">
                                     <div class="progress-table">
-                                        <div class="table-head">
+                                        <div class="table-head table-bordered pl-4">
                                             <div class="percentage">${products}</div>
                                             <div class="country">${fullCostPrice}</div>
                                             <div class="country">${bailedOut}</div>
                                         </div>
                                         <c:forEach var="cropProduction"
                                                    items="${sessionScope.companyInfo.cropProductions}">
-                                            <div class="table-row">
+                                            <div class="table-row table-bordered pl-4">
                                                 <c:choose>
                                                     <c:when test="${cropProduction.index eq 121}">
                                                         <div class="percentage">${plantProducts}</div>
