@@ -604,7 +604,7 @@
         {"text":"Уровень рентабельности, %","value":"coefficients.profitability"},
         {"text":"Уровень рентабельности без учета государственной поддержки, %","value":"coefficients.profitability_without_support"}];
 
-    //let options2 = [{"text":,"value":},{"text":,"value":},{"text":,"value":},{"text":,"value":},{"text":,"value":},{"text":,"value":},{"text":,"value":},{"text":,"value":},{"text":,"value":},{"text":,"value":},{"text":,"value":},{"text":,"value":}];
+
     let options2 = [{"text":"Основные средства","value":"fixed_assets.fixed_assets"},
         {"text":"Долгосрочные кредиты и займы","value":"fixed_assets.loans_borrowings"},
         {"text":"ИТОГО по разделу IV","value":"fixed_assets.total_4"},

@@ -43,16 +43,24 @@ public class Reader extends SessionUtil {
             throw new ServiceException(e);
         }
     }
-
+    //My mod
     private void processSheet(Sheet sheet) throws ServiceException {
         var data = new HashMap<Integer, List<Object>>();
         var iterator = sheet.rowIterator();
+        DataFormatter dataFormatter = new DataFormatter();
+        boolean skiprow = false;
         for (var rowIndex = 0; iterator.hasNext(); rowIndex++) {
             var row = iterator.next();
-            processRow(data, rowIndex, row);
+            for (int i=0; i<10; i++){
+                System.out.println(dataFormatter.formatCellValue(row.getCell(i)));
+                if (!dataFormatter.formatCellValue(row.getCell(i)).equals("")) skiprow = false;
+                else skiprow = true;
+            }
+            if (!skiprow)
+                processRow(data, rowIndex, row);
         }
     }
-
+    //My mod
     private void processRow(HashMap<Integer, List<Object>> data, int rowIndex, Row row) throws ServiceException {
         data.put(rowIndex, new ArrayList<>());
         for (var cell : row) {
