@@ -15,7 +15,7 @@ public class HibernateUtil {
         try {
             return new Configuration().configure(new File("C:\\Users\\USER\\Desktop\\proj\\enterpriseEfficiency\\src\\main\\resources\\hibernate.cfg.xml")).buildSessionFactory();
         } catch (Exception e) {
-            System.out.println("FFFFFFFFFFFF");
+            //System.out.println("FFFFFFFFFFFF");
             System.err.println(e);
             throw new ExceptionInInitializerError(e);
         }

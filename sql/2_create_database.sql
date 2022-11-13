@@ -11,3 +11,4 @@ GRANT SELECT,INSERT,UPDATE,DELETE
     ON `company_db`.*
     TO company_user@'%';
 #IDENTIFIED BY 'company_password';
+

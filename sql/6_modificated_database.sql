@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `company_db`.`address`
 -- -----------------------------------------------------
 -- Table `company_db`.`cattle`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `company_db`.`cattle`
+CREATE TABLE IF NOT EXISTS `company_db`.`cattle` --
 (
     `ynn`                    INT NOT NULL,
     `year`                   YEAR NOT NULL,
@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `company_db`.`cattle`
 CREATE TABLE IF NOT EXISTS `company_db`.`coefficients`
 (
     `ynn`                           INT    NOT NULL,
-    `year`                          YEAR NOT NULL,
+    `year`                          YEAR   NOT NULL,
     `own_security`                  DOUBLE NOT NULL,
     `current_liquidity`             DOUBLE NOT NULL,
     `financial_security`            DOUBLE NOT NULL,

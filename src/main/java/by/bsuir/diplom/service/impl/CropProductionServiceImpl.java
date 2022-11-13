@@ -1,8 +1,10 @@
 package by.bsuir.diplom.service.impl;
 
 import by.bsuir.diplom.bean.CropProduction;
+import by.bsuir.diplom.bean.Staff;
 import by.bsuir.diplom.dao.DaoFactory;
 import by.bsuir.diplom.dao.api.CropProductionDao;
+import by.bsuir.diplom.dao.api.StaffDao;
 import by.bsuir.diplom.dao.exception.DaoException;
 import by.bsuir.diplom.dao.utilities.SessionUtil;
 import by.bsuir.diplom.service.ServiceException;
@@ -11,6 +13,25 @@ import by.bsuir.diplom.service.api.CropProductionService;
 import java.util.List;
 
 public class CropProductionServiceImpl extends SessionUtil implements CropProductionService {
+
+    @Override
+    public List<CropProduction> getCropProductionToExport(Integer ynn) throws ServiceException {
+        List<CropProduction> list;
+        CropProductionDao cropprodDao = DaoFactory.getInstance().getCropProductionDao();
+        try {
+            openTransactionSession();
+            cropprodDao.setSession(getSession());
+            list = cropprodDao.getCropProductionToExport(ynn);
+            commitTransactionSession();
+        } catch (DaoException e) {
+            rollbackTransactionSession();
+            throw new ServiceException(e);
+        } finally {
+            closeSession();
+        }
+        return list;
+    }
+
     @Override
     public List<CropProduction> getAll() throws ServiceException {
         List<CropProduction> list;

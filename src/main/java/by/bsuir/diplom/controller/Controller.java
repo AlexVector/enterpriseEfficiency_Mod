@@ -4,7 +4,6 @@ import by.bsuir.diplom.controller.command.Command;
 import by.bsuir.diplom.controller.command.CommandProvider;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,10 +56,8 @@ public class Controller extends HttpServlet {
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String name;
         Command command;
-
         name = request.getParameter("command");
         command = provider.takeCommand(name);
-
         command.execute(request, response, uploadFilePath);
     }
 

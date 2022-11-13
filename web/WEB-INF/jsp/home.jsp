@@ -371,6 +371,12 @@
                     </div>
                     <div class="col-lg-1"></div>
                     <div class="col-lg-3 sidebar">
+                            <%--My modification--%>
+                                <form action="Controller" method="post">
+                                    <input type="hidden" name="command" value="export_full_data"/>
+                                    <button type="submit" class="mb-2"><img class="btn pb-2" src="<c:url value="/resources/images/icons8-export-excel-48.png"/>" alt="Кнопка" title="Выгрузить данные в Excel"></button>
+                                </form>
+                            <%--My modification--%>
                         <c:if test="${sessionScope.locationMap ne null}">
                             <div class="single-widget category-widget">
                                 <h4 class="title">${areas}</h4>
@@ -550,6 +556,14 @@
                             </tbody>
                         </table>
                     </div>
+                        <%--My modification--%>
+                    <div class="col-lg-3 sidebar">
+                        <form action="Controller" method="post">
+                            <input type="hidden" name="command" value="export_search_data"/>
+                            <button type="submit" class="mb-2"><img class="btn pb-2" src="<c:url value="/resources/images/icons8-export-excel-48.png"/>" alt="Кнопка" title="Выгрузить данные в Excel"></button>
+                        </form>
+                    </div>
+                        <%--My modification--%>
                 </div>
             </div>
         </section>
@@ -564,6 +578,7 @@
 <c:import url="parts/footer.jsp"/>
 
 <script>
+
     var diff1 = document.getElementById('firstdiff');
     var diff2 = document.getElementById('seconddiff');
     var diff3 = document.getElementById('thirddiff');

@@ -6,6 +6,8 @@ import by.bsuir.diplom.service.ServiceException;
 import java.util.List;
 
 public interface GroundsService {
+    List<Grounds> getGroundsToExport(Integer ynn) throws ServiceException;
+
     List<Grounds> getAll() throws ServiceException;
 
     /**

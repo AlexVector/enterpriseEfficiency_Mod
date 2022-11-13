@@ -6,6 +6,9 @@ import by.bsuir.diplom.service.ServiceException;
 import java.util.List;
 
 public interface StaffService {
+
+    List<Staff> getStaffToExport(Integer ynn) throws ServiceException;
+
     List<Staff> getAll() throws ServiceException;
 
     /**

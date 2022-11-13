@@ -12,6 +12,24 @@ import java.util.List;
 
 public class StaffServiceImpl extends SessionUtil implements StaffService {
     @Override
+    public List<Staff> getStaffToExport(Integer ynn) throws ServiceException {
+        List<Staff> list;
+        StaffDao staffDao = DaoFactory.getInstance().getStaffDao();
+        try {
+            openTransactionSession();
+            staffDao.setSession(getSession());
+            list = staffDao.getStaffToExport(ynn);
+            commitTransactionSession();
+        } catch (DaoException e) {
+            rollbackTransactionSession();
+            throw new ServiceException(e);
+        } finally {
+            closeSession();
+        }
+        return list;
+    }
+
+    @Override
     public List<Staff> getAll() throws ServiceException {
         List<Staff> list;
         StaffDao staffDao = DaoFactory.getInstance().getStaffDao();

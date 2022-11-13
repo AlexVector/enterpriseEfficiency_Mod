@@ -12,6 +12,7 @@ public class CommandProvider {
 
     private Map<CommandName, Command> commands = new HashMap<>();
 
+
     public CommandProvider() {
         commands.put(CommandName.GO_TO_SIGN_IN_PAGE, new GoToSignInPage());
         commands.put(CommandName.GO_TO_SIGN_UP_PAGE, new GoToSignUpPage());
@@ -28,6 +29,8 @@ public class CommandProvider {
         commands.put(CommandName.FILTER_BY_LOCATION, new FilterByLocation());
         commands.put(CommandName.EDIT_USER, new EditUser());
         commands.put(CommandName.IMPORT_DATA, new ImportData());
+        commands.put(CommandName.EXPORT_FULL_DATA, new ExportFullData());
+        commands.put(CommandName.EXPORT_SEARCH_DATA, new ExportSearchData());
         commands.put(CommandName.GO_TO_EDIT_COMPANY_PAGE, new GoToEditCompanyPage());
         commands.put(CommandName.EDIT_COMPANY_INFO, new EditCompanyInfo());
         commands.put(CommandName.EDIT_STAFF, new EditStaff());

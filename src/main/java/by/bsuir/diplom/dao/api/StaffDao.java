@@ -10,6 +10,19 @@ public class StaffDao extends AbstractDao<Integer, Staff>{
     private static final String GET_ALL = "SELECT * FROM staff";
     private static final String GET_STAFF = "SELECT * FROM staff WHERE ynn=:ynn";
 
+    //my mod
+    private static final String GET_STAFF_FOR_EXPORT = "select * from staff inner join company c on c.ynn = staff.ynn where c.ynn=:ynn order by staff.column_index";
+
+    public List<Staff> getStaffToExport(Integer ynn) throws DaoException{
+        try{
+            Query query = session.createNativeQuery(GET_STAFF_FOR_EXPORT).addEntity(Staff.class);
+            query.setParameter("ynn", ynn);
+            return query.list();
+        } catch (Exception ex){
+            throw new DaoException(ex);
+        }
+    }
+
     @Override
     public List<Staff> getAll() throws DaoException {
         try {

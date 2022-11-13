@@ -6,6 +6,10 @@ import by.bsuir.diplom.service.ServiceException;
 import java.util.List;
 
 public interface CropProductionService {
+
+
+    List<CropProduction> getCropProductionToExport(Integer ynn) throws ServiceException;
+
     List<CropProduction> getAll() throws ServiceException;
 
     /**

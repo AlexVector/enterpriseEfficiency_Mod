@@ -1,7 +1,9 @@
 package by.bsuir.diplom.service.impl;
 
+import by.bsuir.diplom.bean.CropProduction;
 import by.bsuir.diplom.bean.Grounds;
 import by.bsuir.diplom.dao.DaoFactory;
+import by.bsuir.diplom.dao.api.CropProductionDao;
 import by.bsuir.diplom.dao.api.GroundsDao;
 import by.bsuir.diplom.dao.exception.DaoException;
 import by.bsuir.diplom.dao.utilities.SessionUtil;
@@ -11,6 +13,24 @@ import by.bsuir.diplom.service.api.GroundsService;
 import java.util.List;
 
 public class GroundsServiceImpl extends SessionUtil implements GroundsService {
+    @Override
+    public List<Grounds> getGroundsToExport(Integer ynn) throws ServiceException {
+        List<Grounds> list;
+        GroundsDao groundsDao = DaoFactory.getInstance().getGroundsDao();
+        try {
+            openTransactionSession();
+            groundsDao.setSession(getSession());
+            list = groundsDao.getGroundsToExport(ynn);
+            commitTransactionSession();
+        } catch (DaoException e) {
+            rollbackTransactionSession();
+            throw new ServiceException(e);
+        } finally {
+            closeSession();
+        }
+        return list;
+    }
+
     @Override
     public List<Grounds> getAll() throws ServiceException {
         List<Grounds> list;

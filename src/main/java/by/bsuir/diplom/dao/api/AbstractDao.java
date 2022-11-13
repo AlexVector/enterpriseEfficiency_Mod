@@ -2,6 +2,7 @@ package by.bsuir.diplom.dao.api;
 
 import by.bsuir.diplom.dao.exception.DaoException;
 import org.hibernate.Session;
+import org.hibernate.annotations.Entity;
 
 import java.io.Serializable;
 import java.util.List;
