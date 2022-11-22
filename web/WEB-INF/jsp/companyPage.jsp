@@ -147,6 +147,38 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="main-content">
+                        <%--My modification--%>
+                        <button class="btn btn-primary mb-2" id="showdynamic" type="button">Динамика показателей</button>
+                            <div class="single-content0" hidden>
+                                <div class="single-job mb-4 d-lg-flex justify-content-between">
+                                    <div class="job-text">
+                                        <h4>Динамика показателей</h4>
+                                        <ul>
+                                            <li>
+                                                <h5>Категория:
+                                                    <select class="form-control" name="category" id="dynamiccat">
+                                                        <option selected disabled>Выберите категорию...</option>
+                                                        <option value="1">Основная информация о предприятии</option>
+                                                        <option value="2">Капитал предприятия</option>
+                                                        <option value="3">Коэффициенты предприятия (На конец отчетного периода)</option>
+                                                        <option value="4">Персонал предприятия</option>
+                                                        <option value="5">Продукция</option>
+                                                        <option value="6">Затраты предприятия (На конец отчетного периода)</option>
+                                                        <option value="7">Другие параметры</option>
+                                                    </select>
+                                                </h5>
+                                            </li>
+                                            <li><h5>Параметр:<br> <select class="form-control" name="parameter" id="dynamicparam">
+                                                <option selected disabled>Сначала выберите категорию...</option>
+                                            </select></h5></li>
+                                        </ul>
+                                        <figure class="highcharts-figure">
+                                            <div id="container_for_dynamic_chart"></div>
+                                        </figure>
+                                    </div>
+                                </div>
+                            </div>
+                        <%--My modification--%>
                         <div class="single-content1">
                             <div class="single-job mb-4 d-lg-flex justify-content-between">
                                 <div class="job-text">
@@ -635,7 +667,181 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <script>
+
+
+    let options1 = [{"text":"Уровень рентабельности, %","value":"coefficients.profitability"},
+        {"text":"Уровень рентабельности без учета государственной поддержки, %","value":"coefficients.profitability_without_support"}];
+
+
+    let options2 = [{"text":"Основные средства","value":"fixed_assets.fixed_assets"},
+        {"text":"Долгосрочные кредиты и займы","value":"fixed_assets.loans_borrowings"},
+        {"text":"ИТОГО по разделу IV","value":"fixed_assets.total_4"},
+        {"text":"Краткосрочная кредиторская задолженность","value":"fixed_assets.shortterm_debt"},
+        {"text":"ИТОГО по разделу V","value":"fixed_assets.total_5"},
+        {"text":"Выручка от реализации товаров, продукции, работ, услуг","value":"fixed_assets.sales_revenue"},
+        {"text":"Чистая прибыль","value":"fixed_assets.profit"},
+        {"text":"Рентабельность продаж, %","value":"sales_return.sales_return"},
+        {"text":"На выплаты дивидендов и др. доходов от участия в уставном капитале организации (За январь-декабрь 2020 года)","value":"sales_return.current_dividend_payments"},
+        {"text":"На выплаты дивидендов и др. доходов от участия в уставном капитале организации (За январь-декабрь 2019 года)","value":"sales_return.prev_dividend_payments"},
+        {"text":"Кредиторская задолженность на конец отчетного периода всего","value":"sales_return.total_end_debt"},
+        {"text":"Кредиторская задолженность на конец отчетного периода, в том числе просроченная","value":"sales_return.overdue_end_debt"},
+        {"text":"Кредиторская задолженность на начало отчетного года всего","value":"sales_return.total_begin_debt"},
+        {"text":"Кредиторская задолженность на начало отчетного года, в том числе просроченная","value":"sales_return.overdue_begin_debt"},
+        {"text":"Чистые активы на конец отчетного периода","value":"coefficients.end_net_assets"},
+        {"text":"Чистые активы на начало отчетного периода","value":"coefficients.begin_net_assets"},
+        {"text":"Баланс на 31 декабря 2020 года","value":"cattle.current_end_balance"},
+        {"text":"Баланс на 31 декабря 2019 года","value":"cattle.prev_end_balance"}];
+
+    let options3 = [{"text": "Коэффициент обеспеченности собственными оборотными средствами", "value": "coefficients.own_security"},
+        {"text": "Коэффициент текущей ликвидности", "value": "coefficients.current_liquidity"},
+        {"text": "Коэффициент обеспеченности финансовых обязательств активами", "value": "coefficients.financial_security"},
+        {"text": "Коэффициент абсолютной ликвидности", "value": "coefficients.absolute_liquidity"}];
+
+    let options4 = [{"text":"Среднесписочная численность работников, человек* (всего, включая наемный персонал в колхозах)","value":"staff.column_index=107 AND staff.average_number"},
+        {"text":"Среднесписочная численность работников, человек* (персонал основной деят. занятый в с/х производстве)","value":"staff.column_index=109 AND staff.average_number"},
+        {"text":"Среднесписочная численность работников, человек* (рабочие)","value":"staff.column_index=111 AND staff.average_number"},
+        {"text":"Среднесписочная численность работников, человек* (служащие)","value":"staff.column_index=113 AND staff.average_number"},
+        {"text":"Среднесписочная численность работников, человек* (руководители)","value":"staff.column_index=115 AND staff.average_number"},
+        {"text":"Среднесписочная численность работников, человек* (специалисты)","value":"staff.column_index=117 AND staff.average_number"},
+        {"text":"Фонд ЗП работников, вкл. совместителей млн. руб. (всего, вкл. наемный персонал в колхозах)","value":"staff.column_index=107 AND staff.salary_fund"},
+        {"text":"Фонд ЗП работников, вкл. совместителей млн. руб. (персонал основной деят. занятый в с/х производстве)","value":"staff.column_index=109 AND staff.salary_fund"},
+        {"text":"Фонд ЗП работников, вкл. совместителей млн. руб. (рабочие)","value":"staff.column_index=111 AND staff.salary_fund"},
+        {"text":"Фонд ЗП работников, вкл. совместителей млн. руб. (служащие)","value":"staff.column_index=113 AND staff.salary_fund"},
+        {"text":"Фонд ЗП работников, вкл. совместителей млн. руб. (руководители)","value":"staff.column_index=115 AND staff.salary_fund"},
+        {"text":"Фонд ЗП работников, вкл. совместителей млн. руб. (специалисты)","value":"staff.column_index=117 AND staff.salary_fund"}];
+
+
+    let options5 = [{"text":"Полная себестоимость проданной продукции растениеводства","value":"crop_production.column_index = 123 AND crop_production.full_cost_price"},
+        {"text":"Полная себестоимость проданной продукции животноводства","value":"crop_production.column_index = 127 AND crop_production.full_cost_price"},
+        {"text":"Полная себестоимость проданной продукции итого","value":"crop_production.column_index = 129 AND crop_production.full_cost_price"},
+        {"text":"Выручено с продажи с продажи продукции растениеводства","value":"crop_production.column_index = 123 AND crop_production.bailed_out"},
+        {"text":"Выручено с продажи с продажи продукции животноводства","value":"crop_production.column_index = 127 AND crop_production.bailed_out"},
+        {"text":"Выручено с продажи с продажи продукции итого","value":"crop_production.column_index = 129 AND crop_production.bailed_out"}];
+
+    let options6 = [{"text":"Затраты на оплату труда с отчислениями на социальные нужды","value":"expenses.labor_cost"},
+        {"text":"Матеpиальные затpаты, вошедшие в себестоимость пpодукции","value":"expenses.material_costs"},
+        {"text":"Коpма (всего)","value":"expenses.feed"},
+        {"text":"Корма покупные","value":"expenses.purchased_feed"},
+        {"text":"Амоpтизация основных сpедств и нематериальных активов","value":"expenses.deprecation"},
+        {"text":"Страховые платежи","value":"expenses.insurance_payments"},
+        {"text":"Пpочие затpаты","value":"expenses.other_costs"},
+        {"text":"Итого затpат","value":"expenses.total_costs"},
+        {"text":"Затраты по закладке и выращиванию молодых многолетних насаждений","value":"expenses.planting_costs"}];
+
+
+    let options7 = [{"text":"Сбор зеpна в физической массе после доpаботки, всего","value":"grounds.products_index=140 AND grounds.total_products"},
+        {"text":"Сбор зеpна в физической массе после доpаботки, с 1 га","value":"grounds.products_index=140 AND grounds.hectare_products"},
+        {"text":"Себестоимость единицы продукции (зерно)","value":"grounds.products_index=140 AND grounds.production_cost"},
+        {"text":"Сбор картофеля, всего","value":"grounds.products_index=143 AND grounds.total_products"},
+        {"text":"Сбор картофеля, с 1 га","value":"grounds.products_index=143 AND grounds.hectare_products"},
+        {"text":"Себестоимость единицы продукции (картофель)","value":"grounds.products_index=143 AND grounds.production_cost"},
+        {"text":"Всего сельскохозяйственных угодий (гектары)","value":"grounds.products_index=140 AND grounds.hectare"},
+        {"text":"Всего сельскохозяйственных угодий (баллогектары га)","value":"grounds.products_index=140 AND grounds.ballogectars"},
+        {"text":"Пашня (гектары)","value":"grounds.products_index=143 AND grounds.hectare"},
+        {"text":"Пашня (баллогектары га)","value":"grounds.products_index=143 AND grounds.ballogectars"},
+        {"text":"КРС. Молочного направления основное стадо молочного скота","value":"dairy_products.cattle"},
+        {"text":"Молоко тонн (Выход продукции количество)","value":"dairy_products.output_dairy_products"},
+        {"text":"Молоко тонн (Себестоимость единицы продукции)","value":"dairy_products.cost_dairy_products"},
+        {"text":"Пpиpост тонн (Выход продукции количество)","value":"dairy_products.production_growth"},
+        {"text":"Пpиpост тонн (Себестоимость единицы продукции)","value":"dairy_products.production_cost_growth"},
+        {"text":"Сpеднегодовой удой молока от одной коpовы","value":"cattle.milk_yield"},
+        {"text":"Сpеднесуточный пpиpост кpупного pогатого скота - всего","value":"cattle.average_daily_increase"},
+        {"text":"Коровы и быки-производители(кроме рабочего скота). Расход кормов на единицу продукции, кормо-единиц","value":"cattle.cattle_producers"},
+        {"text":"Крупный рогатый скот на выpащивании и откоpме всего. Расход кормов на единицу продукции, кормо-единиц","value":"cattle.cattle_cultivation"}];
+
     var staffinfo = document.getElementsByClassName('country');
+    var dynamicbutton = document.getElementById('showdynamic');
+
+    document.getElementById('dynamiccat').onclick = function (event){
+        if (document.getElementById('dynamiccat').value=='0'){
+            document.getElementById('dynamicparam').innerHTML='';
+            for(var i = 0; i < options0.length; i++) {
+                var opt = options0[i];
+                var el = document.createElement("option");
+                el.text = opt.text;
+                el.value = opt.value;
+                document.getElementById('dynamicparam').appendChild(el);
+            }
+        }
+        if (document.getElementById('dynamiccat').value=='1'){
+            document.getElementById('dynamicparam').innerHTML='';
+            for(var i = 0; i < options1.length; i++) {
+                var opt = options1[i];
+                var el = document.createElement("option");
+                el.text = opt.text;
+                el.value = opt.value;
+                document.getElementById('dynamicparam').appendChild(el);
+            }
+        }
+        if (document.getElementById('dynamiccat').value=='2'){
+            document.getElementById('dynamicparam').innerHTML='';
+            for(var i = 0; i < options2.length; i++) {
+                var opt = options2[i];
+                var el = document.createElement("option");
+                el.text = opt.text;
+                el.value = opt.value;
+                document.getElementById('dynamicparam').appendChild(el);
+            }
+        }
+        if (document.getElementById('dynamiccat').value=='3'){
+            document.getElementById('dynamicparam').innerHTML='';
+            for(var i = 0; i < options3.length; i++) {
+                var opt = options3[i];
+                var el = document.createElement("option");
+                el.text = opt.text;
+                el.value = opt.value;
+                document.getElementById('dynamicparam').appendChild(el);
+            }
+        }
+        if (document.getElementById('dynamiccat').value=='4'){
+            document.getElementById('dynamicparam').innerHTML='';
+            for(var i = 0; i < options4.length; i++) {
+                var opt = options4[i];
+                var el = document.createElement("option");
+                el.text = opt.text;
+                el.value = opt.value;
+                document.getElementById('dynamicparam').appendChild(el);
+            }
+        }
+        if (document.getElementById('dynamiccat').value=='5'){
+            document.getElementById('dynamicparam').innerHTML='';
+            for(var i = 0; i < options5.length; i++) {
+                var opt = options5[i];
+                var el = document.createElement("option");
+                el.text = opt.text;
+                el.value = opt.value;
+                document.getElementById('dynamicparam').appendChild(el);
+            }
+        }
+        if (document.getElementById('dynamiccat').value=='6'){
+            document.getElementById('dynamicparam').innerHTML='';
+            for(var i = 0; i < options6.length; i++) {
+                var opt = options6[i];
+                var el = document.createElement("option");
+                el.text = opt.text;
+                el.value = opt.value;
+                document.getElementById('dynamicparam').appendChild(el);
+            }
+        }
+        if (document.getElementById('dynamiccat').value=='7'){
+            document.getElementById('dynamicparam').innerHTML='';
+            for(var i = 0; i < options7.length; i++) {
+                var opt = options7[i];
+                var el = document.createElement("option");
+                el.text = opt.text;
+                el.value = opt.value;
+                document.getElementById('dynamicparam').appendChild(el);
+            }
+        }
+    };
+
+    dynamicbutton.onclick = function (event){
+        if (document.getElementsByClassName('single-content0')[0].hidden==true)
+            document.getElementsByClassName('single-content0')[0].hidden=false;
+        else
+            document.getElementsByClassName('single-content0')[0].hidden=true;
+    }
+
     Highcharts.chart('container_for_staffLabel', {
         chart: {type: 'pie'},
         title: {text: "${averageNumber}"},
