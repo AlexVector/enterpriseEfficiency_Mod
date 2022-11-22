@@ -17,19 +17,7 @@ public class DropData implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response, File uploadFilePath) throws ServletException, IOException {
         HttpSession session = request.getSession();
         ServiceProvider provider = ServiceProvider.getInstance();
-        AddressService addressService = provider.getAddressService();
-        CattleService cattleService = provider.getCattleService();
-        CoefficientsService coefficientsService = provider.getCoefficientsService();
-        CompanyInfoService companyInfoService = provider.getCompanyInfoService();
         CompanyService companyService = provider.getCompanyService();
-        CorrelationService correlationService = provider.getCorrelationService();
-        CropProductionService cropProductionService = provider.getCropProductionService();
-        DairyProductsService dairyProductsService = provider.getDairyProductsService();
-        ExpensesService expensesService = provider.getExpensesService();
-        FixedAssetsService fixedAssetsService = provider.getFixedAssetsService();
-        GroundsService groundsService = provider.getGroundsService();
-        SalesReturnService salesReturnService = provider.getSalesReturnService();
-        StaffService staffService = provider.getStaffService();
 
         try {
             companyService.deleteAll();
