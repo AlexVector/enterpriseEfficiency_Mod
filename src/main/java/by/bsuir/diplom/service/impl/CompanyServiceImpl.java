@@ -16,6 +16,22 @@ import java.util.List;
 
 public class CompanyServiceImpl extends SessionUtil implements CompanyService {
     @Override
+    public void deleteAll() throws ServiceException {
+        CompanyDao companyDao = DaoFactory.getInstance().getCompanyDao();
+        try {
+            openTransactionSession();
+            companyDao.setSession(getSession());
+            companyDao.deleteAll();
+            commitTransactionSession();
+        } catch (DaoException e) {
+            rollbackTransactionSession();
+            throw new ServiceException(e);
+        } finally {
+            closeSession();
+        }
+    }
+
+    @Override
     public List<Company> getAll() throws ServiceException {
         List<Company> list;
         CompanyDao companyDao = DaoFactory.getInstance().getCompanyDao();

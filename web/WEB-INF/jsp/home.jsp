@@ -312,6 +312,7 @@
             </div>
         </section>
         <%--My modification--%>
+
         <section class="blog-posts-area section-padding">
             <div class="container">
                 <div class="row">
@@ -371,12 +372,28 @@
                     </div>
                     <div class="col-lg-1"></div>
                     <div class="col-lg-3 sidebar">
+
+
+
+
                             <%--My modification--%>
-                                <form action="Controller" method="post">
-                                    <input type="hidden" name="command" value="export_full_data"/>
-                                    <button type="submit" class="mb-2"><img class="btn pb-2" src="<c:url value="/resources/images/icons8-export-excel-48.png"/>" alt="Кнопка" title="Выгрузить данные в Excel"></button>
+                        <div style="display: flex; flex-direction: row; justify-content: flex-start">
+                            <form action="Controller" method="post" style="margin-right:3px">
+                                <input type="hidden" name="command" value="export_full_data"/>
+                                <button type="submit" class="mb-2"><img class="btn pb-2" src="<c:url value="/resources/images/icons8-export-excel-48.png"/>" alt="Кнопка" title="Выгрузить данные в Excel"></button>
+                            </form>
+                            <c:if test="${sessionScope.user.role.value eq 0}">
+                                <form action="Controller" method="post" style="margin-right:3px">
+                                    <input type="hidden" name="command" value="drop_data"/>
+                                    <button type="submit" class="mb-2"><img class="btn pb-2" src="<c:url value="/resources/images/icons8-delete-48.png"/>" alt="Кнопка" title="Удаление данных"></button>
                                 </form>
+                            </c:if>
+                        </div>
                             <%--My modification--%>
+
+
+
+
                         <c:if test="${sessionScope.locationMap ne null}">
                             <div class="single-widget category-widget">
                                 <h4 class="title">${areas}</h4>

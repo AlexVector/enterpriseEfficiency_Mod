@@ -41,7 +41,8 @@ public class CommandProvider {
         commands.put(CommandName.GO_TO_INDICATORS_PAGE, new GoToIndicatorsPage());
         commands.put(CommandName.GO_TO_CORRELATION_PAGE, new GoToCorrelationPage());
         commands.put(CommandName.WRONG_REQUEST, new WrongRequest());
-        commands.put(CommandName.ADVANCED_SEARCH, new AdvancedSearch()); //My modification
+        commands.put(CommandName.ADVANCED_SEARCH, new AdvancedSearch());
+        commands.put(CommandName.DROP_DATA, new DropData());
     }
 
     public Command takeCommand(String name) {

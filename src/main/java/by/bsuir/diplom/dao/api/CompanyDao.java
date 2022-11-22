@@ -10,6 +10,7 @@ import java.util.List;
 
 public class CompanyDao extends AbstractDao<Integer, Company> {
     private static final String GET_ALL = "SELECT * FROM company";
+    private static final String DELETE_ALL = "DELETE FROM company";
     private static final String GET_ALL_YNN = "SELECT ynn FROM company";
     private static final String GET_COMPANY = "SELECT * FROM company WHERE ynn=:ynn";
     private static final String FILTER_BY_AREA = "SELECT company.* FROM company_db.company LEFT JOIN address ON company.ynn = address.ynn where area=:area";
@@ -17,6 +18,15 @@ public class CompanyDao extends AbstractDao<Integer, Company> {
     private static final String FILTER_BY_ABBREVIATION = "SELECT * FROM company where name like ";
     private static final String SEARCH_BY_NAME = "SELECT * FROM company where name or full_name like ";
     private static final String GET_BETWEEN_ID = "SELECT * FROM company_db.company where id between :first_id and :second_id";
+
+
+    public void deleteAll() throws DaoException {
+        try {
+            session.createNativeQuery(DELETE_ALL).executeUpdate();
+        } catch (Exception ex) {
+            throw new DaoException(ex);
+        }
+    }
 
     @Override
     public List<Company> getAll() throws DaoException {

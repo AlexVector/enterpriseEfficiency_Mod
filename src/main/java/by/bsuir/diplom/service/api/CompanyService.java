@@ -7,7 +7,7 @@ import by.bsuir.diplom.service.ServiceException;
 import java.util.List;
 
 public interface CompanyService {
-
+    void deleteAll() throws ServiceException;
     List<Company> getAll() throws ServiceException;
 
     /**
