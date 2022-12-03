@@ -383,7 +383,7 @@
                                 <button type="submit" class="mb-2"><img class="btn pb-2" src="<c:url value="/resources/images/icons8-export-excel-48.png"/>" alt="Кнопка" title="Выгрузить данные в Excel"></button>
                             </form>
                             <c:if test="${sessionScope.user.role.value eq 0}">
-                                <form action="Controller" method="post" style="margin-right:3px">
+                                <form name="drop_data_form" action="Controller" method="post" style="margin-right:3px">
                                     <input type="hidden" name="command" value="drop_data"/>
                                     <button type="submit" class="mb-2"><img class="btn pb-2" src="<c:url value="/resources/images/icons8-delete-48.png"/>" alt="Кнопка" title="Удаление данных"></button>
                                 </form>
@@ -713,6 +713,14 @@
         {"text":"Коровы и быки-производители(кроме рабочего скота). Расход кормов на единицу продукции, кормо-единиц","value":"cattle.cattle_producers"},
         {"text":"Крупный рогатый скот на выpащивании и откоpме всего. Расход кормов на единицу продукции, кормо-единиц","value":"cattle.cattle_cultivation"}];
 
+
+    document.getElementsByName('drop_data_form')[0].onsubmit = e => {
+        result = prompt('Вы собираетесь удалить все существующие в системе записи. Введите "Подтвердить" и подтвердите удаление данных.');
+        if (result!=='Подтвердить') {
+            e.preventDefault();
+            alert('Удаление данных отменено!');
+        }
+    };
 
     document.getElementById('resetbutton').onclick = function (event){
         //var opt = 'Сначала выберите категорию...';
