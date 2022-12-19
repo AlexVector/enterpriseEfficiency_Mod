@@ -54,7 +54,7 @@ public class ImportData implements Command {
                 response.sendRedirect("Controller?command=go_to_home_page&message=message.import.complete");
             } catch (ServiceException e) {
                 userLogger.error(e);
-                if(e.getMessage().contains("NumberFormatException")){
+                if(e.getMessage().contains("NumberFormatException") || e.getMessage().contains("NullPointerException")){
                     response.sendRedirect("Controller?command=go_to_home_page&message=message.import.complete");
                 }else {
                     response.sendRedirect("Controller?command=go_to_home_page&message=message.import.unsuccessfully");

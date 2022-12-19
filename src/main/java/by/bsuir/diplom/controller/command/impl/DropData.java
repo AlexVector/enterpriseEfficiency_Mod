@@ -22,6 +22,7 @@ public class DropData implements Command {
         try {
             companyService.deleteAll();
             session.removeAttribute("companiesList");
+            session.removeAttribute("advSearchCompanies");
             response.sendRedirect("Controller?command=go_to_home_page&message=message.deleteAll.complete");//добавить в локализации
         } catch (ServiceException e) {
             //userLogger.info(e);

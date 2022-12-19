@@ -130,7 +130,8 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="main-content">
-                            <div class="single-content1">
+                            <button class="btn btn-primary mb-2" id="showdynamic" type="button">Расширенный поиск</button>
+                            <div class="single-content1" hidden>
                                 <div class="single-job d-lg-flex justify-content-between">
                                     <div class="job-text" style="width: 100%">
                                         <h4>Расширенный поиск</h4>
@@ -713,6 +714,14 @@
         {"text":"Коровы и быки-производители(кроме рабочего скота). Расход кормов на единицу продукции, кормо-единиц","value":"cattle.cattle_producers"},
         {"text":"Крупный рогатый скот на выpащивании и откоpме всего. Расход кормов на единицу продукции, кормо-единиц","value":"cattle.cattle_cultivation"}];
 
+
+    var dynamicbutton = document.getElementById('showdynamic');
+    dynamicbutton.onclick = function (event){
+        if (document.getElementsByClassName('single-content1')[0].hidden==true)
+            document.getElementsByClassName('single-content1')[0].hidden=false;
+        else
+            document.getElementsByClassName('single-content1')[0].hidden=true;
+    }
 
     document.getElementsByName('drop_data_form')[0].onsubmit = e => {
         result = prompt('Вы собираетесь удалить все существующие в системе записи. Введите "Подтвердить" и подтвердите удаление данных.');

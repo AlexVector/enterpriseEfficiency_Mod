@@ -47,18 +47,32 @@ public class Reader extends SessionUtil {
     private void processSheet(Sheet sheet) throws ServiceException {
         var data = new HashMap<Integer, List<Object>>();
         var iterator = sheet.rowIterator();
+
+        for (var rowIndex = 0; iterator.hasNext(); rowIndex++) {
+            var row = iterator.next();
+            processRow(data, rowIndex, row);
+        }
+        /*
         DataFormatter dataFormatter = new DataFormatter();
         boolean skiprow = false;
         for (var rowIndex = 0; iterator.hasNext(); rowIndex++) {
             var row = iterator.next();
             for (int i=0; i<10; i++){
                 System.out.println(dataFormatter.formatCellValue(row.getCell(i)));
-                if (!dataFormatter.formatCellValue(row.getCell(i)).equals("")) skiprow = false;
-                else skiprow = true;
+                if (dataFormatter.formatCellValue(row.getCell(0)).equals("Наименование периода")){
+                    skiprow = true;
+                    break;
+                }
+                else {
+                    if (!dataFormatter.formatCellValue(row.getCell(i)).equals("")) skiprow = false;
+                    else skiprow = true;
+                }
+
             }
             if (!skiprow)
                 processRow(data, rowIndex, row);
         }
+        */
     }
     //My mod
     private void processRow(HashMap<Integer, List<Object>> data, int rowIndex, Row row) throws ServiceException {
@@ -150,21 +164,25 @@ public class Reader extends SessionUtil {
 //            groundsDao.setSession(getSession());
 //            dairyProductsDao.setSession(getSession());
 //            cattleDao.setSession(getSession());
+            try {
+                Company company = parser.parseCompany(list);
+                company.setCompanyInfo(parser.parseCompanyInfo(list));
+                company.setAddress(parser.parseAddress(list));
+                company.setEnterpriseStatistics(parser.parseStatistic(list));
+                company.setFixedAssets(parser.parseAssets(list));
+                company.setSalesReturn(parser.parseSales(list));
+                company.setCoefficients(parser.parseCoefficients(list));
+                company.setStaff(parser.parseStaff(list));
+                company.setCropProductions(parser.parseCropProduction(list));
+                company.setExpenses(parser.parseExpenses(list));
+                company.setGrounds(parser.parseGrounds(list));
+                company.setDairyProducts(parser.parseDairyProducts(list));
+                company.setCattle(parser.parseCattle(list));
+                companyDao.add(company);
+            }catch (NullPointerException e){
+                throw new ServiceException(e);
+            }
 
-            Company company = parser.parseCompany(list);
-            company.setCompanyInfo(parser.parseCompanyInfo(list));
-            company.setAddress(parser.parseAddress(list));
-            company.setEnterpriseStatistics(parser.parseStatistic(list));
-            company.setFixedAssets(parser.parseAssets(list));
-            company.setSalesReturn(parser.parseSales(list));
-            company.setCoefficients(parser.parseCoefficients(list));
-            company.setStaff(parser.parseStaff(list));
-            company.setCropProductions(parser.parseCropProduction(list));
-            company.setExpenses(parser.parseExpenses(list));
-            company.setGrounds(parser.parseGrounds(list));
-            company.setDairyProducts(parser.parseDairyProducts(list));
-            company.setCattle(parser.parseCattle(list));
-            companyDao.add(company);
 
 //            companyDao.add(parser.parseCompany(list));
 //            companyInfoDao.add(parser.parseCompanyInfo(list));
