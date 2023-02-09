@@ -23,7 +23,7 @@
                             <span><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <em
                                         class="icon-heart-empty" aria-hidden="true"></em> by <a href="https://www.instagram.com/_malyvan_/"
-                                                                                            target="_blank">Vadim</a>
+                                                                                            target="_blank">Vadim</a> modified by Alex_Vector
                                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 </span>
                 </div>

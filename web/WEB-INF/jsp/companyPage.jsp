@@ -752,6 +752,15 @@
     var staffinfo = document.getElementsByClassName('country');
     var dynamicbutton = document.getElementById('showdynamic');
 
+    var anomalybutton = document.getElementById('showanomaly');
+    anomalybutton.onclick = function (event){
+        if (document.getElementsByClassName('single-content0')[0].hidden==true)
+            document.getElementsByClassName('single-content0')[0].hidden=false;
+        else
+            document.getElementsByClassName('single-content0')[0].hidden=true;
+    }
+
+
     document.getElementById('dynamiccat').onclick = function (event){
         if (document.getElementById('dynamiccat').value=='0'){
             document.getElementById('dynamicparam').innerHTML='';

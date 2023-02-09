@@ -217,13 +217,13 @@ public class CompanyServiceImpl extends SessionUtil implements CompanyService {
     }
     //My modification
     @Override
-    public List<Company> getAdvancedSearchResult(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, int operationsCounter) throws DaoException {
+    public List<Company> getAdvancedSearchResultList(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, int operationsCounter) throws DaoException {
         List<Company> list = null;
         CompanyDao companyDao = DaoFactory.getInstance().getCompanyDao();
         try {
             openTransactionSession();
             companyDao.setSession(getSession());
-            list = companyDao.getAdvancedSearchResult(parameters, statuses, types, values, text_values, operationsCounter);
+            list = companyDao.getAdvancedSearchResultList(parameters, statuses, types, values, text_values, operationsCounter);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -231,6 +231,23 @@ public class CompanyServiceImpl extends SessionUtil implements CompanyService {
             closeSession();
         }
         return list;
+    }
+
+    @Override
+    public Double getAdvancedSearchResult(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, int operationsCounter) throws DaoException {
+        Double result = null;
+        CompanyDao companyDao = DaoFactory.getInstance().getCompanyDao();
+        try {
+            openTransactionSession();
+            companyDao.setSession(getSession());
+            result = companyDao.getAdvancedSearchResult(parameters, statuses, types, values, text_values, operationsCounter);
+            commitTransactionSession();
+        } catch (DaoException e) {
+            rollbackTransactionSession();
+        } finally {
+            closeSession();
+        }
+        return result;
     }
     //My modification
 

@@ -50,11 +50,11 @@
 <body>
 <c:import url="parts/header.jsp"/>
 
-<!-- Preloader Starts -->
+<!-- Preloader Starts
 <div class="preloader">
     <div class="spinner"></div>
 </div>
-<!-- Preloader End -->
+ Preloader End -->
 
 <!-- Start blog-posts Area -->
 <div class="whole-wrap">

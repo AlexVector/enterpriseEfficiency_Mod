@@ -43,6 +43,7 @@ public class CommandProvider {
         commands.put(CommandName.WRONG_REQUEST, new WrongRequest());
         commands.put(CommandName.ADVANCED_SEARCH, new AdvancedSearch());
         commands.put(CommandName.DROP_DATA, new DropData());
+        commands.put(CommandName.ANOMALIES_SEARCH, new GrabbsTest());
     }
 
     public Command takeCommand(String name) {

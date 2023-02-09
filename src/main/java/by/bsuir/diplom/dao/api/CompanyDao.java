@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.query.Query;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 public class CompanyDao extends AbstractDao<Integer, Company> {
@@ -70,7 +72,7 @@ public class CompanyDao extends AbstractDao<Integer, Company> {
 
     public String specialJoins(String createQuery, String[] parameters, String[] statuses){
         for (int i=0; i<parameters.length; i++){
-            if (parameters[i]!=null && (statuses[i].equals("min") || statuses[i].equals("max")) && !parameters[i].substring(0, parameters[i].indexOf(".")).equals("company")){
+            if (parameters[i]!=null && (statuses[i].equals("min") || statuses[i].equals("max") || statuses[i].equals("average")) && !parameters[i].substring(0, parameters[i].indexOf(".")).equals("company")){
                 createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) + " on company.ynn = " + parameters[i].substring(0, parameters[i].indexOf(".")) + ".ynn ";
             }
         }
@@ -78,10 +80,10 @@ public class CompanyDao extends AbstractDao<Integer, Company> {
     }
     public String standartJoins(String createQuery, String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, boolean has_minmax, String innerJoinConnector){
         for (int i=0;i<parameters.length;i++){
-            if (!(statuses[i].equals("min") || statuses[i].equals("max")) && has_minmax && !innerJoinConnector.substring(innerJoinConnector.indexOf(" on "), innerJoinConnector.indexOf(".")).equals(parameters[i].substring(0, parameters[i].indexOf("."))) && !createQuery.contains("join " + parameters[i].substring(0, parameters[i].indexOf("."))+" on"))
+            if (!(statuses[i].equals("min") || statuses[i].equals("max") || statuses[i].equals("average")) && has_minmax && !innerJoinConnector.substring(innerJoinConnector.indexOf(" on "), innerJoinConnector.indexOf(".")).equals(parameters[i].substring(0, parameters[i].indexOf("."))) && !createQuery.contains("join " + parameters[i].substring(0, parameters[i].indexOf("."))+" on"))
                 createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) + innerJoinConnector + parameters[i].substring(0, parameters[i].indexOf(".")) + ".ynn ";
             if (!has_minmax && !parameters[i].substring(0, parameters[i].indexOf(".")).equals("company") && !createQuery.contains("join " + parameters[i].substring(0, parameters[i].indexOf("."))+" on")){
-                if (parameters[i]!=null && (text_values[i]!="" || (statuses[i].equals("sort") && types[i]!=null) || ((statuses[i].equals("morethan") || statuses[i].equals("lessthan") || statuses[i].equals("equal")) && values[i]!="") || statuses[i].equals("isnull")))
+                if (parameters[i]!=null && (text_values[i]!="" || (statuses[i].equals("sort") && types[0]!=null) || ((statuses[i].equals("morethan") || statuses[i].equals("lessthan") || statuses[i].equals("equal")) && values[i]!="") || statuses[i].equals("isnull")))
                     createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) + " on company.ynn = " + parameters[i].substring(0, parameters[i].indexOf(".")) + ".ynn ";
             }
         }
@@ -104,24 +106,24 @@ public class CompanyDao extends AbstractDao<Integer, Company> {
             }
         }
         for (int i=0; i<parameters.length; i++){
-            if (parameters[i]!=null && statuses[i].equals("sort") && types[i]!=null){
+            if (parameters[i]!=null && statuses[i].equals("sort") && types[0]!=null){
                 if (createQuery.substring(createQuery.length()-4, createQuery.length()).equals("and "))
                     createQuery = createQuery.substring(0, createQuery.length()-4);
                 if (createQuery.substring(createQuery.length()-6, createQuery.length()).equals("where "))
                     createQuery = createQuery.substring(0, createQuery.length()-6);
                 if (parameters[i].contains(" AND ")){
                     String[] res = parameters[i].split(" AND ",2);
-                    createQuery = createQuery + res[0] + " order by " + res[1] + " " + types[i];
+                    createQuery = createQuery + res[0] + " order by " + res[1] + " " + types[0];
                 }
                 else {
-                    createQuery = createQuery + "order by " + parameters[i] + " " + types[i];
+                    createQuery = createQuery + "order by " + parameters[i] + " " + types[0];
                 }
             }
         }
         return createQuery;
     }
 
-    public List<Company> getAdvancedSearchResult(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, int operationsSum) throws DaoException {
+    public List<Company> getAdvancedSearchResultList(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, int operationsSum) throws DaoException {
         try {
             String createQuery = "SELECT company.* FROM company ";
             boolean has_minmax = false;
@@ -154,10 +156,52 @@ public class CompanyDao extends AbstractDao<Integer, Company> {
                 createQuery = createQuery.substring(0, createQuery.length()-6);
             if (has_minmax)
                 createQuery = createQuery + ") ";
-            createQuery = createQuery + " COLLATE utf8mb4_general_ci ";
+            //createQuery = createQuery + " COLLATE utf8mb4_general_ci ";
             System.out.println(createQuery);
             Query query = session.createNativeQuery(createQuery).addEntity(Company.class);
             return query.list();
+        } catch (Exception ex) {
+            throw new DaoException(ex);
+        }
+    }
+
+    //переписать под avg
+    public Double getAdvancedSearchResult(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, int operationsSum) throws DaoException {
+        try {
+            int k = -1;
+            String[] res = null;
+            for (int i=0; i< statuses.length; i++){
+                if (statuses[i].equals("average"))
+                    k=i;
+            }
+            String createQuery = null;
+            if (parameters[k].contains(" AND ")){
+                res = parameters[k].split(" AND ",2);
+                createQuery = "SELECT AVG("+ res[1] + ") FROM "+ parameters[k].substring(0, parameters[k].indexOf(".")) + " ";
+            }
+            else createQuery = "SELECT  AVG("+ parameters[k] + ") FROM "+ parameters[k].substring(0, parameters[k].indexOf(".")) + " ";
+
+            String innerJoinConnector = " on " + parameters[k].substring(0, parameters[k].indexOf(".")) + ".ynn = ";
+            for (int i=0;i<parameters.length;i++){
+                if (!(statuses[i].equals("average")) && !innerJoinConnector.substring(innerJoinConnector.indexOf(" on "), innerJoinConnector.indexOf(".")).equals(parameters[i].substring(0, parameters[i].indexOf("."))) && !createQuery.contains("join " + parameters[i].substring(0, parameters[i].indexOf("."))+" on"))
+                    createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) + innerJoinConnector + parameters[i].substring(0, parameters[i].indexOf(".")) + ".ynn ";
+                if (!parameters[i].substring(0, parameters[i].indexOf(".")).equals(parameters[k].substring(0, parameters[k].indexOf("."))) && !createQuery.contains("join " + parameters[i].substring(0, parameters[i].indexOf("."))+" on")){
+                    if (parameters[i]!=null && (text_values[i]!="" || (statuses[i].equals("sort") && types[0]!=null) || ((statuses[i].equals("morethan") || statuses[i].equals("lessthan") || statuses[i].equals("equal")) && values[i]!="") || statuses[i].equals("isnull")))
+                        createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) + " on " + parameters[k].substring(0, parameters[k].indexOf(".")) + ".ynn = " + parameters[i].substring(0, parameters[i].indexOf(".")) + ".ynn ";
+                }
+            }
+            createQuery = createQuery + " where ";//возможно, where тут будет мешать
+            createQuery = commonSQLgen(createQuery, parameters, statuses, types, values, text_values);
+            if (createQuery.substring(createQuery.length()-4, createQuery.length()).equals("and "))
+                createQuery = createQuery.substring(0, createQuery.length()-4);
+            if (createQuery.substring(createQuery.length()-6, createQuery.length()).equals("where "))
+                createQuery = createQuery.substring(0, createQuery.length()-6);
+            //createQuery = createQuery + " COLLATE utf8mb4_general_ci ";
+            System.out.println(createQuery);
+            Query query = session.createNativeQuery(createQuery);
+            List<BigDecimal> result = query.list();
+            //System.out.println(result.toString());
+            return result.get(0).doubleValue();
         } catch (Exception ex) {
             throw new DaoException(ex);
         }

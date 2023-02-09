@@ -72,7 +72,7 @@
             <div class="col-md-6 offset-md-3">
                 <c:choose>
                     <%--My modification--%>
-                    <c:when test="${sessionScope.advSearchCompanies ne null}">
+                    <c:when test="${sessionScope.advSearchCompanies ne null || sessionScope.advSearchResult ne null}">
                         <h2>Результаты запроса:</h2>
                     </c:when>
                     <%--My modification--%>
@@ -130,8 +130,56 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="main-content">
+                            <!-- -->
+                            <button class="btn btn-primary mb-2" id="showanomaly" type="button">Поиск аномалий</button>
+                            <div class="single-content1" id="anomalypanel" hidden>
+                                <div class="single-job d-lg-flex justify-content-between">
+                                    <div class="job-text" style="width: 100%">
+                                        <h4>Поиск аномалий</h4>
+                                        <form action="Controller" method="post">
+                                            <input class="form-control" type="hidden" name="command" value="anomalies_search">
+                                            <h5>Выберите зону поиска:</h5>
+                                            <h5 class="ml-5"><input class="form-check-input" id="allanomalies" type="radio" name="anomaly" checked>По всем параметрам&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <input class="form-check-input" id="oneanomaly" type="radio" name="anomaly">По выбранному параметру&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            </h5>
+                                            <div class="single-content1" id="oneanomalysearchpanel" hidden>
+                                                <div class="single-job d-lg-flex justify-content-between">
+                                                    <div class="job-text">
+                                                        <ul>
+                                                            <li>
+                                                                <h5>Категория:
+                                                                    <select class="form-control" name="anomcat" id="anomcat">
+                                                                        <option selected disabled>Выберите категорию...</option>
+                                                                        <option value="1">Основная информация о предприятии</option>
+                                                                        <option value="2">Капитал предприятия</option>
+                                                                        <option value="3">Коэффициенты предприятия (На конец отчетного периода)</option>
+                                                                        <option value="4">Персонал предприятия</option>
+                                                                        <option value="5">Продукция</option>
+                                                                        <option value="6">Затраты предприятия (На конец отчетного периода)</option>
+                                                                        <option value="7">Другие параметры</option>
+                                                                    </select>
+                                                                </h5>
+                                                            </li>
+                                                            <li>
+                                                                <h5>Параметр:<br>
+                                                                    <select class="form-control" name="anomparam" id="anomparam">
+                                                                        <option selected disabled>Сначала выберите категорию...</option>
+                                                                    </select>
+                                                                </h5>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input class="btn btn-primary mb-2" type="submit">
+                                            <input class="btn mb-2" type="reset" id="resetbutton"> <!-- Настроить кнопку сброса -->
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- -->
                             <button class="btn btn-primary mb-2" id="showdynamic" type="button">Расширенный поиск</button>
-                            <div class="single-content1" hidden>
+                            <div class="single-content1" id="adv_searchpanel" hidden>
                                 <div class="single-job d-lg-flex justify-content-between">
                                     <div class="job-text" style="width: 100%">
                                         <h4>Расширенный поиск</h4>
@@ -179,6 +227,7 @@
                                                                         <option value="max" id="maxoption1">Максимальный</option>
                                                                         <option value="min" id="minoption1">Минимальный</option>
                                                                         <option value="isnull" id="isnulloption1">Отсутствует</option>
+                                                                        <option value="average" id="averageoption1">Среднее значение</option>
                                                                     </select>
                                                                 </h5>
                                                             </li>
@@ -231,6 +280,7 @@
                                                                         <option value="max" id="maxoption2">Максимальный</option>
                                                                         <option value="min" id="minoption2">Минимальный</option>
                                                                         <option value="isnull" id="isnulloption2">Отсутствует</option>
+                                                                        <option value="average" id="averageoption2">Среднее значение</option>
                                                                     </select>
                                                                 </h5>
                                                             </li>
@@ -283,6 +333,7 @@
                                                                         <option value="max" id="maxoption3">Максимальный</option>
                                                                         <option value="min" id="minoption3">Минимальный</option>
                                                                         <option value="isnull" id="isnulloption3">Отсутствует</option>
+                                                                        <option value="average" id="averageoption3">Среднее значение</option>
                                                                     </select>
                                                                 </h5>
                                                             </li>
@@ -586,6 +637,19 @@
             </div>
         </section>
     </c:when>
+
+    <c:when test="${not empty sessionScope.advSearchResult}">
+        <section class="blog-posts-area section-padding">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <h2>${sessionScope.advSearchResult}</h2>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </c:when>
+
     <%--My modification--%>
 </c:choose>
 <!-- End blog-posts Area -->
@@ -715,13 +779,103 @@
         {"text":"Крупный рогатый скот на выpащивании и откоpме всего. Расход кормов на единицу продукции, кормо-единиц","value":"cattle.cattle_cultivation"}];
 
 
+    var anomalydinbutton = document.getElementById('showanomaly');
+    anomalydinbutton.onclick = function (event){
+        if (document.getElementById('anomalypanel').hidden==true)
+            document.getElementById('anomalypanel').hidden=false;
+        else
+            document.getElementById('anomalypanel').hidden=true;
+    }
+
+    document.getElementById('oneanomaly').onclick = function(event) {
+        document.getElementById('oneanomalysearchpanel').hidden = false;
+    };
+    document.getElementById('allanomalies').onclick = function (event) {
+        document.getElementById('oneanomalysearchpanel').hidden = true;
+    }
+
     var dynamicbutton = document.getElementById('showdynamic');
     dynamicbutton.onclick = function (event){
-        if (document.getElementsByClassName('single-content1')[0].hidden==true)
-            document.getElementsByClassName('single-content1')[0].hidden=false;
+        if (document.getElementById('adv_searchpanel').hidden==true)
+            document.getElementById('adv_searchpanel').hidden=false;
         else
-            document.getElementsByClassName('single-content1')[0].hidden=true;
+            document.getElementById('adv_searchpanel').hidden=true;
     }
+
+    //для аномалий сделать кастомные options без текстовой информации, кодов унн, окпо и отрасли
+    document.getElementById('anomcat').onclick = function (event){
+        if (document.getElementById('anomcat').value=='1'){
+            document.getElementById('anomparam').innerHTML='';
+            for(var i = 0; i < options1.length; i++) {
+                var opt = options1[i];
+                var el = document.createElement("option");
+                el.text = opt.text;
+                el.value = opt.value;
+                document.getElementById('anomparam').appendChild(el);
+            }
+        }
+        if (document.getElementById('anomcat').value=='2'){
+            document.getElementById('anomparam').innerHTML='';
+            for(var i = 0; i < options2.length; i++) {
+                var opt = options2[i];
+                var el = document.createElement("option");
+                el.text = opt.text;
+                el.value = opt.value;
+                document.getElementById('anomparam').appendChild(el);
+            }
+        }
+        if (document.getElementById('anomcat').value=='3'){
+            document.getElementById('anomparam').innerHTML='';
+            for(var i = 0; i < options3.length; i++) {
+                var opt = options3[i];
+                var el = document.createElement("option");
+                el.text = opt.text;
+                el.value = opt.value;
+                document.getElementById('anomparam').appendChild(el);
+            }
+        }
+        if (document.getElementById('anomcat').value=='4'){
+            document.getElementById('anomparam').innerHTML='';
+            for(var i = 0; i < options4.length; i++) {
+                var opt = options4[i];
+                var el = document.createElement("option");
+                el.text = opt.text;
+                el.value = opt.value;
+                document.getElementById('anomparam').appendChild(el);
+            }
+        }
+        if (document.getElementById('anomcat').value=='5'){
+            document.getElementById('anomparam').innerHTML='';
+            for(var i = 0; i < options5.length; i++) {
+                var opt = options5[i];
+                var el = document.createElement("option");
+                el.text = opt.text;
+                el.value = opt.value;
+                document.getElementById('anomparam').appendChild(el);
+            }
+        }
+        if (document.getElementById('anomcat').value=='6'){
+            document.getElementById('anomparam').innerHTML='';
+            for(var i = 0; i < options6.length; i++) {
+                var opt = options6[i];
+                var el = document.createElement("option");
+                el.text = opt.text;
+                el.value = opt.value;
+                document.getElementById('anomparam').appendChild(el);
+            }
+        }
+        if (document.getElementById('anomcat').value=='7'){
+            document.getElementById('anomparam').innerHTML='';
+            for(var i = 0; i < options7.length; i++) {
+                var opt = options7[i];
+                var el = document.createElement("option");
+                el.text = opt.text;
+                el.value = opt.value;
+                document.getElementById('anomparam').appendChild(el);
+            }
+        }
+    };
+
 
     document.getElementsByName('drop_data_form')[0].onsubmit = e => {
         result = prompt('Вы собираетесь удалить все существующие в системе записи. Введите "Подтвердить" и подтвердите удаление данных.');
@@ -730,7 +884,7 @@
             alert('Удаление данных отменено!');
         }
     };
-
+    //Нужно доработать
     document.getElementById('resetbutton').onclick = function (event){
         //var opt = 'Сначала выберите категорию...';
         //var el = document.createElement("option");
@@ -744,172 +898,240 @@
         //param1.appendChild(el);
         //param2.appendChild(el);
         //param3.appendChild(el);
-    }
+    }//Нужно доработать
+
+
 
     let sortOption = new Option("Сортировать...", "sort");
     let sortopselected = false;
-    let minmaxnullopselected = false;
+    let min_max_null_average_option_selected = false;
     stat1.addEventListener("change", function() {
-        if (minmaxnullopselected == true){
+        if (min_max_null_average_option_selected == true){
             document.getElementById('minoption1').disabled = true;
             document.getElementById('maxoption1').disabled = true;
             document.getElementById('isnulloption1').disabled = true;
+            document.getElementById('averageoption1').disabled = true;
+            document.getElementById('sortoption1').disabled = true;
         }
         else{
             document.getElementById('minoption1').disabled = false;
             document.getElementById('maxoption1').disabled = false;
             document.getElementById('isnulloption1').disabled = false;
+            document.getElementById('averageoption1').disabled = false;
+            document.getElementById('sortoption1').disabled = false;
         }
-        if ((stat1.value == 'min') || (stat1.value == 'max') || (stat1.value == 'isnull')){
-            minmaxnullopselected = true;
+        if ((stat1.value == 'min') || (stat1.value == 'max') || (stat1.value == 'isnull') || (stat1.value == 'average')){
+            min_max_null_average_option_selected = true;
             document.getElementById('minoption2').disabled = true;
             document.getElementById('maxoption2').disabled = true;
             document.getElementById('isnulloption2').disabled = true;
+            document.getElementById('averageoption2').disabled = true;
+            document.getElementById('sortoption2').disabled = true;
             document.getElementById('minoption3').disabled = true;
             document.getElementById('maxoption3').disabled = true;
             document.getElementById('isnulloption3').disabled = true;
+            document.getElementById('averageoption3').disabled = true;
+            document.getElementById('sortoption3').disabled = true;
         }
         else {
-            if ((stat2.value == 'min') || (stat2.value == 'max') || (stat2.value == 'isnull')){
-                minmaxnullopselected = true;
+            if ((stat2.value == 'min') || (stat2.value == 'max') || (stat2.value == 'isnull') || (stat2.value == 'average')){
+                min_max_null_average_option_selected = true;
                 document.getElementById('minoption1').disabled = true;
                 document.getElementById('maxoption1').disabled = true;
                 document.getElementById('isnulloption1').disabled = true;
+                document.getElementById('averageoption1').disabled = true;
+                document.getElementById('sortoption1').disabled = true;
                 document.getElementById('minoption3').disabled = true;
                 document.getElementById('maxoption3').disabled = true;
                 document.getElementById('isnulloption3').disabled = true;
+                document.getElementById('averageoption3').disabled = true;
+                document.getElementById('sortoption3').disabled = true;
             }
             else {
-                if ((stat3.value == 'min') || (stat3.value == 'max') || (stat3.value == 'isnull')){
-                    minmaxnullopselected = true;
+                if ((stat3.value == 'min') || (stat3.value == 'max') || (stat3.value == 'isnull') || (stat3.value == 'average')){
+                    min_max_null_average_option_selected = true;
                     document.getElementById('minoption1').disabled = true;
                     document.getElementById('maxoption1').disabled = true;
                     document.getElementById('isnulloption1').disabled = true;
+                    document.getElementById('averageoption1').disabled = true;
+                    document.getElementById('sortoption1').disabled = true;
                     document.getElementById('minoption2').disabled = true;
                     document.getElementById('maxoption2').disabled = true;
                     document.getElementById('isnulloption2').disabled = true;
+                    document.getElementById('averageoption2').disabled = true;
+                    document.getElementById('sortoption2').disabled = true;
                 }
                 else{
-                    minmaxnullopselected = false;
+                    min_max_null_average_option_selected = false;
                     document.getElementById('minoption1').disabled = false;
                     document.getElementById('maxoption1').disabled = false;
                     document.getElementById('isnulloption1').disabled = false;
+                    document.getElementById('averageoption1').disabled = false;
+                    document.getElementById('sortoption1').disabled = false;
                     document.getElementById('minoption2').disabled = false;
                     document.getElementById('maxoption2').disabled = false;
                     document.getElementById('isnulloption2').disabled = false;
+                    document.getElementById('averageoption2').disabled = false;
+                    document.getElementById('sortoption2').disabled = false;
                     document.getElementById('minoption3').disabled = false;
                     document.getElementById('maxoption3').disabled = false;
                     document.getElementById('isnulloption3').disabled = false;
+                    document.getElementById('averageoption3').disabled = false;
+                    document.getElementById('sortoption3').disabled = false;
                 }
             }
         }
     });
     stat2.addEventListener("change", function() {
-        if (minmaxnullopselected == true){
+        if (min_max_null_average_option_selected == true){
             document.getElementById('minoption2').disabled = true;
             document.getElementById('maxoption2').disabled = true;
             document.getElementById('isnulloption2').disabled = true;
+            document.getElementById('averageoption2').disabled = true;
+            document.getElementById('sortoption2').disabled = true;
         }
         else{
             document.getElementById('minoption2').disabled = false;
             document.getElementById('maxoption2').disabled = false;
             document.getElementById('isnulloption2').disabled = false;
+            document.getElementById('averageoption2').disabled = false;
+            document.getElementById('sortoption2').disabled = false;
         }
-        if ((stat2.value == 'min') || (stat2.value == 'max') || (stat2.value == 'isnull')){
-            minmaxnullopselected = true;
+        if ((stat2.value == 'min') || (stat2.value == 'max') || (stat2.value == 'isnull')  || (stat2.value == 'average')){
+            min_max_null_average_option_selected = true;
             document.getElementById('minoption1').disabled = true;
             document.getElementById('maxoption1').disabled = true;
             document.getElementById('isnulloption1').disabled = true;
+            document.getElementById('averageoption1').disabled = true;
+            document.getElementById('sortoption1').disabled = true;
             document.getElementById('minoption3').disabled = true;
             document.getElementById('maxoption3').disabled = true;
             document.getElementById('isnulloption3').disabled = true;
+            document.getElementById('averageoption3').disabled = true;
+            document.getElementById('sortoption3').disabled = true;
         }
         else {
-            if ((stat1.value == 'min') || (stat1.value == 'max') || (stat1.value == 'isnull')){
-                minmaxnullopselected = true;
+            if ((stat1.value == 'min') || (stat1.value == 'max') || (stat1.value == 'isnull')  || (stat1.value == 'average')){
+                min_max_null_average_option_selected = true;
                 document.getElementById('minoption2').disabled = true;
                 document.getElementById('maxoption2').disabled = true;
                 document.getElementById('isnulloption2').disabled = true;
+                document.getElementById('averageoption2').disabled = true;
+                document.getElementById('sortoption2').disabled = true;
                 document.getElementById('minoption3').disabled = true;
                 document.getElementById('maxoption3').disabled = true;
                 document.getElementById('isnulloption3').disabled = true;
+                document.getElementById('averageoption3').disabled = true;
+                document.getElementById('sortoption3').disabled = true;
             }
             else {
-                if ((stat3.value == 'min') || (stat3.value == 'max') || (stat3.value == 'isnull')){
-                    minmaxnullopselected = true;
+                if ((stat3.value == 'min') || (stat3.value == 'max') || (stat3.value == 'isnull')  || (stat3.value == 'average')){
+                    min_max_null_average_option_selected = true;
                     document.getElementById('minoption1').disabled = true;
                     document.getElementById('maxoption1').disabled = true;
                     document.getElementById('isnulloption1').disabled = true;
+                    document.getElementById('averageoption1').disabled = true;
+                    document.getElementById('sortoption1').disabled = true;
                     document.getElementById('minoption2').disabled = true;
                     document.getElementById('maxoption2').disabled = true;
                     document.getElementById('isnulloption2').disabled = true;
+                    document.getElementById('averageoption2').disabled = true;
+                    document.getElementById('sortoption2').disabled = true;
                 }
                 else{
-                    minmaxnullopselected = false;
+                    min_max_null_average_option_selected = false;
                     document.getElementById('minoption1').disabled = false;
                     document.getElementById('maxoption1').disabled = false;
                     document.getElementById('isnulloption1').disabled = false;
+                    document.getElementById('averageoption1').disabled = false;
+                    document.getElementById('sortoption1').disabled = false;
                     document.getElementById('minoption2').disabled = false;
                     document.getElementById('maxoption2').disabled = false;
                     document.getElementById('isnulloption2').disabled = false;
+                    document.getElementById('averageoption2').disabled = false;
+                    document.getElementById('sortoption2').disabled = false;
                     document.getElementById('minoption3').disabled = false;
                     document.getElementById('maxoption3').disabled = false;
                     document.getElementById('isnulloption3').disabled = false;
+                    document.getElementById('averageoption3').disabled = false;
+                    document.getElementById('sortoption3').disabled = false;
                 }
             }
         }
     });
     stat3.addEventListener("change", function() {
-        if (minmaxnullopselected == true){
+        if (min_max_null_average_option_selected == true){
             document.getElementById('minoption3').disabled = true;
             document.getElementById('maxoption3').disabled = true;
             document.getElementById('isnulloption3').disabled = true;
+            document.getElementById('averageoption3').disabled = true;
+            document.getElementById('sortoption3').disabled = true;
         }
         else{
             document.getElementById('minoption3').disabled = false;
             document.getElementById('maxoption3').disabled = false;
             document.getElementById('isnulloption3').disabled = false;
+            document.getElementById('averageoption3').disabled = false;
+            document.getElementById('sortoption3').disabled = false;
         }
-        if ((stat3.value == 'min') || (stat3.value == 'max') || (stat3.value == 'isnull')){
-            minmaxnullopselected = true;
+        if ((stat3.value == 'min') || (stat3.value == 'max') || (stat3.value == 'isnull') || (stat3.value == 'average')){
+            min_max_null_average_option_selected = true;
             document.getElementById('minoption1').disabled = true;
             document.getElementById('maxoption1').disabled = true;
             document.getElementById('isnulloption1').disabled = true;
+            document.getElementById('averageoption1').disabled = true;
+            document.getElementById('sortoption1').disabled = true;
             document.getElementById('minoption2').disabled = true;
             document.getElementById('maxoption2').disabled = true;
             document.getElementById('isnulloption2').disabled = true;
+            document.getElementById('averageoption2').disabled = true;
+            document.getElementById('sortoption2').disabled = true;
         }
         else {
             if ((stat1.value == 'min') || (stat1.value == 'max') || (stat1.value == 'isnull')){
-                minmaxnullopselected = true;
+                min_max_null_average_option_selected = true;
                 document.getElementById('minoption2').disabled = true;
                 document.getElementById('maxoption2').disabled = true;
                 document.getElementById('isnulloption2').disabled = true;
+                document.getElementById('averageoption2').disabled = true;
+                document.getElementById('sortoption2').disabled = true;
                 document.getElementById('minoption3').disabled = true;
                 document.getElementById('maxoption3').disabled = true;
                 document.getElementById('isnulloption3').disabled = true;
+                document.getElementById('averageoption3').disabled = true;
+                document.getElementById('sortoption3').disabled = true;
             }
             else {
-                if ((stat2.value == 'min') || (stat2.value == 'max') || (stat2.value == 'isnull')){
-                    minmaxnullopselected = true;
+                if ((stat2.value == 'min') || (stat2.value == 'max') || (stat2.value == 'isnull') || (stat2.value == 'average')){
+                    min_max_null_average_option_selected = true;
                     document.getElementById('minoption2').disabled = true;
                     document.getElementById('maxoption2').disabled = true;
                     document.getElementById('isnulloption2').disabled = true;
+                    document.getElementById('averageoption2').disabled = true;
+                    document.getElementById('sortoption2').disabled = true;
                     document.getElementById('minoption3').disabled = true;
                     document.getElementById('maxoption3').disabled = true;
                     document.getElementById('isnulloption3').disabled = true;
+                    document.getElementById('averageoption3').disabled = true;
+                    document.getElementById('sortoption3').disabled = true;
                 }
                 else{
-                    minmaxnullopselected = false;
+                    min_max_null_average_option_selected = false;
                     document.getElementById('minoption1').disabled = false;
                     document.getElementById('maxoption1').disabled = false;
                     document.getElementById('isnulloption1').disabled = false;
+                    document.getElementById('averageoption1').disabled = false;
+                    document.getElementById('sortoption1').disabled = false;
                     document.getElementById('minoption2').disabled = false;
                     document.getElementById('maxoption2').disabled = false;
                     document.getElementById('isnulloption2').disabled = false;
+                    document.getElementById('averageoption2').disabled = false;
+                    document.getElementById('sortoption2').disabled = false;
                     document.getElementById('minoption3').disabled = false;
                     document.getElementById('maxoption3').disabled = false;
                     document.getElementById('isnulloption3').disabled = false;
+                    document.getElementById('averageoption3').disabled = false;
+                    document.getElementById('sortoption3').disabled = false;
                 }
             }
         }
