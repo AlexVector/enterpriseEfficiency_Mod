@@ -121,6 +121,14 @@
     <fmt:message bundle="${loc}" key="label.cattleProducers" var="cattleProducers"/>
     <fmt:message bundle="${loc}" key="label.cattleCultivation" var="cattleCultivation"/>
 
+    <fmt:message bundle="${loc}" key="label.profitFromSales" var="profitFromSales"/>
+    <fmt:message bundle="${loc}" key="label.netDiscountedValue" var="netDiscountedValue"/>
+    <fmt:message bundle="${loc}" key="label.costRecovery" var="costRecovery"/>
+    <fmt:message bundle="${loc}" key="label.productionProfitability" var="productionProfitability"/>
+    <fmt:message bundle="${loc}" key="label.increasePerEmployed" var="increasePerEmployed"/>
+    <fmt:message bundle="${loc}" key="label.landGrowth" var="landGrowth"/>
+    <fmt:message bundle="${loc}" key="label.organization" var="organization"/>
+
     <fmt:message bundle="${loc}" key="page.company" var="pageTitle"/>
 
     <c:if test="${requestScope.message ne null}">
@@ -148,36 +156,269 @@
                 <div class="col-lg-12">
                     <div class="main-content">
                         <%--My modification--%>
-                        <button class="btn btn-primary mb-2" id="showdynamic" type="button">Динамика показателей</button>
-                            <div class="single-content0" hidden>
-                                <div class="single-job mb-4 d-lg-flex justify-content-between">
-                                    <div class="job-text">
-                                        <h4>Динамика показателей</h4>
-                                        <ul>
-                                            <li>
-                                                <h5>Категория:
-                                                    <select class="form-control" name="category" id="dynamiccat">
-                                                        <option selected disabled>Выберите категорию...</option>
-                                                        <option value="1">Основная информация о предприятии</option>
-                                                        <option value="2">Капитал предприятия</option>
-                                                        <option value="3">Коэффициенты предприятия (На конец отчетного периода)</option>
-                                                        <option value="4">Персонал предприятия</option>
-                                                        <option value="5">Продукция</option>
-                                                        <option value="6">Затраты предприятия (На конец отчетного периода)</option>
-                                                        <option value="7">Другие параметры</option>
-                                                    </select>
-                                                </h5>
-                                            </li>
-                                            <li><h5>Параметр:<br> <select class="form-control" name="parameter" id="dynamicparam">
-                                                <option selected disabled>Сначала выберите категорию...</option>
-                                            </select></h5></li>
-                                        </ul>
-                                        <figure class="highcharts-figure">
-                                            <div id="container_for_dynamic_chart"></div>
-                                        </figure>
+                        <ul>
+                            <li>
+                                <button class="btn btn-primary mb-2" id="showdynamic" type="button">Динамика показателей</button>
+                                <div class="single-content0" id="dymanic" hidden>
+                                    <div class="single-job mb-4 d-lg-flex justify-content-between">
+                                        <div class="job-text">
+                                            <h4>Динамика показателей</h4>
+                                            <ul>
+                                                <li>
+                                                    <h5>Категория:
+                                                        <select class="form-control" name="category" id="dynamiccat">
+                                                            <option selected disabled>Выберите категорию...</option>
+                                                            <option value="1">Основная информация о предприятии</option>
+                                                            <option value="2">Капитал предприятия</option>
+                                                            <option value="3">Коэффициенты предприятия (На конец отчетного периода)</option>
+                                                            <option value="4">Персонал предприятия</option>
+                                                            <option value="5">Продукция</option>
+                                                            <option value="6">Затраты предприятия (На конец отчетного периода)</option>
+                                                            <option value="7">Другие параметры</option>
+                                                        </select>
+                                                    </h5>
+                                                </li>
+                                                <li><h5>Параметр:<br> <select class="form-control" name="parameter" id="dynamicparam">
+                                                    <option selected disabled>Сначала выберите категорию...</option>
+                                                </select></h5></li>
+                                            </ul>
+                                            <figure class="highcharts-figure">
+                                                <div id="container_for_dynamic_chart"></div>
+                                            </figure>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </li>
+
+                            <li>
+                                <button class="btn btn-primary mb-2" id="companycoef" type="button">Коэфициенты предприятия</button>
+                                <div class="single-content0" id="coeficients" hidden>
+                                    <div class="single-job mb-4 d-lg-flex justify-content-between">
+                                        <div class="job-text" style="width: 100%; margin: auto;">
+
+                                            <div class="tab">
+                                                <button class="tablinks" style="width: 25%; margin: auto;" onclick="openTab(event, 'Factory')" id="defaultOpen">Производственные</button>
+                                                <button class="tablinks" style="width: 25%; margin: auto;" onclick="openTab(event, 'Ecomonic')">Экономические</button>
+                                                <button class="tablinks" style="width: 25%; margin: auto;" onclick="openTab(event, 'Commercial')">Коммерческие</button>
+                                                <button class="tablinks" style="width: 25%; margin: auto;" onclick="openTab(event, 'Finance')">Финансовые</button>
+
+                                                <div id="Factory" class="tabcontent">
+                                                    <div class="progress-table-wrap">
+                                                        <div class="progress-table-coef-spec">
+                                                            <table class="table table-bordered">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th class="wd-10em">Код УНН</th>
+                                                                    <th class="wd-10em">Удой на 1 корову, кг</th>
+                                                                    <th class="wd-10em">Урожайность, ц/га</th>
+                                                                    <th class="wd-10em">Среднесуточный привес, г</th>
+                                                                    <th class="wd-10em">Зерно на 1 балло-га пашни, кг</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td class="wd-10em">
+                                                                        <h5>${sessionScope.companyInfo.ynn}</h5>
+                                                                    </td>
+                                                                    <td class="wd-10em">
+                                                                        <h5>${sessionScope.companyInfo.cattle.milkYield}</h5>
+                                                                    </td>
+                                                                    <td class="wd-10em">
+                                                                        <h5>${sessionScope.companyInfo.grounds.get(0).hectareProducts}</h5>
+                                                                    </td>
+                                                                    <td class="wd-10em">
+                                                                        <h5>${sessionScope.companyInfo.cattle.averageDailyIncrease}</h5>
+                                                                    </td>
+                                                                    <td class="wd-10em">
+                                                                        <h5>${String.format("%.3f", sessionScope.companyInfo.grounds.get(0).totalProducts*1000/sessionScope.companyInfo.grounds.get(1).ballogectars).replace(',', '.')}</h5>
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div id="Ecomonic" class="tabcontent">
+                                                    <div class="progress-table-wrap">
+                                                        <div class="progress-table-coef-spec">
+                                                            <table class="table table-bordered">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th class="wd-10em">Код УНН</th>
+                                                                    <th class="wd-10em">Расход кормов на 1 т молока</th>
+                                                                    <th class="wd-10em">Расход кормов на 1 ед прироста КРС</th>
+                                                                    <th class="wd-10em">Себестоимость 1 т зерна, тыс. руб.</th>
+                                                                    <th class="wd-10em">Себестоимость 1 т молока</th>
+                                                                    <th class="wd-10em">Себестоимость 1 т прироста КРС</th>
+
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td class="wd-10em">
+                                                                        <h5>${sessionScope.companyInfo.ynn}</h5>
+                                                                    </td>
+                                                                    <td class="wd-10em">
+                                                                        <c:choose>
+                                                                            <c:when test="${sessionScope.companyInfo.expenses.feed eq null or sessionScope.companyInfo.dairyProducts.outputDairyProducts eq null}">${noInfo}</c:when>
+                                                                            <c:otherwise><h5>${String.format("%.3f", sessionScope.companyInfo.expenses.feed/sessionScope.companyInfo.dairyProducts.outputDairyProducts).replace(',', '.')}</h5></c:otherwise>
+                                                                        </c:choose>
+                                                                    </td>
+                                                                    <td class="wd-10em">
+                                                                        <c:choose>
+                                                                            <c:when test="${sessionScope.companyInfo.expenses.feed eq null or sessionScope.companyInfo.dairyProducts.productionGrowth eq null}">${noInfo}</c:when>
+                                                                            <c:otherwise><h5>${String.format("%.3f",sessionScope.companyInfo.expenses.feed/sessionScope.companyInfo.dairyProducts.productionGrowth).replace(',', '.')}</h5></c:otherwise>
+                                                                        </c:choose>
+                                                                    </td>
+                                                                    <td class="wd-10em">
+                                                                        <c:choose>
+                                                                            <c:when test="${sessionScope.companyInfo.grounds.get(0).productionCost eq null}">${noInfo}</c:when>
+                                                                            <c:otherwise><h5>${sessionScope.companyInfo.grounds.get(0).productionCost}</h5></c:otherwise>
+                                                                        </c:choose>
+                                                                    </td>
+                                                                    <td class="wd-10em">
+                                                                        <c:choose>
+                                                                            <c:when test="${sessionScope.companyInfo.dairyProducts.costDairyProducts eq null}">${noInfo}</c:when>
+                                                                            <c:otherwise><h5>${sessionScope.companyInfo.dairyProducts.costDairyProducts}</h5></c:otherwise>
+                                                                        </c:choose>
+                                                                    </td>
+                                                                    <td class="wd-10em">
+                                                                        <c:choose>
+                                                                            <c:when test="${sessionScope.companyInfo.dairyProducts.productionCostGrowth eq null}">${noInfo}</c:when>
+                                                                            <c:otherwise><h5>${sessionScope.companyInfo.dairyProducts.productionCostGrowth}</h5></c:otherwise>
+                                                                        </c:choose>
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div id="Commercial" class="tabcontent">
+                                                    <div class="progress-table-wrap">
+                                                        <div class="progress-table-coef-spec">
+                                                            <table class="table table-bordered">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th class="wd-10em">Код УНН</th>
+                                                                    <th class="wd-10em">Чистая прибыль на 1 балло-га с-х угодий, тыс. руб.</th>
+                                                                    <th class="wd-10em">Прибыль от реализации на 1 балло-гектар с-х угодий, тыс. руб</th>
+                                                                    <th class="wd-10em">Выручка на 1 занятого, млн. руб.</th>
+                                                                    <th class="wd-10em">ЧДС на 1 занятого, млн. руб.</th>
+                                                                    <th class="wd-10em">Рентабельность продаж, %</th>
+
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td class="wd-10em">
+                                                                        <h5>${sessionScope.companyInfo.ynn}</h5>
+                                                                    </td>
+                                                                    <td class="wd-10em">
+                                                                        <c:choose>
+                                                                            <c:when test="${sessionScope.companyInfo.fixedAssets.profit eq null or sessionScope.companyInfo.grounds.get(0).ballogectars eq null}">${noInfo}</c:when>
+                                                                            <c:otherwise><h5>${String.format("%.3f",sessionScope.companyInfo.fixedAssets.profit*1000/sessionScope.companyInfo.grounds.get(0).ballogectars).replace(',', '.')}</h5></c:otherwise>
+                                                                        </c:choose>
+                                                                    </td>
+                                                                    <td class="wd-10em">
+                                                                        <c:forEach var="cropProduction" items="${sessionScope.companyInfo.cropProductions}">
+                                                                            <c:choose>
+                                                                                <c:when test="${cropProduction.index eq 129}">
+                                                                                    <c:choose>
+                                                                                        <c:when test="${cropProduction.fullCostPrice eq null or cropProduction.bailedOut eq null or sessionScope.companyInfo.grounds.get(0).ballogectars eq null}">${noInfo}</c:when>
+                                                                                        <c:otherwise><h5>${String.format("%.3f", 1000*(cropProduction.bailedOut-cropProduction.fullCostPrice)/sessionScope.companyInfo.grounds.get(0).ballogectars).replace(',', '.')}</h5></c:otherwise>
+                                                                                    </c:choose>
+                                                                                </c:when>
+                                                                            </c:choose>
+                                                                        </c:forEach>
+                                                                    </td>
+                                                                    <td class="wd-10em">
+                                                                        <c:forEach var="staff" items="${sessionScope.companyInfo.staff}">
+                                                                            <c:choose>
+                                                                                <c:when test="${staff.index eq 107}">
+                                                                                    <c:choose>
+                                                                                        <c:when test="${sessionScope.companyInfo.fixedAssets.salesRevenue eq null or staff.averageNumber eq null}">${noInfo}</c:when>
+                                                                                        <c:otherwise><h5>${String.format("%.3f",sessionScope.companyInfo.fixedAssets.salesRevenue/staff.averageNumber).replace(',', '.')}</h5></c:otherwise>
+                                                                                    </c:choose>
+                                                                                </c:when>
+                                                                            </c:choose>
+                                                                        </c:forEach>
+                                                                    </td>
+                                                                    <td class="wd-10em">
+                                                                        <c:forEach var="staff" items="${sessionScope.companyInfo.staff}">
+                                                                            <c:choose>
+                                                                                <c:when test="${staff.index eq 107}">
+                                                                                    <c:choose>
+                                                                                        <c:when test="${staff.averageNumber eq null}">${noInfo}</c:when>
+                                                                                        <c:otherwise><h5>${String.format("%.3f",(sessionScope.companyInfo.fixedAssets.salesRevenue+sessionScope.companyInfo.expenses.laborCost+sessionScope.companyInfo.expenses.deprecation+sessionScope.companyInfo.expenses.insurancePayments)/staff.averageNumber).replace(',', '.')}</h5></c:otherwise>
+                                                                                    </c:choose>
+                                                                                </c:when>
+                                                                            </c:choose>
+                                                                        </c:forEach>
+                                                                    </td>
+                                                                    <td class="wd-10em">
+                                                                        <c:choose>
+                                                                            <c:when test="${sessionScope.companyInfo.coefficients.profitability eq null}">${noInfo}</c:when>
+                                                                            <c:otherwise><h5>${sessionScope.companyInfo.coefficients.profitability}</h5></c:otherwise>
+                                                                        </c:choose>
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div id="Finance" class="tabcontent">
+                                                    <div class="progress-table-wrap">
+                                                        <div class="progress-table-coef-spec">
+                                                            <table class="table table-bordered">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th class="wd-10em">Код УНН</th>
+                                                                    <th class="wd-10em">Прирост КЗ на 100 га угодий, тыс. руб.</th>
+                                                                    <th class="wd-10em">Выручка на 1 руб. обязательств</th>
+                                                                    <th class="wd-10em">Чистые активы на 1 баллогектар сельско-хозяйственных угодий</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td class="wd-10em">
+                                                                        <h5>${sessionScope.companyInfo.ynn}</h5>
+                                                                    </td>
+                                                                    <td class="wd-10em">
+                                                                        <c:choose>
+                                                                            <c:when test="${sessionScope.companyInfo.salesReturn.totalEndDebt eq null or sessionScope.companyInfo.salesReturn.totalBeginDebt eq null or sessionScope.companyInfo.grounds.get(1).hectare eq null}">${noInfo}</c:when>
+                                                                            <c:otherwise><h5>${String.format("%.3f",(sessionScope.companyInfo.salesReturn.totalEndDebt-sessionScope.companyInfo.salesReturn.totalBeginDebt)/sessionScope.companyInfo.grounds.get(1).hectare/100*1000).replace(',', '.')}</h5></c:otherwise>
+                                                                        </c:choose>
+                                                                    </td>
+                                                                    <td class="wd-10em">
+                                                                        <c:choose>
+                                                                            <c:when test="${sessionScope.companyInfo.fixedAssets.salesRevenue eq null or sessionScope.companyInfo.fixedAssets.total4 eq null or sessionScope.companyInfo.fixedAssets.total5 eq null}">${noInfo}</c:when>
+                                                                            <c:otherwise><h5>${String.format("%.3f",sessionScope.companyInfo.fixedAssets.salesRevenue/(sessionScope.companyInfo.fixedAssets.total4+sessionScope.companyInfo.fixedAssets.total5)).replace(',', '.')}</h5></c:otherwise>
+                                                                        </c:choose>
+                                                                    </td>
+                                                                    <td class="wd-10em">
+                                                                        <c:choose>
+                                                                            <c:when test="${sessionScope.companyInfo.coefficients.endNetAssets eq null or sessionScope.companyInfo.grounds.get(0).ballogectars eq null}">${noInfo}</c:when>
+                                                                            <c:otherwise><h5>${String.format("%.3f",sessionScope.companyInfo.coefficients.endNetAssets/sessionScope.companyInfo.grounds.get(0).ballogectars*1000).replace(',', '.')}</h5></c:otherwise>
+                                                                        </c:choose>
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                        </ul>
                         <%--My modification--%>
                         <div class="single-content1">
                             <div class="single-job mb-4 d-lg-flex justify-content-between">
@@ -750,14 +991,22 @@
         {"text":"Крупный рогатый скот на выpащивании и откоpме всего. Расход кормов на единицу продукции, кормо-единиц","value":"cattle.cattle_cultivation"}];
 
     var staffinfo = document.getElementsByClassName('country');
-    var dynamicbutton = document.getElementById('showdynamic');
 
-    var anomalybutton = document.getElementById('showanomaly');
-    anomalybutton.onclick = function (event){
-        if (document.getElementsByClassName('single-content0')[0].hidden==true)
-            document.getElementsByClassName('single-content0')[0].hidden=false;
+
+    var dynamicbutton = document.getElementById('showdynamic');
+    dynamicbutton.onclick = function (event){
+        if (document.getElementById('dymanic').hidden==true)
+            document.getElementById('dymanic').hidden=false;
         else
-            document.getElementsByClassName('single-content0')[0].hidden=true;
+            document.getElementById('dymanic').hidden=true;
+    }
+
+    var coef_button = document.getElementById('companycoef');
+    coef_button.onclick = function (event){
+        if (document.getElementById('coeficients').hidden==true)
+            document.getElementById('coeficients').hidden=false;
+        else
+            document.getElementById('coeficients').hidden=true;
     }
 
 
@@ -850,6 +1099,27 @@
         else
             document.getElementsByClassName('single-content0')[0].hidden=true;
     }
+
+    document.getElementById("defaultOpen").click();
+
+    function openTab(evt, cityName) {
+        // Declare all variables
+        var i, tabcontent, tablinks;
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
 
     Highcharts.chart('container_for_staffLabel', {
         chart: {type: 'pie'},

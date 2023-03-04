@@ -130,7 +130,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="main-content">
-                            <!-- -->
+
                             <button class="btn btn-primary mb-2" id="showanomaly" type="button">Поиск аномалий</button>
                             <div class="single-content1" id="anomalypanel" hidden>
                                 <div class="single-job d-lg-flex justify-content-between">
@@ -139,8 +139,8 @@
                                         <form action="Controller" method="post">
                                             <input class="form-control" type="hidden" name="command" value="anomalies_search">
                                             <h5>Выберите зону поиска:</h5>
-                                            <h5 class="ml-5"><input class="form-check-input" id="allanomalies" type="radio" name="anomaly" checked>По всем параметрам&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                <input class="form-check-input" id="oneanomaly" type="radio" name="anomaly">По выбранному параметру&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <h5 class="ml-5"><input class="form-check-input" id="allanomalies" type="radio" name="anomaly" value="all" checked>По всем параметрам&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <input class="form-check-input" id="oneanomaly" type="radio" name="anomaly" value="one">По выбранному параметру&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             </h5>
                                             <div class="single-content1" id="oneanomalysearchpanel" hidden>
                                                 <div class="single-job d-lg-flex justify-content-between">
@@ -172,12 +172,12 @@
                                                 </div>
                                             </div>
                                             <input class="btn btn-primary mb-2" type="submit">
-                                            <input class="btn mb-2" type="reset" id="resetbutton"> <!-- Настроить кнопку сброса -->
+                                            <input class="btn mb-2" type="reset" id="resetbutton">
                                         </form>
                                     </div>
                                 </div>
                             </div>
-                            <!-- -->
+
                             <button class="btn btn-primary mb-2" id="showdynamic" type="button">Расширенный поиск</button>
                             <div class="single-content1" id="adv_searchpanel" hidden>
                                 <div class="single-job d-lg-flex justify-content-between">
@@ -227,7 +227,6 @@
                                                                         <option value="max" id="maxoption1">Максимальный</option>
                                                                         <option value="min" id="minoption1">Минимальный</option>
                                                                         <option value="isnull" id="isnulloption1">Отсутствует</option>
-                                                                        <option value="average" id="averageoption1">Среднее значение</option>
                                                                     </select>
                                                                 </h5>
                                                             </li>
@@ -280,7 +279,6 @@
                                                                         <option value="max" id="maxoption2">Максимальный</option>
                                                                         <option value="min" id="minoption2">Минимальный</option>
                                                                         <option value="isnull" id="isnulloption2">Отсутствует</option>
-                                                                        <option value="average" id="averageoption2">Среднее значение</option>
                                                                     </select>
                                                                 </h5>
                                                             </li>
@@ -333,7 +331,6 @@
                                                                         <option value="max" id="maxoption3">Максимальный</option>
                                                                         <option value="min" id="minoption3">Минимальный</option>
                                                                         <option value="isnull" id="isnulloption3">Отсутствует</option>
-                                                                        <option value="average" id="averageoption3">Среднее значение</option>
                                                                     </select>
                                                                 </h5>
                                                             </li>
@@ -426,8 +423,6 @@
                     <div class="col-lg-3 sidebar">
 
 
-
-
                             <%--My modification--%>
                         <div style="display: flex; flex-direction: row; justify-content: flex-start">
                             <form action="Controller" method="post" style="margin-right:3px">
@@ -442,8 +437,6 @@
                             </c:if>
                         </div>
                             <%--My modification--%>
-
-
 
 
                         <c:if test="${sessionScope.locationMap ne null}">
@@ -652,7 +645,6 @@
 
     <%--My modification--%>
 </c:choose>
-<!-- End blog-posts Area -->
 
 <div id="wrapper"></div>
 
@@ -701,7 +693,6 @@
         {"text":"Уровень рентабельности, %","value":"coefficients.profitability"},
         {"text":"Уровень рентабельности без учета государственной поддержки, %","value":"coefficients.profitability_without_support"}];
 
-
     let options2 = [{"text":"Основные средства","value":"fixed_assets.fixed_assets"},
         {"text":"Долгосрочные кредиты и займы","value":"fixed_assets.loans_borrowings"},
         {"text":"ИТОГО по разделу IV","value":"fixed_assets.total_4"},
@@ -739,7 +730,6 @@
         {"text":"Фонд ЗП работников, вкл. совместителей млн. руб. (руководители)","value":"staff.column_index=115 AND staff.salary_fund"},
         {"text":"Фонд ЗП работников, вкл. совместителей млн. руб. (специалисты)","value":"staff.column_index=117 AND staff.salary_fund"}];
 
-
     let options5 = [{"text":"Полная себестоимость проданной продукции растениеводства","value":"crop_production.column_index = 123 AND crop_production.full_cost_price"},
         {"text":"Полная себестоимость проданной продукции животноводства","value":"crop_production.column_index = 127 AND crop_production.full_cost_price"},
         {"text":"Полная себестоимость проданной продукции итого","value":"crop_production.column_index = 129 AND crop_production.full_cost_price"},
@@ -756,7 +746,6 @@
         {"text":"Пpочие затpаты","value":"expenses.other_costs"},
         {"text":"Итого затpат","value":"expenses.total_costs"},
         {"text":"Затраты по закладке и выращиванию молодых многолетних насаждений","value":"expenses.planting_costs"}];
-
 
     let options7 = [{"text":"Сбор зеpна в физической массе после доpаботки, всего","value":"grounds.products_index=140 AND grounds.total_products"},
         {"text":"Сбор зеpна в физической массе после доpаботки, с 1 га","value":"grounds.products_index=140 AND grounds.hectare_products"},
@@ -779,30 +768,34 @@
         {"text":"Крупный рогатый скот на выpащивании и откоpме всего. Расход кормов на единицу продукции, кормо-единиц","value":"cattle.cattle_cultivation"}];
 
 
+
     var anomalydinbutton = document.getElementById('showanomaly');
     anomalydinbutton.onclick = function (event){
         if (document.getElementById('anomalypanel').hidden==true)
             document.getElementById('anomalypanel').hidden=false;
         else
             document.getElementById('anomalypanel').hidden=true;
-    }
+    };
+
+
 
     document.getElementById('oneanomaly').onclick = function(event) {
         document.getElementById('oneanomalysearchpanel').hidden = false;
     };
     document.getElementById('allanomalies').onclick = function (event) {
         document.getElementById('oneanomalysearchpanel').hidden = true;
-    }
+    };
 
-    var dynamicbutton = document.getElementById('showdynamic');
-    dynamicbutton.onclick = function (event){
+
+    document.getElementById('showdynamic').onclick = function (event){
         if (document.getElementById('adv_searchpanel').hidden==true)
             document.getElementById('adv_searchpanel').hidden=false;
         else
             document.getElementById('adv_searchpanel').hidden=true;
-    }
+    };
 
     //для аномалий сделать кастомные options без текстовой информации, кодов унн, окпо и отрасли
+
     document.getElementById('anomcat').onclick = function (event){
         if (document.getElementById('anomcat').value=='1'){
             document.getElementById('anomparam').innerHTML='';
@@ -877,13 +870,8 @@
     };
 
 
-    document.getElementsByName('drop_data_form')[0].onsubmit = e => {
-        result = prompt('Вы собираетесь удалить все существующие в системе записи. Введите "Подтвердить" и подтвердите удаление данных.');
-        if (result!=='Подтвердить') {
-            e.preventDefault();
-            alert('Удаление данных отменено!');
-        }
-    };
+
+
     //Нужно доработать
     document.getElementById('resetbutton').onclick = function (event){
         //var opt = 'Сначала выберите категорию...';
@@ -898,7 +886,7 @@
         //param1.appendChild(el);
         //param2.appendChild(el);
         //param3.appendChild(el);
-    }//Нужно доработать
+    };//Нужно доработать
 
 
 
@@ -1229,11 +1217,10 @@
             }
         }
     });
+
+
     /*
     stat1.onclick = function (event) {
-
-
-
         else {
             sortOption.id = 'sortoption2';
             stat2.append(sortOption);
@@ -1593,6 +1580,7 @@
         }
     };
 
+
     stat1.onclick = function (event) {
         document.getElementById('type1').value = '0';
         num1.value = '';
@@ -1643,6 +1631,7 @@
     };
 
 
+
     diff1.onclick = function(event) {
         divfordiff2.hidden = true;
         divfordiff3.hidden = true;
@@ -1655,6 +1644,17 @@
         divfordiff2.hidden = false;
         divfordiff3.hidden = false;
     };
+
+    //может вызвать ошибку за счет того, что элемент есть только у администратора. ОСТАВЛЯТЬ В КОНЦЕ СКРИПТА
+    if (document.getElementsByName('drop_data_form') != null){
+        document.getElementsByName('drop_data_form')[0].onsubmit = function (e) {
+            result = prompt('Вы собираетесь удалить все существующие в системе записи. Введите "Подтвердить" и подтвердите удаление данных.');
+            if (result!=='Подтвердить') {
+                e.preventDefault();
+                alert('Удаление данных отменено!');
+            }
+        };
+    }
 </script>
 
 </body>
