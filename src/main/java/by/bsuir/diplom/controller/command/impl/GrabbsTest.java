@@ -134,10 +134,8 @@ public class GrabbsTest extends SessionUtil implements Command {
         Double degrees_of_freedom = count - 2;
         Double t_crit_value = new org.apache.commons.math3.distribution.TDistribution(degrees_of_freedom).inverseCumulativeProbability(1-significance_value);
         Double g_crit_value = ((count-1)*t_crit_value)/(Math.sqrt(count*(degrees_of_freedom+Math.pow(t_crit_value, 2))));
-
         //System.out.println(max + "---" + min + "---" + avg + "---" + count + "---" + standart_deviation +
                 //"---" + degrees_of_freedom + "---" + t_crit_value + "---" + G + "---" + g_crit_value);
-
         if (G>g_crit_value){
             List<Company> anomaly_company = findAnomalyCompany(parameter);
             if (anomaly_company != null && anomaly_company.size() > 0){
