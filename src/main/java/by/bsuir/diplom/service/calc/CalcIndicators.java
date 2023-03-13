@@ -27,8 +27,13 @@ public class CalcIndicators {
         double value = calcEnterpriseProfit(company) / calcEnterpriseExpenses(company) * 100;
         return Precision.round(value, 2);
     }
-
+    //
+    int i = 0;
+    //
     private EnterpriseIndicators calcAvgIndicators(List<Company> list, int begin, int finish) {
+        //
+        System.out.println(i++);
+        //
         OptionalDouble profitFromSales = createStream(list, begin, finish).mapToDouble(Company::getProfitFromSales).average();
         OptionalDouble netDiscountedValue = createStream(list, begin, finish).mapToDouble(Company::getNetDiscountedValue).average();
         OptionalDouble costRecovery = createStream(list, begin, finish).mapToDouble(Company::getCostRecovery).average();
