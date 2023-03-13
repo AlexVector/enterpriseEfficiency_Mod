@@ -8,6 +8,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.query.Query;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Collections;
 import java.util.List;
 
 public class CompanyDao extends AbstractDao<Integer, Company> {
@@ -26,6 +28,55 @@ public class CompanyDao extends AbstractDao<Integer, Company> {
         try {
             session.createNativeQuery(DELETE_ALL).executeUpdate();
         } catch (Exception ex) {
+            throw new DaoException(ex);
+        }
+    }
+
+    public List getQuerySelectList(String sql_query){
+        Query query = session.createNativeQuery(sql_query);
+        List listResult = query.list();
+        return listResult;
+    }
+
+    public List<Company> getQueryCompany(String sql_query) throws DaoException {
+        try {
+            return session.createNativeQuery(sql_query).addEntity(Company.class).list();
+        } catch (Exception ex) {
+            throw new DaoException(ex);
+        }
+    }
+
+    public Double getQuerySelectResult(String sql_query) throws DaoException{
+        try {
+            Query query = session.createNativeQuery(sql_query);
+            Double doubleResult = null;
+            System.out.println();
+            if (query.list().get(0) instanceof Integer){
+                List<Integer> result = query.list();
+                return Double.valueOf(result.get(0));
+            }
+            else {
+                if (query.list().get(0) instanceof BigInteger){
+                    List<BigInteger> biResult = query.list();
+                    doubleResult = biResult.get(0).doubleValue();
+                    return doubleResult;
+                }
+                else {
+                    if (query.list().get(0) instanceof Double){
+                        List<Double> dResult = query.list();
+                        doubleResult = dResult.get(0).doubleValue();
+                        return doubleResult;
+                    }
+                    else {
+                        List<BigDecimal> bdResult = query.list();
+                        doubleResult = bdResult.get(0).doubleValue();
+                        return doubleResult;
+                    }
+
+                }
+
+            }
+        }catch (Exception ex) {
             throw new DaoException(ex);
         }
     }
