@@ -47,7 +47,7 @@ public class AdvancedSearch implements Command {
             new OptionDataKeeper("Долгосрочные кредиты и займы", "fixed_assets.loans_borrowings", "", "руб."),
             new OptionDataKeeper("ИТОГО по разделу IV", "fixed_assets.total_4", "", "руб."),
             new OptionDataKeeper("Краткосрочная кредиторская задолженность", "fixed_assets.shortterm_debt", "", "руб."),
-            new OptionDataKeeper("ИТОГО по разделу V", "fixed_assets.total_5", "содержит в себе", ""),
+            new OptionDataKeeper("ИТОГО по разделу V", "fixed_assets.total_5", "содержит в себе", "руб."),
             new OptionDataKeeper("Выручка от реализации товаров, продукции, работ, услуг", "fixed_assets.sales_revenue", "", "руб."),
             new OptionDataKeeper("Чистая прибыль", "fixed_assets.profit", "", "руб."),
             new OptionDataKeeper("Рентабельность продаж", "sales_return.sales_return", "", "руб."),

@@ -216,32 +216,49 @@ public class CompanyDao extends AbstractDao<Integer, Company> {
         }
     }
 
-    //переписать под avg
+
     public Double getAdvancedSearchResult(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, int operationsSum) throws DaoException {
         try {
-            int k = -1;
+            int average_ind = -1;
+            boolean and_flag = false;
             String[] res = null;
             for (int i=0; i< statuses.length; i++){
-                if (statuses[i].equals("average"))
-                    k=i;
-            }
-            String createQuery = null;
-            if (parameters[k].contains(" AND ")){
-                res = parameters[k].split(" AND ",2);
-                createQuery = "SELECT AVG("+ res[1] + ") FROM "+ parameters[k].substring(0, parameters[k].indexOf(".")) + " ";
-            }
-            else createQuery = "SELECT  AVG("+ parameters[k] + ") FROM "+ parameters[k].substring(0, parameters[k].indexOf(".")) + " ";
-
-            String innerJoinConnector = " on " + parameters[k].substring(0, parameters[k].indexOf(".")) + ".ynn = ";
-            for (int i=0;i<parameters.length;i++){
-                if (!(statuses[i].equals("average")) && !innerJoinConnector.substring(innerJoinConnector.indexOf(" on "), innerJoinConnector.indexOf(".")).equals(parameters[i].substring(0, parameters[i].indexOf("."))) && !createQuery.contains("join " + parameters[i].substring(0, parameters[i].indexOf("."))+" on"))
-                    createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) + innerJoinConnector + parameters[i].substring(0, parameters[i].indexOf(".")) + ".ynn ";
-                if (!parameters[i].substring(0, parameters[i].indexOf(".")).equals(parameters[k].substring(0, parameters[k].indexOf("."))) && !createQuery.contains("join " + parameters[i].substring(0, parameters[i].indexOf("."))+" on")){
-                    if (parameters[i]!=null && (text_values[i]!="" || (statuses[i].equals("sort") && types[0]!=null) || ((statuses[i].equals("morethan") || statuses[i].equals("lessthan") || statuses[i].equals("equal")) && values[i]!="") || statuses[i].equals("isnull")))
-                        createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) + " on " + parameters[k].substring(0, parameters[k].indexOf(".")) + ".ynn = " + parameters[i].substring(0, parameters[i].indexOf(".")) + ".ynn ";
+                if (statuses[i].equals("average")){
+                    average_ind=i;
+                    break;
                 }
             }
-            createQuery = createQuery + " where ";//возможно, where тут будет мешать
+            String createQuery = null;
+            if (parameters[average_ind].contains(" AND ")){
+                res = parameters[average_ind].split(" AND ",2);
+                and_flag = true;
+                createQuery = "SELECT AVG("+ res[1] + ") FROM "+
+                        parameters[average_ind].substring(0, parameters[average_ind].indexOf(".")) + " ";
+            }
+            else createQuery = "SELECT  AVG("+ parameters[average_ind] + ") FROM "+
+                    parameters[average_ind].substring(0, parameters[average_ind].indexOf(".")) + " ";
+            String innerJoinConnector = " on " + parameters[average_ind].substring(0, parameters[average_ind].indexOf(".")) + ".ynn = ";
+            //продумать условия
+            for (int i=0;i<parameters.length;i++){
+                if (!(statuses[i].equals("average")) && !innerJoinConnector.substring(innerJoinConnector.indexOf(" on "),
+                        innerJoinConnector.indexOf(".")).equals(parameters[i].substring(0, parameters[i].indexOf("."))) &&
+                        !createQuery.contains("join " + parameters[i].substring(0, parameters[i].indexOf("."))+" on") &&
+                        !parameters[average_ind].substring(0, parameters[average_ind].indexOf(".")).equals(parameters[i].substring(0, parameters[i].indexOf("."))))
+                    createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) +
+                            innerJoinConnector + parameters[i].substring(0, parameters[i].indexOf(".")) + ".ynn ";
+                if (!parameters[i].substring(0, parameters[i].indexOf(".")).equals(parameters[average_ind].substring(0, parameters[average_ind].indexOf("."))) &&
+                        !createQuery.contains("join " + parameters[i].substring(0, parameters[i].indexOf("."))+" on")){
+                    if (parameters[i]!=null && (text_values[i]!="" || (statuses[i].equals("sort") && types[0]!=null) ||
+                            ((statuses[i].equals("morethan") || statuses[i].equals("lessthan") || statuses[i].equals("equal")) &&
+                                    values[i]!="") || statuses[i].equals("isnull")))
+                        createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) + " on " +
+                                parameters[average_ind].substring(0, parameters[average_ind].indexOf(".")) + ".ynn = " +
+                                parameters[i].substring(0, parameters[i].indexOf(".")) + ".ynn ";
+                }
+            }
+            createQuery = createQuery + " where ";
+            if (and_flag)
+                createQuery = createQuery + res[0] + " and ";
             createQuery = commonSQLgen(createQuery, parameters, statuses, types, values, text_values);
             if (createQuery.substring(createQuery.length()-4, createQuery.length()).equals("and "))
                 createQuery = createQuery.substring(0, createQuery.length()-4);
