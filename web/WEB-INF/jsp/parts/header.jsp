@@ -64,7 +64,7 @@
                         <div class="col-lg-2">
                             <div class="logo-area">
                                 <a href="Controller?command=go_to_home_page">
-                                    <img src="<c:url value="/resources/images/logo.png"/>" alt="logo">
+                                    <img src="<c:url value="/resources/images/newlogo.png"/>" height="96px" alt="logo">
                                 </a>
                             </div>
                         </div>
@@ -113,7 +113,7 @@
                         <div class="col-lg-2">
                             <div class="logo-area">
                                 <a href="Controller?command=go_to_home_page">
-                                    <img src="<c:url value="/resources/images/logo.png"/>" alt="logo">
+                                    <img src="<c:url value="/resources/images/newlogo.png"/>" height="96px" alt="logo">
                                 </a>
                             </div>
                         </div>
