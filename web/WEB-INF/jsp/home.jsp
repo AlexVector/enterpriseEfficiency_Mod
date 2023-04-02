@@ -226,6 +226,7 @@
                                                                         <option value="equal">Равен...</option>
                                                                         <option value="max" id="maxoption1">Максимальный</option>
                                                                         <option value="min" id="minoption1">Минимальный</option>
+                                                                        <option value="average" id="averageoption1">Среднее значение</option>
                                                                         <option value="isnull" id="isnulloption1">Отсутствует</option>
                                                                     </select>
                                                                 </h5>
@@ -278,6 +279,7 @@
                                                                         <option value="equal">Равен...</option>
                                                                         <option value="max" id="maxoption2">Максимальный</option>
                                                                         <option value="min" id="minoption2">Минимальный</option>
+                                                                        <option value="average" id="averageoption2">Среднее значение</option>
                                                                         <option value="isnull" id="isnulloption2">Отсутствует</option>
                                                                     </select>
                                                                 </h5>
@@ -330,6 +332,7 @@
                                                                         <option value="equal">Равен...</option>
                                                                         <option value="max" id="maxoption3">Максимальный</option>
                                                                         <option value="min" id="minoption3">Минимальный</option>
+                                                                        <option value="average" id="averageoption3">Среднее значение</option>
                                                                         <option value="isnull" id="isnulloption3">Отсутствует</option>
                                                                     </select>
                                                                 </h5>

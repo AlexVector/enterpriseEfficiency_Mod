@@ -46,6 +46,10 @@ $(document).ready( function () {
 } );
 
 $(document).ready( function () {
+    var table = $('#anomalyTable').DataTable();
+} );
+
+$(document).ready( function () {
     var table = $('#filterCompaniesTable').DataTable();
 } );
 

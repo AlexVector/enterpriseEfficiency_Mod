@@ -7,9 +7,9 @@ import by.bsuir.diplom.dao.api.CompanyDao;
 import by.bsuir.diplom.dao.exception.DaoException;
 import by.bsuir.diplom.dao.utilities.SessionUtil;
 import by.bsuir.diplom.service.GTestResultClass;
-import by.bsuir.diplom.service.ServiceProvider;
-import by.bsuir.diplom.service.api.AddressService;
-import by.bsuir.diplom.service.api.CompanyService;
+import org.apache.commons.math3.distribution.TDistribution;
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -109,17 +109,57 @@ public class GrabbsTest extends SessionUtil implements Command {
         for (Map.Entry<String,String> pair : entrySet) {
             List<GTestResultClass> gTestResultClassList = grabbsSelectedTest(pair.getValue());
             if (gTestResultClassList != null)
-                resultList.add(grabbsSelectedTest(pair.getValue()).get(0));
+                for (GTestResultClass gtr: gTestResultClassList)
+                    resultList.add(gtr);
         }
         return resultList;
     }
 
     public List<GTestResultClass> grabbsSelectedTest(String parameter) throws DaoException {
-        Double max = find(parameter, "MAX");
-        Double min = find(parameter, "MIN");
-        Double avg = find(parameter, "AVG");
-        Double count = find(parameter, "COUNT");
+        //Double max = find(parameter, "MAX");
+        //Double min = find(parameter, "MIN");
+        //Double avg = find(parameter, "AVG");
+        //Double count = find(parameter, "COUNT");
         List listResult = findList(parameter);
+        Double alpha = 0.05;
+        List<Double> doubleListResult = new ArrayList<>();
+        for (int i = 0; i < listResult.size(); i++){
+            if (listResult.get(i) instanceof Integer)
+                doubleListResult.add(((Integer) listResult.get(i)).doubleValue());
+            else
+                doubleListResult.add((Double) listResult.get(i));
+        }
+        List<Double> anomaly = grubbsFunction(doubleListResult, alpha);
+        //System.out.println(anomaly);
+        //System.out.println(anomaly.size());
+        List<Company> companyList = findCompanyFullList(parameter);
+
+        String parameter_name = null;
+        Set<Map.Entry<String, String>> entrySet = options.entrySet();
+        List <GTestResultClass> testResult = new ArrayList<GTestResultClass>();
+        for (Map.Entry<String,String> pair : entrySet) {
+            if (parameter.equals(pair.getValue())) {
+                parameter_name = pair.getKey();// нашли наше значение и возвращаем ключ
+                break;
+            }
+        }
+
+        if (anomaly.size() > 0){
+            for (int i = 0; i < anomaly.size(); i++){
+                testResult.add(new GTestResultClass(companyList.get(i), parameter_name, String.valueOf(anomaly.get(i)),"Подозрительно большое значение"));
+            }
+        }
+        List<Company> companyNullAnomalyList = findNullParamCompanyList(parameter);
+        if (companyNullAnomalyList.size() > 0){
+            for (Company nullCompany: companyNullAnomalyList)
+                testResult.add(new GTestResultClass(nullCompany, parameter_name, "0", "Значение отсутствует"));
+        }
+        if (testResult.size() > 0)
+            return testResult;
+        else
+            return null;
+
+        /*
         Double st_dev_part = Double.valueOf(0);
         for (int i = 0; i < count.intValue(); i++){
             if (listResult.get(i) != null && listResult.get(i) instanceof Double)
@@ -130,8 +170,8 @@ public class GrabbsTest extends SessionUtil implements Command {
         Double standart_deviation = Math.sqrt(st_dev_part/(count-1));
         Double G = (max - min)/standart_deviation;
         Double alpha = 0.05;
-        Double significance_value = alpha/count;
-        Double degrees_of_freedom = count - 2;
+        Double significance_value = alpha/count;//уровень значимости
+        Double degrees_of_freedom = count - 2;//степени свободы
         Double t_crit_value = new org.apache.commons.math3.distribution.TDistribution(degrees_of_freedom).inverseCumulativeProbability(1-significance_value);
         Double g_crit_value = ((count-1)*t_crit_value)/(Math.sqrt(count*(degrees_of_freedom+Math.pow(t_crit_value, 2))));
         //System.out.println(max + "---" + min + "---" + avg + "---" + count + "---" + standart_deviation +
@@ -155,6 +195,8 @@ public class GrabbsTest extends SessionUtil implements Command {
             else return null;
         }
         else return null;
+         */
+
     }
 
     public List<Company> findAnomalyCompany(String parameter){
@@ -171,6 +213,93 @@ public class GrabbsTest extends SessionUtil implements Command {
         else sql_query = "SELECT company.* FROM company JOIN " + parameter.substring(0, parameter.indexOf(".")) +
                 " ON company.ynn = " + parameter.substring(0, parameter.indexOf(".")) + ".ynn WHERE " + parameter +
                 "=(SELECT MAX(" + parameter + ") FROM " + parameter.substring(0, parameter.indexOf(".")) + ")";
+        List<Company> find_result_company = null;
+        try {
+            find_result_company = companyDao.getQueryCompany(sql_query);
+            closeSession();
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
+        return find_result_company;
+    }
+
+    public List<Company> findCompanyFullList(String parameter){
+        CompanyDao companyDao = DaoFactory.getInstance().getCompanyDao();
+        openTransactionSession();
+        companyDao.setSession(getSession());
+        String sql_query = "";
+        if (parameter.contains(" AND ")){
+            String[] res = parameter.split(" AND ",2);
+            sql_query = "SELECT company.* FROM company JOIN " + res[1].substring(0, res[1].indexOf(".")) +
+                    " ON company.ynn = " + res[1].substring(0, res[1].indexOf(".")) + ".ynn WHERE " + res[0] + " ORDER BY " + res[1] + "  DESC";
+        }
+        else sql_query = "SELECT company.* FROM company JOIN " + parameter.substring(0, parameter.indexOf(".")) +
+                " ON company.ynn = " + parameter.substring(0, parameter.indexOf(".")) + ".ynn ORDER BY " + parameter + "  DESC";
+        List<Company> find_result_company = null;
+        try {
+            find_result_company = companyDao.getQueryCompany(sql_query);
+            closeSession();
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
+        return find_result_company;
+    }
+
+
+    public static List<Double> grubbsFunction(List<Double> values, double alpha) {
+        int anom_flag = 0;
+        List<Double> outliers = new ArrayList<>();
+        while (anom_flag == 0){
+            DescriptiveStatistics stats = new DescriptiveStatistics();
+            for (Double value : values) {
+                if (value != null)
+                    stats.addValue(value);
+            }
+            double mean = stats.getMean();
+            double stdDev = stats.getStandardDeviation();
+            int n = values.size();
+            double maxDeviation = 0;
+            int maxIndex = 0;
+            for (int i = 0; i < n; i++) {
+                if (values.get(i)!=null){
+                    double deviation = Math.abs(values.get(i) - mean);
+                    if (deviation > maxDeviation) {
+                        maxDeviation = deviation;
+                        maxIndex = i;
+                    }
+                }
+            }
+            double testStatistic = maxDeviation / stdDev;
+            TDistribution tDist = new TDistribution(n - 2);
+            double criticalValue = tDist.inverseCumulativeProbability(1 - alpha / (2 * n));
+            criticalValue = (n - 1) * criticalValue / Math.sqrt(n * (n - 2 + criticalValue * criticalValue));
+            //System.out.println("Grubbs' Test Statistic: " + testStatistic);
+            //System.out.println("Critical Value: " + criticalValue);
+
+            if (testStatistic > criticalValue) {
+                //System.out.println("Outlier detected: " + values.get(maxIndex));
+                outliers.add(values.get(maxIndex));
+                values.remove(maxIndex);
+                anom_flag = 0;
+            }
+            else anom_flag = 1;
+        }
+        return outliers;
+    }
+
+
+    public List<Company> findNullParamCompanyList(String parameter){
+        CompanyDao companyDao = DaoFactory.getInstance().getCompanyDao();
+        openTransactionSession();
+        companyDao.setSession(getSession());
+        String sql_query = "";
+        if (parameter.contains(" AND ")){
+            String[] res = parameter.split(" AND ",2);
+            sql_query = "SELECT company.* FROM company JOIN " + res[1].substring(0, res[1].indexOf(".")) +
+                    " ON company.ynn = " + res[1].substring(0, res[1].indexOf(".")) + ".ynn WHERE " + res[0] + " AND " + res[1] + " IS NULL";
+        }
+        else sql_query = "SELECT company.* FROM company JOIN " + parameter.substring(0, parameter.indexOf(".")) +
+                " ON company.ynn = " + parameter.substring(0, parameter.indexOf(".")) + ".ynn WHERE " + parameter + " IS NULL";
         List<Company> find_result_company = null;
         try {
             find_result_company = companyDao.getQueryCompany(sql_query);
