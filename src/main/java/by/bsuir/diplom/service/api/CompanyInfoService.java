@@ -11,10 +11,10 @@ public interface CompanyInfoService {
     /**
      * Method for deleting company info
      *
-     * @param ynn ynn of company info
+     * @param com_id of company info
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    void delete(Integer ynn) throws ServiceException;
+    void delete(Integer com_id) throws ServiceException;
 
     /**
      * Method for validating data before edit company info in database
@@ -27,9 +27,9 @@ public interface CompanyInfoService {
     /**
      * Method for getting company info
      *
-     * @param ynn company info ynn
+     * @param com_id company info com_id
      * @return object of {@code CompanyInfo} with needed info
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    CompanyInfo getCompanyInfo(Integer ynn) throws ServiceException;
+    CompanyInfo getCompanyInfo(Integer com_id) throws ServiceException;
 }

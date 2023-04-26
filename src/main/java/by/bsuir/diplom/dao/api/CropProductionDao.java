@@ -9,16 +9,16 @@ import java.util.List;
 
 public class CropProductionDao extends AbstractDao<Integer, CropProduction> {
     private static final String GET_ALL = "SELECT * FROM crop_production";
-    private static final String GET_CROP_PRODUCTION = "SELECT * FROM crop_production WHERE ynn=:ynn";
-    private static final String GET_INDICATOR_FOR_CALCULATION = "SELECT * FROM company_db.crop_production WHERE ynn=:company_ynn order by id DESC LIMIT 1";
+    private static final String GET_CROP_PRODUCTION = "SELECT * FROM crop_production WHERE com_id=:com_id";
+    private static final String GET_INDICATOR_FOR_CALCULATION = "SELECT * FROM new_db.crop_production WHERE com_id=:com_id order by com_id DESC LIMIT 1";
 
     //my mod
-    private static final String GET_CROP_PROD_FOR_EXPORT = "select * from crop_production inner join company c on c.ynn = crop_production.ynn where c.ynn=:ynn order by crop_production.column_index";
+    private static final String GET_CROP_PROD_FOR_EXPORT = "select * from crop_production inner join company c on c.com_id = crop_production.com_id where c.com_id=:com_id order by crop_production.column_index";
     
-    public List<CropProduction> getCropProductionToExport(Integer ynn) throws DaoException{
+    public List<CropProduction> getCropProductionToExport(Integer com_id) throws DaoException{
         try{
             Query query = session.createNativeQuery(GET_CROP_PROD_FOR_EXPORT).addEntity(CropProduction.class);
-            query.setParameter("ynn", ynn);
+            query.setParameter("com_id", com_id);
             return query.list();
         } catch (Exception ex){
             throw new DaoException(ex);
@@ -44,20 +44,20 @@ public class CropProductionDao extends AbstractDao<Integer, CropProduction> {
         }
     }
 
-    public List<CropProduction> getCropProduction(Integer ynn) throws DaoException {
+    public List<CropProduction> getCropProduction(Integer com_id) throws DaoException {
         try {
             Query query = session.createNativeQuery(GET_CROP_PRODUCTION).addEntity(CropProduction.class);
-            query.setParameter("ynn", ynn);
+            query.setParameter("com_id", com_id);
             return query.list();
         } catch (Exception ex) {
             throw new DaoException(ex);
         }
     }
 
-    public CropProduction getIndicators(Integer ynn) throws DaoException {
+    public CropProduction getIndicators(Integer com_id) throws DaoException {
         try {
             Query query = session.createNativeQuery(GET_INDICATOR_FOR_CALCULATION).addEntity(CropProduction.class);
-            query.setParameter("company_ynn", ynn);
+            query.setParameter("com_id", com_id);
             return (CropProduction) query.getSingleResult();
         } catch (Exception ex) {
             throw new DaoException(ex);

@@ -22,7 +22,7 @@ public class DataCalculation extends SessionUtil {
         try {
             openTransactionSession();
             cropProductionDao.setSession(getSession());
-            cropProduction = cropProductionDao.getIndicators(company.getYnn());
+            cropProduction = cropProductionDao.getIndicators(company.getCom_id());
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();

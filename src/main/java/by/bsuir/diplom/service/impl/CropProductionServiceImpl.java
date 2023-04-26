@@ -15,13 +15,13 @@ import java.util.List;
 public class CropProductionServiceImpl extends SessionUtil implements CropProductionService {
 
     @Override
-    public List<CropProduction> getCropProductionToExport(Integer ynn) throws ServiceException {
+    public List<CropProduction> getCropProductionToExport(Integer com_id) throws ServiceException {
         List<CropProduction> list;
         CropProductionDao cropprodDao = DaoFactory.getInstance().getCropProductionDao();
         try {
             openTransactionSession();
             cropprodDao.setSession(getSession());
-            list = cropprodDao.getCropProductionToExport(ynn);
+            list = cropprodDao.getCropProductionToExport(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -51,15 +51,15 @@ public class CropProductionServiceImpl extends SessionUtil implements CropProduc
     }
 
     @Override
-    public void delete(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
-            throw new ServiceException("Wrong ynn for delete crop production");
+    public void delete(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
+            throw new ServiceException("Wrong company id for delete crop production");
         }
         CropProductionDao cropProductionDao = DaoFactory.getInstance().getCropProductionDao();
         try {
             openTransactionSession();
             cropProductionDao.setSession(getSession());
-            cropProductionDao.delete(ynn);
+            cropProductionDao.delete(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -89,8 +89,8 @@ public class CropProductionServiceImpl extends SessionUtil implements CropProduc
     }
 
     @Override
-    public List<CropProduction> getCropProduction(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
+    public List<CropProduction> getCropProduction(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
             throw new ServiceException("Impossible to get crop production info!");
         }
         List<CropProduction> cropProductions;
@@ -98,7 +98,7 @@ public class CropProductionServiceImpl extends SessionUtil implements CropProduc
         try {
             openTransactionSession();
             cropProductionDao.setSession(getSession());
-            cropProductions = cropProductionDao.getCropProduction(ynn);
+            cropProductions = cropProductionDao.getCropProduction(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -110,8 +110,8 @@ public class CropProductionServiceImpl extends SessionUtil implements CropProduc
     }
 
     @Override
-    public CropProduction getIndicators(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
+    public CropProduction getIndicators(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
             throw new ServiceException("Impossible to get indicators!");
         }
         CropProduction cropProduction;
@@ -119,7 +119,7 @@ public class CropProductionServiceImpl extends SessionUtil implements CropProduc
         try {
             openTransactionSession();
             cropProductionDao.setSession(getSession());
-            cropProduction = cropProductionDao.getIndicators(ynn);
+            cropProduction = cropProductionDao.getIndicators(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();

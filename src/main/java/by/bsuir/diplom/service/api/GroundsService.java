@@ -6,17 +6,17 @@ import by.bsuir.diplom.service.ServiceException;
 import java.util.List;
 
 public interface GroundsService {
-    List<Grounds> getGroundsToExport(Integer ynn) throws ServiceException;
+    List<Grounds> getGroundsToExport(Integer com_id) throws ServiceException;
 
     List<Grounds> getAll() throws ServiceException;
 
     /**
      * Method for deleting grounds
      *
-     * @param ynn ynn of grounds
+     * @param com_id of grounds
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    void delete(Integer ynn) throws ServiceException;
+    void delete(Integer com_id) throws ServiceException;
 
     /**
      * Method for validating data before edit grounds in database
@@ -29,9 +29,9 @@ public interface GroundsService {
     /**
      * Method for getting grounds info
      *
-     * @param ynn grounds ynn
+     * @param com_id grounds com_id
      * @return object of {@code Grounds} with needed info
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    List<Grounds> getGrounds(Integer ynn) throws ServiceException;
+    List<Grounds> getGrounds(Integer com_id) throws ServiceException;
 }

@@ -22,7 +22,7 @@ public class EditStaff implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response, File uploadFilePath) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        int ynn = (int) session.getAttribute("editCompanyYnn");
+        int companyId = (int) session.getAttribute("editCompanyId");
         Integer staffId = Integer.valueOf(request.getParameter("staffId"));
         Integer editStaffIndex = Integer.valueOf(request.getParameter("editStaffIndex"));
         Integer editAverageNumber = null;
@@ -34,16 +34,16 @@ public class EditStaff implements Command {
             editSalaryFund = Double.valueOf(request.getParameter("editSalaryFund"));
         }
 
-        Staff staff = new Staff(staffId, ynn, editStaffIndex, editAverageNumber, editSalaryFund);
+        Staff staff = new Staff(staffId, companyId, editStaffIndex, editAverageNumber, editSalaryFund);
 
         StaffService service = ServiceProvider.getInstance().getStaffService();
         try {
             service.edit(staff);
             session.removeAttribute("editCompany");
-            response.sendRedirect("Controller?command=go_to_edit_company_page&editCompanyYnn=" + ynn + "&message=message.editStaff.complete");
+            response.sendRedirect("Controller?command=go_to_edit_company_page&editCompanyId=" + companyId + "&message=message.editStaff.complete");
         } catch (ServiceException e) {
             userLogger.error(e);
-            response.sendRedirect("Controller?command=go_to_edit_company_page&editCompanyYnn=" + ynn + "&message=message.edit.unsuccessfully");
+            response.sendRedirect("Controller?command=go_to_edit_company_page&editCompanyId=" + companyId + "&message=message.edit.unsuccessfully");
         }
     }
 }

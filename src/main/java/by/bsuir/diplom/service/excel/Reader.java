@@ -136,80 +136,94 @@ public class Reader extends SessionUtil {
         DataParser parser = new DataParser();
 
         CompanyDao companyDao = DaoFactory.getInstance().getCompanyDao();
-//        CompanyInfoDao companyInfoDao = DaoFactory.getInstance().getCompanyInfoDao();
-//        AddressDao addressDao = DaoFactory.getInstance().getAddressDao();
-//        EnterpriseStatisticDao enterpriseStatisticDao = DaoFactory.getInstance().getEnterpriseStatisticDao();
-//        FixedAssetsDao fixedAssetsDao = DaoFactory.getInstance().getFixedAssetsDao();
-//        SalesReturnDao salesReturnDao = DaoFactory.getInstance().getSalesReturnDao();
-//        CoefficientsDao coefficientsDao = DaoFactory.getInstance().getCoefficientsDao();
-//        StaffDao staffDao = DaoFactory.getInstance().getStaffDao();
-//        CropProductionDao cropProductionDao = DaoFactory.getInstance().getCropProductionDao();
-//        ExpensesDao expensesDao = DaoFactory.getInstance().getExpensesDao();
-//        GroundsDao groundsDao = DaoFactory.getInstance().getGroundsDao();
-//        DairyProductsDao dairyProductsDao = DaoFactory.getInstance().getDairyProductsDao();
-//        CattleDao cattleDao = DaoFactory.getInstance().getCattleDao();
+        CompanyInfoDao companyInfoDao = DaoFactory.getInstance().getCompanyInfoDao();
+        AddressDao addressDao = DaoFactory.getInstance().getAddressDao();
+        EnterpriseStatisticDao enterpriseStatisticDao = DaoFactory.getInstance().getEnterpriseStatisticDao();
+        FixedAssetsDao fixedAssetsDao = DaoFactory.getInstance().getFixedAssetsDao();
+        SalesReturnDao salesReturnDao = DaoFactory.getInstance().getSalesReturnDao();
+        CoefficientsDao coefficientsDao = DaoFactory.getInstance().getCoefficientsDao();
+        StaffDao staffDao = DaoFactory.getInstance().getStaffDao();
+        CropProductionDao cropProductionDao = DaoFactory.getInstance().getCropProductionDao();
+        ExpensesDao expensesDao = DaoFactory.getInstance().getExpensesDao();
+        GroundsDao groundsDao = DaoFactory.getInstance().getGroundsDao();
+        DairyProductsDao dairyProductsDao = DaoFactory.getInstance().getDairyProductsDao();
+        CattleDao cattleDao = DaoFactory.getInstance().getCattleDao();
         try {
             openTransactionSession();
 
             companyDao.setSession(getSession());
-//            companyInfoDao.setSession(getSession());
-//            addressDao.setSession(getSession());
-//            enterpriseStatisticDao.setSession(getSession());
-//            fixedAssetsDao.setSession(getSession());
-//            salesReturnDao.setSession(getSession());
-//            coefficientsDao.setSession(getSession());
-//            staffDao.setSession(getSession());
-//            cropProductionDao.setSession(getSession());
-//            expensesDao.setSession(getSession());
-//            groundsDao.setSession(getSession());
-//            dairyProductsDao.setSession(getSession());
-//            cattleDao.setSession(getSession());
+
+            companyInfoDao.setSession(getSession());
+            addressDao.setSession(getSession());
+            enterpriseStatisticDao.setSession(getSession());
+            fixedAssetsDao.setSession(getSession());
+            salesReturnDao.setSession(getSession());
+            coefficientsDao.setSession(getSession());
+            staffDao.setSession(getSession());
+            cropProductionDao.setSession(getSession());
+            expensesDao.setSession(getSession());
+            groundsDao.setSession(getSession());
+            dairyProductsDao.setSession(getSession());
+            cattleDao.setSession(getSession());
+
+            /*
             try {
-                Company company = parser.parseCompany(list);
-                company.setCompanyInfo(parser.parseCompanyInfo(list));
-                company.setAddress(parser.parseAddress(list));
-                company.setEnterpriseStatistics(parser.parseStatistic(list));
-                company.setFixedAssets(parser.parseAssets(list));
-                company.setSalesReturn(parser.parseSales(list));
-                company.setCoefficients(parser.parseCoefficients(list));
-                company.setStaff(parser.parseStaff(list));
-                company.setCropProductions(parser.parseCropProduction(list));
-                company.setExpenses(parser.parseExpenses(list));
-                company.setGrounds(parser.parseGrounds(list));
-                company.setDairyProducts(parser.parseDairyProducts(list));
-                company.setCattle(parser.parseCattle(list));
-                companyDao.add(company);
+                Company company = new Company(0, 0, "0", "0", 0, "0", "0");
+
+                companyDao.persist(company);
+                System.out.println("-*-" + company.getCom_id() + "-*-");
+                Integer companyId = company.getCom_id();
+
+                company = parser.parseCompany(list);
+                company.setCom_id(companyId);
+                company.setCompanyInfo(parser.parseCompanyInfo(companyId, list));
+                company.setAddress(parser.parseAddress(companyId, list));
+                company.setEnterpriseStatistics(parser.parseStatistic(companyId, list));
+                company.setFixedAssets(parser.parseAssets(companyId, list));
+                company.setSalesReturn(parser.parseSales(companyId, list));
+                company.setCoefficients(parser.parseCoefficients(companyId, list));
+                company.setStaff(parser.parseStaff(companyId, list));
+                company.setCropProductions(parser.parseCropProduction(companyId, list));
+                company.setExpenses(parser.parseExpenses(companyId, list));
+                company.setGrounds(parser.parseGrounds(companyId, list));
+                company.setDairyProducts(parser.parseDairyProducts(companyId, list));
+                company.setCattle(parser.parseCattle(companyId, list));
+                companyDao.update(company);
+
             }catch (NullPointerException e){
                 throw new ServiceException(e);
             }
 
+             */
 
-//            companyDao.add(parser.parseCompany(list));
-//            companyInfoDao.add(parser.parseCompanyInfo(list));
-//            addressDao.add(parser.parseAddress(list));
-//            List<EnterpriseStatistic> enterpriseStatisticList = parser.parseStatistic(list);
-//            for (EnterpriseStatistic stat : enterpriseStatisticList) {
-//                enterpriseStatisticDao.add(stat);
-//            }
-//            fixedAssetsDao.add(parser.parseAssets(list));
-//            salesReturnDao.add(parser.parseSales(list));
-//            coefficientsDao.add(parser.parseCoefficients(list));
-//            List<Staff> staffList = parser.parseStaff(list);
-//            for (Staff staff : staffList) {
-//                staffDao.add(staff);
-//            }
-//            List<CropProduction> cropProductionList = parser.parseCropProduction(list);
-//            for (CropProduction production : cropProductionList) {
-//                cropProductionDao.add(production);
-//            }
-//            expensesDao.add(parser.parseExpenses(list));
-//            List<Grounds> groundsList = parser.parseGrounds(list);
-//            for (Grounds ground : groundsList) {
-//                groundsDao.add(ground);
-//            }
-//            dairyProductsDao.add(parser.parseDairyProducts(list));
-//            cattleDao.add(parser.parseCattle(list));
+            Integer id = companyDao.addWithId(parser.parseCompany(list));
+            companyInfoDao.add(parser.parseCompanyInfo(id,list));
+            addressDao.add(parser.parseAddress(id, list));
 
+            List<EnterpriseStatistic> enterpriseStatisticList = parser.parseStatistic(id, list);
+            for (EnterpriseStatistic stat : enterpriseStatisticList) {
+                enterpriseStatisticDao.add(stat);
+            }
+            fixedAssetsDao.add(parser.parseAssets(id, list));
+            salesReturnDao.add(parser.parseSales(id, list));
+            coefficientsDao.add(parser.parseCoefficients(id, list));
+
+            List<Staff> staffList = parser.parseStaff(id, list);
+            for (Staff staff : staffList) {
+                staffDao.add(staff);
+            }
+
+            List<CropProduction> cropProductionList = parser.parseCropProduction(id, list);
+            for (CropProduction production : cropProductionList) {
+                cropProductionDao.add(production);
+            }
+            expensesDao.add(parser.parseExpenses(id, list));
+            List<Grounds> groundsList = parser.parseGrounds(id, list);
+            for (Grounds ground : groundsList) {
+                groundsDao.add(ground);
+            }
+            dairyProductsDao.add(parser.parseDairyProducts(id, list));
+            cattleDao.add(parser.parseCattle(id, list));
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();

@@ -5,12 +5,12 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @javax.persistence.Entity
-@Table(name = "company_info", schema = "company_db")
+@Table(name = "company_info", schema = "new_db")
 public class CompanyInfo implements Serializable {
 
     @Id
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ynn")
+    @JoinColumn(name = "com_id")
     private Company company;
 
     @Column(name = "industry_code", nullable = false)
@@ -31,8 +31,8 @@ public class CompanyInfo implements Serializable {
     public CompanyInfo() {
     }
 
-    public CompanyInfo(Integer ynn, Integer industryCode, String industryName, String departmentName, String associationName, String ownershipType) {
-        this.company = new Company(ynn);
+    public CompanyInfo(Integer com_id, Integer industryCode, String industryName, String departmentName, String associationName, String ownershipType) {
+        this.company = new Company(com_id);
         this.industryCode = industryCode;
         this.industryName = industryName;
         this.departmentName = departmentName;
@@ -104,7 +104,7 @@ public class CompanyInfo implements Serializable {
     @Override
     public String toString() {
         return "CompanyInfo{" +
-                "ynn=" + company.getYnn() +
+                "com_id=" + company.getCom_id() +
                 ", industryCode=" + industryCode +
                 ", industryName='" + industryName + '\'' +
                 ", departmentName='" + departmentName + '\'' +

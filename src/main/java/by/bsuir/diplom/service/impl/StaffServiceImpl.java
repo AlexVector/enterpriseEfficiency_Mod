@@ -12,13 +12,13 @@ import java.util.List;
 
 public class StaffServiceImpl extends SessionUtil implements StaffService {
     @Override
-    public List<Staff> getStaffToExport(Integer ynn) throws ServiceException {
+    public List<Staff> getStaffToExport(Integer com_id) throws ServiceException {
         List<Staff> list;
         StaffDao staffDao = DaoFactory.getInstance().getStaffDao();
         try {
             openTransactionSession();
             staffDao.setSession(getSession());
-            list = staffDao.getStaffToExport(ynn);
+            list = staffDao.getStaffToExport(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -48,15 +48,15 @@ public class StaffServiceImpl extends SessionUtil implements StaffService {
     }
 
     @Override
-    public void delete(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
-            throw new ServiceException("Wrong ynn for delete staff");
+    public void delete(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
+            throw new ServiceException("Wrong company id for delete staff");
         }
         StaffDao staffDao = DaoFactory.getInstance().getStaffDao();
         try {
             openTransactionSession();
             staffDao.setSession(getSession());
-            staffDao.delete(ynn);
+            staffDao.delete(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -86,8 +86,8 @@ public class StaffServiceImpl extends SessionUtil implements StaffService {
     }
 
     @Override
-    public List<Staff> getStaff(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
+    public List<Staff> getStaff(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
             throw new ServiceException("Impossible to get grounds info!");
         }
         List<Staff> staffList;
@@ -95,7 +95,7 @@ public class StaffServiceImpl extends SessionUtil implements StaffService {
         try {
             openTransactionSession();
             staffDao.setSession(getSession());
-            staffList = staffDao.getStaff(ynn);
+            staffList = staffDao.getStaff(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();

@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
   <session-factory>
-    <property name="connection.url">jdbc:mysql://localhost:3306/company_db</property>
+    <property name="connection.url">jdbc:mysql://localhost:3306/new_db</property><!--changed from company_db-->
     <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
     <property name="connection.username">root</property>
     <property name="connection.password">1234</property>
@@ -14,8 +14,12 @@
     <property name="show_sql">true</property>
     <property name="hibernate.format_sql">true</property>
 
-    <property name="default_schema">company_db</property>
+    <property name="default_schema">new_db</property><!--changed from company_db-->
     <property name="hibernate.current_session_context_class">thread</property>
+
+    <!-- DB schema will be updated if needed -->
+    <!--<property name="hibernate.hbm2ddl.auto">create</property>-->
+
     <mapping class="by.bsuir.diplom.bean.Address"/>
     <mapping class="by.bsuir.diplom.bean.Cattle"/>
     <mapping class="by.bsuir.diplom.bean.Coefficients"/>
@@ -33,7 +37,6 @@
     <mapping class="by.bsuir.diplom.bean.Staff"/>
     <mapping class="by.bsuir.diplom.bean.Users"/>
 
-    <!-- DB schema will be updated if needed -->
-    <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
+
   </session-factory>
 </hibernate-configuration>

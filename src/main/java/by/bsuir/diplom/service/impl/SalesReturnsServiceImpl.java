@@ -31,15 +31,15 @@ public class SalesReturnsServiceImpl extends SessionUtil implements SalesReturnS
     }
 
     @Override
-    public void delete(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
-            throw new ServiceException("Wrong ynn for delete sales return");
+    public void delete(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
+            throw new ServiceException("Wrong company id for delete sales return");
         }
         SalesReturnDao salesReturnDao = DaoFactory.getInstance().getSalesReturnDao();
         try {
             openTransactionSession();
             salesReturnDao.setSession(getSession());
-            salesReturnDao.delete(ynn);
+            salesReturnDao.delete(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -69,8 +69,8 @@ public class SalesReturnsServiceImpl extends SessionUtil implements SalesReturnS
     }
 
     @Override
-    public SalesReturn getSalesReturn(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
+    public SalesReturn getSalesReturn(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
             throw new ServiceException("Impossible to get sales return info!");
         }
         SalesReturn salesReturn;
@@ -78,7 +78,7 @@ public class SalesReturnsServiceImpl extends SessionUtil implements SalesReturnS
         try {
             openTransactionSession();
             salesReturnDao.setSession(getSession());
-            salesReturn = salesReturnDao.getSalesReturn(ynn);
+            salesReturn = salesReturnDao.getSalesReturn(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();

@@ -5,12 +5,12 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @javax.persistence.Entity
-@Table(name = "address", schema = "company_db")
+@Table(name = "address", schema = "new_db")
 public class Address implements Serializable {
 
     @Id
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ynn")
+    @JoinColumn(name = "com_id")
     private Company company;
 
     @Column(name = "address", nullable = true, length = 250)
@@ -25,14 +25,14 @@ public class Address implements Serializable {
     public Address() {
     }
 
-    public Address(Integer ynn, String area, String district) {
-        this.company = new Company(ynn);
+    public Address(Integer com_id, String area, String district) {
+        this.company = new Company(com_id);
         this.area = area;
         this.district = district;
     }
 
-    public Address(Integer ynn, String location, String area, String district) {
-        this.company = new Company(ynn);
+    public Address(Integer com_id, String location, String area, String district) {
+        this.company = new Company(com_id);
         this.location = location;
         this.area = area;
         this.district = district;
@@ -86,7 +86,7 @@ public class Address implements Serializable {
     @Override
     public String toString() {
         return "Address{" +
-                "ynn=" + company.getYnn() +
+                "com_id=" + company.getCom_id() +
                 ", address='" + location + '\'' +
                 ", area='" + area + '\'' +
                 ", district='" + district + '\'' +

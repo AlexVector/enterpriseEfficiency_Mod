@@ -84,9 +84,9 @@ public class EditCapital implements Command {
         if (request.getParameter("editPrevEndBalance") != null && !"".equals(request.getParameter("editPrevEndBalance"))) {
             editPrevEndBalance = Integer.valueOf(request.getParameter("editPrevEndBalance"));
         }
-        FixedAssets fixedAssets = new FixedAssets(company.getYnn(), editFixedAssets, editLoansBorrowings, editTotal4,
+        FixedAssets fixedAssets = new FixedAssets(company.getCom_id(), editFixedAssets, editLoansBorrowings, editTotal4,
                 editShorttermDebt, editTotal5, editSalesRevenue, editProfit);
-        SalesReturn salesReturn = new SalesReturn(company.getYnn(), editSales, editCurrentDividendPayments,
+        SalesReturn salesReturn = new SalesReturn(company.getCom_id(), editSales, editCurrentDividendPayments,
                 editPrevDividendPayments, editTotalEndDebt, editOverdueEndDebt, editTotalBeginDebt, editOverdueBeginDebt);
         Coefficients coefficients = company.getCoefficients();
         coefficients.setEndNetAssets(editEndNetAssets);
@@ -107,10 +107,10 @@ public class EditCapital implements Command {
             cattleService.edit(cattle);
             session.removeAttribute("editCompany");
             session.removeAttribute("companiesList");
-            response.sendRedirect("Controller?command=go_to_edit_company_page&editCompanyYnn=" + company.getYnn() + "&message=message.editCapital.complete");
+            response.sendRedirect("Controller?command=go_to_edit_company_page&editCompanyId=" + company.getCom_id() + "&message=message.editCapital.complete");
         } catch (ServiceException e) {
             userLogger.error(e);
-            response.sendRedirect("Controller?command=go_to_edit_company_page&editCompanyYnn=" + company.getYnn() + "&message=message.edit.unsuccessfully");
+            response.sendRedirect("Controller?command=go_to_edit_company_page&editCompanyId=" + company.getCom_id() + "&message=message.edit.unsuccessfully");
         }
     }
 }

@@ -12,10 +12,10 @@ public interface SalesReturnService {
     /**
      * Method for deleting sales return
      *
-     * @param ynn ynn of sales return
+     * @param com_id of sales return
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    void delete(Integer ynn) throws ServiceException;
+    void delete(Integer com_id) throws ServiceException;
 
     /**
      * Method for validating data before edit sales return in database
@@ -28,9 +28,9 @@ public interface SalesReturnService {
     /**
      * Method for getting sales return info
      *
-     * @param ynn sales return ynn
+     * @param com_id sales return com_id
      * @return object of {@code SalesReturn} with needed info
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    SalesReturn getSalesReturn(Integer ynn) throws ServiceException;
+    SalesReturn getSalesReturn(Integer com_id) throws ServiceException;
 }

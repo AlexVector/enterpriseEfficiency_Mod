@@ -5,12 +5,12 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @javax.persistence.Entity
-@Table(name = "expenses", schema = "company_db")
+@Table(name = "expenses", schema = "new_db")
 public class Expenses implements Serializable {
 
     @Id
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ynn")
+    @JoinColumn(name = "com_id")
     private Company company;
 
     @Column(name = "labor_cost", nullable = false)
@@ -43,15 +43,15 @@ public class Expenses implements Serializable {
     public Expenses() {
     }
 
-    public Expenses(Integer ynn, Integer laborCost, Integer materialCosts, Integer totalCosts) {
-        this.company = new Company(ynn);
+    public Expenses(Integer com_id, Integer laborCost, Integer materialCosts, Integer totalCosts) {
+        this.company = new Company(com_id);
         this.laborCost = laborCost;
         this.materialCosts = materialCosts;
         this.totalCosts = totalCosts;
     }
 
-    public Expenses(Integer ynn, Integer laborCost, Integer materialCosts, Integer feed, Integer purchasedFeed, Integer deprecation, Integer insurancePayments, Integer otherCosts, Integer totalCosts, Integer plantingCosts) {
-        this.company = new Company(ynn);
+    public Expenses(Integer com_id, Integer laborCost, Integer materialCosts, Integer feed, Integer purchasedFeed, Integer deprecation, Integer insurancePayments, Integer otherCosts, Integer totalCosts, Integer plantingCosts) {
+        this.company = new Company(com_id);
         this.laborCost = laborCost;
         this.materialCosts = materialCosts;
         this.feed = feed;
@@ -159,7 +159,7 @@ public class Expenses implements Serializable {
     @Override
     public String toString() {
         return "Expenses{" +
-                "ynn=" + company.getYnn() +
+                "com_id=" + company.getCom_id() +
                 ", laborCost=" + laborCost +
                 ", materialCosts=" + materialCosts +
                 ", feed=" + feed +

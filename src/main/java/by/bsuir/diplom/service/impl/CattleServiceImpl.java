@@ -31,15 +31,15 @@ public class CattleServiceImpl extends SessionUtil implements CattleService {
     }
 
     @Override
-    public void delete(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
-            throw new ServiceException("Wrong ynn for delete cattle");
+    public void delete(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
+            throw new ServiceException("Wrong company id for delete cattle");
         }
         CattleDao cattleDao = DaoFactory.getInstance().getCattleDao();
         try {
             openTransactionSession();
             cattleDao.setSession(getSession());
-            cattleDao.delete(ynn);
+            cattleDao.delete(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -69,8 +69,8 @@ public class CattleServiceImpl extends SessionUtil implements CattleService {
     }
 
     @Override
-    public Cattle getCattle(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
+    public Cattle getCattle(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
             throw new ServiceException("Impossible to get cattle info!");
         }
         Cattle cattle;
@@ -78,7 +78,7 @@ public class CattleServiceImpl extends SessionUtil implements CattleService {
         try {
             openTransactionSession();
             cattleDao.setSession(getSession());
-            cattle = cattleDao.getCattle(ynn);
+            cattle = cattleDao.getCattle(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();

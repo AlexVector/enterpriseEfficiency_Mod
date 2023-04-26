@@ -31,15 +31,15 @@ public class DairyProductsServiceImpl extends SessionUtil implements DairyProduc
     }
 
     @Override
-    public void delete(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
-            throw new ServiceException("Wrong ynn for delete coefficients");
+    public void delete(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
+            throw new ServiceException("Wrong company id for delete coefficients");
         }
         DairyProductsDao dairyProductsDao = DaoFactory.getInstance().getDairyProductsDao();
         try {
             openTransactionSession();
             dairyProductsDao.setSession(getSession());
-            dairyProductsDao.delete(ynn);
+            dairyProductsDao.delete(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -69,8 +69,8 @@ public class DairyProductsServiceImpl extends SessionUtil implements DairyProduc
     }
 
     @Override
-    public DairyProducts getDairyProducts(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
+    public DairyProducts getDairyProducts(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
             throw new ServiceException("Impossible to get dairy products info!");
         }
         DairyProducts dairyProducts;
@@ -78,7 +78,7 @@ public class DairyProductsServiceImpl extends SessionUtil implements DairyProduc
         try {
             openTransactionSession();
             dairyProductsDao.setSession(getSession());
-            dairyProducts = dairyProductsDao.getDairyProducts(ynn);
+            dairyProducts = dairyProductsDao.getDairyProducts(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();

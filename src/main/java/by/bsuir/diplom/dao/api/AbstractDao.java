@@ -41,6 +41,47 @@ public abstract class AbstractDao<K, T extends Serializable> {
         }
     }
 
+    public Integer addWithId(T t) throws DaoException {
+        try {
+            return (Integer) session.save(t);
+        } catch (Exception ex) {
+            throw new DaoException(ex);
+        }
+    }
+
+    public void saveAndEvict(T t) throws DaoException {
+        try {
+            session.save(t);
+            session.evict(t);
+        } catch (Exception ex) {
+            throw new DaoException(ex);
+        }
+    }
+
+    public void persist(T t) throws DaoException {
+        try {
+            session.persist(t);
+        } catch (Exception ex) {
+            throw new DaoException(ex);
+        }
+    }
+
+    public void merge(T t) throws DaoException {
+        try {
+            session.merge(t);
+        } catch (Exception ex) {
+            throw new DaoException(ex);
+        }
+    }
+
+    public void update(T t) throws DaoException {
+        try {
+            session.update(t);
+        } catch (Exception ex) {
+            throw new DaoException(ex);
+        }
+    }
+
     /**
      * Method that deletes all records from the database by ID
      *

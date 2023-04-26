@@ -5,12 +5,12 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @javax.persistence.Entity
-@Table(name = "sales_return", schema = "company_db")
+@Table(name = "sales_return", schema = "new_db")
 public class SalesReturn implements Serializable {
 
     @Id
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ynn")
+    @JoinColumn(name = "com_id")
     private Company company;
 
     @Column(name = "sales_return", nullable = true, precision = 2)
@@ -37,13 +37,13 @@ public class SalesReturn implements Serializable {
     public SalesReturn() {
     }
 
-    public SalesReturn(Integer ynn, Integer totalEndDebt) {
-        this.company = new Company(ynn);
+    public SalesReturn(Integer com_id, Integer totalEndDebt) {
+        this.company = new Company(com_id);
         this.totalEndDebt = totalEndDebt;
     }
 
-    public SalesReturn(Integer ynn, Double sales, Integer currentDividendPayments, Integer prevDividendPayments, Integer totalEndDebt, Integer overdueEndDebt, Integer totalBeginDebt, Integer overdueBeginDebt) {
-        this.company = new Company(ynn);
+    public SalesReturn(Integer com_id, Double sales, Integer currentDividendPayments, Integer prevDividendPayments, Integer totalEndDebt, Integer overdueEndDebt, Integer totalBeginDebt, Integer overdueBeginDebt) {
+        this.company = new Company(com_id);
         this.sales = sales;
         this.currentDividendPayments = currentDividendPayments;
         this.prevDividendPayments = prevDividendPayments;
@@ -133,7 +133,7 @@ public class SalesReturn implements Serializable {
     @Override
     public String toString() {
         return "SalesReturn{" +
-                "ynn=" + company.getYnn() +
+                "com_id=" + company.getCom_id() +
                 ", salesReturn=" + sales +
                 ", currentDividendPayments=" + currentDividendPayments +
                 ", prevDividendPayments=" + prevDividendPayments +

@@ -5,17 +5,18 @@ import java.io.Serializable;
 import java.util.*;
 
 @javax.persistence.Entity
-@Table(name = "company", schema = "company_db")
+@Table(name = "company", schema = "new_db")
 public class Company implements Serializable {
 
     @Id
-    @Column(name = "ynn", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "com_id", unique = true, nullable = true)
+    private Integer com_id;
+
+    @Column(name = "ynn", nullable = false)
     private Integer ynn;
 
-    @Column(name = "id", unique = true, nullable = true)
-    private Integer id;
-
-    @Column(name = "okpo", unique = true, nullable = false)
+    @Column(name = "okpo", nullable = false)
     private Integer okpo;
 
     @Column(name = "name", nullable = false, length = 100)
@@ -93,8 +94,8 @@ public class Company implements Serializable {
     public Company() {
     }
 
-    public Company(Integer ynn) {
-        this.ynn = ynn;
+    public Company(Integer com_id) {
+        this.com_id = com_id;
     }
 
     public Company(Integer ynn, Integer okpo) {
@@ -112,9 +113,9 @@ public class Company implements Serializable {
         this.activityType = activityType;
     }
 
-    public Company(Integer ynn, Integer id, Integer okpo, String name, String fullName, Integer year, String period, String activityType) {
+    public Company(Integer ynn, Integer com_id, Integer okpo, String name, String fullName, Integer year, String period, String activityType) {
         this.ynn = ynn;
-        this.id = id;
+        this.com_id = com_id;
         this.okpo = okpo;
         this.name = name;
         this.fullName = fullName;
@@ -131,12 +132,12 @@ public class Company implements Serializable {
         this.ynn = ynn;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getCom_id() {
+        return com_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCom_id(Integer com_id) {
+        this.com_id = com_id;
     }
 
     public Integer getOkpo() {
@@ -344,19 +345,19 @@ public class Company implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Company company = (Company) o;
-        return Objects.equals(ynn, company.ynn) && Objects.equals(id, company.id) && Objects.equals(okpo, company.okpo) && Objects.equals(name, company.name) && Objects.equals(fullName, company.fullName) && Objects.equals(year, company.year) && Objects.equals(period, company.period) && Objects.equals(activityType, company.activityType) && Objects.equals(profitFromSales, company.profitFromSales) && Objects.equals(netDiscountedValue, company.netDiscountedValue) && Objects.equals(costRecovery, company.costRecovery) && Objects.equals(productionProfitability, company.productionProfitability) && Objects.equals(increasePerEmployed, company.increasePerEmployed) && Objects.equals(landGrowth, company.landGrowth) && Objects.equals(address, company.address) && Objects.equals(cattle, company.cattle) && Objects.equals(coefficients, company.coefficients) && Objects.equals(companyInfo, company.companyInfo) && Objects.equals(correlation, company.correlation) && Objects.equals(dairyProducts, company.dairyProducts) && Objects.equals(expenses, company.expenses) && Objects.equals(fixedAssets, company.fixedAssets) && Objects.equals(salesReturn, company.salesReturn) && Objects.equals(cropProductions, company.cropProductions) && Objects.equals(enterpriseStatistics, company.enterpriseStatistics) && Objects.equals(grounds, company.grounds) && Objects.equals(staff, company.staff);
+        return Objects.equals(ynn, company.ynn) && Objects.equals(com_id, company.com_id) && Objects.equals(okpo, company.okpo) && Objects.equals(name, company.name) && Objects.equals(fullName, company.fullName) && Objects.equals(year, company.year) && Objects.equals(period, company.period) && Objects.equals(activityType, company.activityType) && Objects.equals(profitFromSales, company.profitFromSales) && Objects.equals(netDiscountedValue, company.netDiscountedValue) && Objects.equals(costRecovery, company.costRecovery) && Objects.equals(productionProfitability, company.productionProfitability) && Objects.equals(increasePerEmployed, company.increasePerEmployed) && Objects.equals(landGrowth, company.landGrowth) && Objects.equals(address, company.address) && Objects.equals(cattle, company.cattle) && Objects.equals(coefficients, company.coefficients) && Objects.equals(companyInfo, company.companyInfo) && Objects.equals(correlation, company.correlation) && Objects.equals(dairyProducts, company.dairyProducts) && Objects.equals(expenses, company.expenses) && Objects.equals(fixedAssets, company.fixedAssets) && Objects.equals(salesReturn, company.salesReturn) && Objects.equals(cropProductions, company.cropProductions) && Objects.equals(enterpriseStatistics, company.enterpriseStatistics) && Objects.equals(grounds, company.grounds) && Objects.equals(staff, company.staff);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ynn, id, okpo, name, fullName, year, period, activityType, profitFromSales, netDiscountedValue, costRecovery, productionProfitability, increasePerEmployed, landGrowth, address, cattle, coefficients, companyInfo, correlation, dairyProducts, expenses, fixedAssets, salesReturn, cropProductions, enterpriseStatistics, grounds, staff);
+        return Objects.hash(ynn, com_id, okpo, name, fullName, year, period, activityType, profitFromSales, netDiscountedValue, costRecovery, productionProfitability, increasePerEmployed, landGrowth, address, cattle, coefficients, companyInfo, correlation, dairyProducts, expenses, fixedAssets, salesReturn, cropProductions, enterpriseStatistics, grounds, staff);
     }
 
     @Override
     public String toString() {
         return "Company{" +
                 "ynn=" + ynn +
-                ", id=" + id +
+                ", com_id=" + com_id +
                 ", okpo=" + okpo +
                 ", name='" + name + '\'' +
                 ", fullName='" + fullName + '\'' +

@@ -31,15 +31,15 @@ public class CoefficientsServiceImpl extends SessionUtil implements Coefficients
     }
 
     @Override
-    public void delete(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
-            throw new ServiceException("Wrong ynn for delete coefficients");
+    public void delete(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
+            throw new ServiceException("Wrong company id for delete coefficients");
         }
         CoefficientsDao coefficientsDao = DaoFactory.getInstance().getCoefficientsDao();
         try {
             openTransactionSession();
             coefficientsDao.setSession(getSession());
-            coefficientsDao.delete(ynn);
+            coefficientsDao.delete(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -69,8 +69,8 @@ public class CoefficientsServiceImpl extends SessionUtil implements Coefficients
     }
 
     @Override
-    public Coefficients getCoefficients(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
+    public Coefficients getCoefficients(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
             throw new ServiceException("Impossible to get coefficients info!");
         }
         Coefficients coefficients;
@@ -78,7 +78,7 @@ public class CoefficientsServiceImpl extends SessionUtil implements Coefficients
         try {
             openTransactionSession();
             coefficientsDao.setSession(getSession());
-            coefficients = coefficientsDao.getCoefficients(ynn);
+            coefficients = coefficientsDao.getCoefficients(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();

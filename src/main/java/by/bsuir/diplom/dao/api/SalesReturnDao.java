@@ -8,7 +8,7 @@ import java.util.List;
 
 public class SalesReturnDao extends AbstractDao<Integer, SalesReturn> {
     private static final String GET_ALL = "SELECT * FROM sales_return";
-    private static final String GET_SALES_RETURN = "SELECT * FROM company_db.sales_return WHERE ynn=:ynn";
+    private static final String GET_SALES_RETURN = "SELECT * FROM new_db.sales_return WHERE com_id=:com_id";
 
     @Override
     public List<SalesReturn> getAll() throws DaoException {
@@ -29,10 +29,10 @@ public class SalesReturnDao extends AbstractDao<Integer, SalesReturn> {
         }
     }
 
-    public SalesReturn getSalesReturn(Integer ynn) throws DaoException {
+    public SalesReturn getSalesReturn(Integer com_id) throws DaoException {
         try {
             Query query = session.createNativeQuery(GET_SALES_RETURN).addEntity(SalesReturn.class);
-            query.setParameter("ynn", ynn);
+            query.setParameter("com_id", com_id);
             return (SalesReturn) query.getSingleResult();
         } catch (Exception ex) {
             throw new DaoException(ex);

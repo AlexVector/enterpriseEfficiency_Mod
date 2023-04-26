@@ -20,12 +20,12 @@ public class DeleteCompany implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response, File uploadFilePath) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        Integer ynn = Integer.valueOf(request.getParameter("deleteCompanyYnn"));
+        Integer companyId = Integer.valueOf(request.getParameter("deleteCompanyId"));
 
         CompanyService companyService = ServiceProvider.getInstance().getCompanyService();
 
         try {
-            companyService.delete(ynn);
+            companyService.delete(companyId);
             session.removeAttribute("companiesList");
             response.sendRedirect("Controller?command=go_to_home_page&message=message.deleteCompany.complete");
         } catch (ServiceException e) {

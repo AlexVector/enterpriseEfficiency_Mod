@@ -31,15 +31,15 @@ public class FixedAssetsServiceImpl extends SessionUtil implements FixedAssetsSe
     }
 
     @Override
-    public void delete(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
-            throw new ServiceException("Wrong ynn for delete fixed assets");
+    public void delete(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
+            throw new ServiceException("Wrong company id for delete fixed assets");
         }
         FixedAssetsDao fixedAssetsDao = DaoFactory.getInstance().getFixedAssetsDao();
         try {
             openTransactionSession();
             fixedAssetsDao.setSession(getSession());
-            fixedAssetsDao.delete(ynn);
+            fixedAssetsDao.delete(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -69,8 +69,8 @@ public class FixedAssetsServiceImpl extends SessionUtil implements FixedAssetsSe
     }
 
     @Override
-    public FixedAssets getFixedAssets(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
+    public FixedAssets getFixedAssets(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
             throw new ServiceException("Impossible to get fixed assets info!");
         }
         FixedAssets fixedAssets;
@@ -78,7 +78,7 @@ public class FixedAssetsServiceImpl extends SessionUtil implements FixedAssetsSe
         try {
             openTransactionSession();
             fixedAssetsDao.setSession(getSession());
-            fixedAssets = fixedAssetsDao.getFixedAssets(ynn);
+            fixedAssets = fixedAssetsDao.getFixedAssets(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();

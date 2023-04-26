@@ -4,11 +4,11 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @javax.persistence.Entity
-@Table(name = "grounds", schema = "company_db")
+@Table(name = "grounds", schema = "new_db")
 public class Grounds extends Entity {
 
     @ManyToOne
-    @JoinColumn(name = "ynn", referencedColumnName = "ynn", foreignKey = @ForeignKey(name = "grounds_FK"))
+    @JoinColumn(name = "com_id", referencedColumnName = "com_id", foreignKey = @ForeignKey(name = "grounds_FK"))
     private Company company;
 
     @Column(name = "products_index", nullable = false)
@@ -35,12 +35,12 @@ public class Grounds extends Entity {
     public Grounds() {
     }
 
-    public Grounds(Integer ynn) {
-        this.company = new Company(ynn);
+    public Grounds(Integer com_id) {
+        this.company = new Company(com_id);
     }
 
-    public Grounds(Integer ynn, Integer productsIndex, Integer hectareIndex, Double hectare, Double ballogectars) {
-        this.company = new Company(ynn);
+    public Grounds(Integer com_id, Integer productsIndex, Integer hectareIndex, Double hectare, Double ballogectars) {
+        this.company = new Company(com_id);
         this.productsIndex = productsIndex;
         this.hectareIndex = hectareIndex;
         this.hectare = hectare;
@@ -128,7 +128,7 @@ public class Grounds extends Entity {
     @Override
     public String toString() {
         return "Grounds{" +
-                "ynn=" + company.getYnn() +
+                "com_id=" + company.getCom_id() +
                 ", productsIndex=" + productsIndex +
                 ", totalProducts=" + totalProducts +
                 ", hectareProducts=" + hectareProducts +

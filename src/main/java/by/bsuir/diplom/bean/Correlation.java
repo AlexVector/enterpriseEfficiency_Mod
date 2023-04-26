@@ -5,12 +5,12 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @javax.persistence.Entity
-@Table(name = "correlation", schema = "company_db")
+@Table(name = "correlation", schema = "new_db")
 public class Correlation implements Serializable {
 
     @Id
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ynn")
+    @JoinColumn(name = "com_id")
     private Company company;
 
     @Column(name = "profit_and_net_discounted", nullable = true)
@@ -34,12 +34,12 @@ public class Correlation implements Serializable {
     public Correlation() {
     }
 
-    public Correlation(Integer ynn) {
-        this.company = new Company(ynn);
+    public Correlation(Integer com_id) {
+        this.company = new Company(com_id);
     }
 
-    public Correlation(Integer ynn, Double profitAndNetDiscounted, Double profitAndCostRecovery, Double profitAndProfitability, Double netDiscountedAndCostRecovery, Double netDiscountedAndProfitability, Double costRecoveryAndProfitability) {
-        this.company = new Company(ynn);
+    public Correlation(Integer com_id, Double profitAndNetDiscounted, Double profitAndCostRecovery, Double profitAndProfitability, Double netDiscountedAndCostRecovery, Double netDiscountedAndProfitability, Double costRecoveryAndProfitability) {
+        this.company = new Company(com_id);
         this.profitAndNetDiscounted = profitAndNetDiscounted;
         this.profitAndCostRecovery = profitAndCostRecovery;
         this.profitAndProfitability = profitAndProfitability;
@@ -120,7 +120,7 @@ public class Correlation implements Serializable {
     @Override
     public String toString() {
         return "Correlation{" +
-                "ynn=" + company.getYnn() +
+                "com_id=" + company.getCom_id() +
                 ", profitAndNetDiscounted=" + profitAndNetDiscounted +
                 ", profitAndCostRecovery=" + profitAndCostRecovery +
                 ", profitAndProfitability=" + profitAndProfitability +

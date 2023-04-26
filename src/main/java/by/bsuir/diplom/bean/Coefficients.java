@@ -5,12 +5,12 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @javax.persistence.Entity
-@Table(name = "coefficients", schema = "company_db")
+@Table(name = "coefficients", schema = "new_db")
 public class Coefficients implements Serializable {
 
     @Id
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ynn")
+    @JoinColumn(name = "com_id")
     private Company company;
 
     @Column(name = "own_security", nullable = false, precision = 2)
@@ -40,16 +40,16 @@ public class Coefficients implements Serializable {
     public Coefficients() {
     }
 
-    public Coefficients(Integer ynn, Double ownSecurity, Double currentLiquidity, Double financialSecurity, Integer endNetAssets) {
-        this.company = new Company(ynn);
+    public Coefficients(Integer com_id, Double ownSecurity, Double currentLiquidity, Double financialSecurity, Integer endNetAssets) {
+        this.company = new Company(com_id);
         this.ownSecurity = ownSecurity;
         this.currentLiquidity = currentLiquidity;
         this.financialSecurity = financialSecurity;
         this.endNetAssets = endNetAssets;
     }
 
-    public Coefficients(Integer ynn, Double ownSecurity, Double currentLiquidity, Double financialSecurity, Double absoluteLiquidity, Integer endNetAssets, Integer beginNetAssets, Double profitability, Double profitabilityWithoutSupport) {
-        this.company = new Company(ynn);
+    public Coefficients(Integer com_id, Double ownSecurity, Double currentLiquidity, Double financialSecurity, Double absoluteLiquidity, Integer endNetAssets, Integer beginNetAssets, Double profitability, Double profitabilityWithoutSupport) {
+        this.company = new Company(com_id);
         this.ownSecurity = ownSecurity;
         this.currentLiquidity = currentLiquidity;
         this.financialSecurity = financialSecurity;
@@ -148,7 +148,7 @@ public class Coefficients implements Serializable {
     @Override
     public String toString() {
         return "Coefficients{" +
-                "ynn=" + company.getYnn() +
+                "com_id=" + company.getCom_id() +
                 ", ownSecurity=" + ownSecurity +
                 ", currentLiquidity=" + currentLiquidity +
                 ", financialSecurity=" + financialSecurity +

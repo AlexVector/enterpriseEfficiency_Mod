@@ -52,7 +52,7 @@ public class CalcIndicators {
     }
 
     private Stream<Company> createStream(List<Company> list, int begin, int finish) {
-        return list.stream().filter(s -> s.getId() >= begin && s.getId() <= finish);
+        return list.stream().filter(s -> s.getCom_id() >= begin && s.getCom_id() <= finish);
     }
 
     private double calcEnterpriseProfit(Company company) {

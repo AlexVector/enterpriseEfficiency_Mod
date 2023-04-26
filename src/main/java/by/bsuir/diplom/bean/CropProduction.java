@@ -4,11 +4,12 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @javax.persistence.Entity
-@Table(name = "crop_production", schema = "company_db")
+@Table(name = "crop_production", schema = "new_db")
 public class CropProduction extends Entity{
 
+
     @ManyToOne
-    @JoinColumn(name = "ynn", referencedColumnName = "ynn", foreignKey = @ForeignKey(name = "crop_production_FK"))
+    @JoinColumn(name = "com_id", referencedColumnName = "com_id", foreignKey = @ForeignKey(name = "crop_production_FK"))
     private Company company;
 
     @Column(name = "column_index", nullable = false)
@@ -23,13 +24,13 @@ public class CropProduction extends Entity{
     public CropProduction() {
     }
 
-    public CropProduction(Integer ynn, Integer index) {
-        this.company = new Company(ynn);
+    public CropProduction(Integer com_id, Integer index) {
+        this.company = new Company(com_id);
         this.index = index;
     }
 
-    public CropProduction(Integer ynn, Integer index, Double fullCostPrice, Double bailedOut) {
-        this.company = new Company(ynn);
+    public CropProduction(Integer com_id, Integer index, Double fullCostPrice, Double bailedOut) {
+        this.company = new Company(com_id);
         this.index = index;
         this.fullCostPrice = fullCostPrice;
         this.bailedOut = bailedOut;
@@ -84,7 +85,7 @@ public class CropProduction extends Entity{
     @Override
     public String toString() {
         return "CropProduction{" +
-                "ynn=" + company.getYnn() +
+                "com_id=" + company.getCom_id() +
                 ", index=" + index +
                 ", fullCostPrice=" + fullCostPrice +
                 ", bailedOut=" + bailedOut +

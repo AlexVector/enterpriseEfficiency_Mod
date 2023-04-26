@@ -31,15 +31,15 @@ public class ExpensesServiceImpl extends SessionUtil implements ExpensesService 
     }
 
     @Override
-    public void delete(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
-            throw new ServiceException("Wrong ynn for delete expenses");
+    public void delete(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
+            throw new ServiceException("Wrong company id for delete expenses");
         }
         ExpensesDao expensesDao = DaoFactory.getInstance().getExpensesDao();
         try {
             openTransactionSession();
             expensesDao.setSession(getSession());
-            expensesDao.delete(ynn);
+            expensesDao.delete(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -69,8 +69,8 @@ public class ExpensesServiceImpl extends SessionUtil implements ExpensesService 
     }
 
     @Override
-    public Expenses getExpenses(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
+    public Expenses getExpenses(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
             throw new ServiceException("Impossible to get expenses info!");
         }
         Expenses expenses;
@@ -78,7 +78,7 @@ public class ExpensesServiceImpl extends SessionUtil implements ExpensesService 
         try {
             openTransactionSession();
             expensesDao.setSession(getSession());
-            expenses = expensesDao.getExpenses(ynn);
+            expenses = expensesDao.getExpenses(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();

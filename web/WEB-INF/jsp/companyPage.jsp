@@ -162,8 +162,12 @@
                                 <div class="single-content0" id="dymanic" hidden>
                                     <div class="single-job mb-4 d-lg-flex justify-content-between">
                                         <div class="job-text">
-                                            <h4>Динамика показателей</h4>
                                             <ul>
+                                                <li>
+                                                    <figure class="highcharts-figure">
+                                                        <div id="container_for_dynamic"></div>
+                                                    </figure>
+                                                </li>
                                                 <li>
                                                     <h5>Категория:
                                                         <select class="form-control" name="category" id="dynamiccat">
@@ -910,85 +914,85 @@
 <script>
 
 
-    let options1 = [{"text":"Уровень рентабельности, %","value":"coefficients.profitability"},
-        {"text":"Уровень рентабельности без учета государственной поддержки, %","value":"coefficients.profitability_without_support"}];
+    let options1 = [{"text":"Уровень рентабельности, %","value":"${sessionScope.sameYnnCompanies.get(i).coefficients.profitability}"},
+        {"text":"Уровень рентабельности без учета государственной поддержки, %","value":"${sessionScope.sameYnnCompanies.get(i).coefficients.profitabilityWithoutSupport}"}];
 
 
-    let options2 = [{"text":"Основные средства","value":"fixed_assets.fixed_assets"},
-        {"text":"Долгосрочные кредиты и займы","value":"fixed_assets.loans_borrowings"},
-        {"text":"ИТОГО по разделу IV","value":"fixed_assets.total_4"},
-        {"text":"Краткосрочная кредиторская задолженность","value":"fixed_assets.shortterm_debt"},
-        {"text":"ИТОГО по разделу V","value":"fixed_assets.total_5"},
-        {"text":"Выручка от реализации товаров, продукции, работ, услуг","value":"fixed_assets.sales_revenue"},
-        {"text":"Чистая прибыль","value":"fixed_assets.profit"},
-        {"text":"Рентабельность продаж, %","value":"sales_return.sales_return"},
-        {"text":"На выплаты дивидендов и др. доходов от участия в уставном капитале организации (За январь-декабрь 2020 года)","value":"sales_return.current_dividend_payments"},
-        {"text":"На выплаты дивидендов и др. доходов от участия в уставном капитале организации (За январь-декабрь 2019 года)","value":"sales_return.prev_dividend_payments"},
-        {"text":"Кредиторская задолженность на конец отчетного периода всего","value":"sales_return.total_end_debt"},
-        {"text":"Кредиторская задолженность на конец отчетного периода, в том числе просроченная","value":"sales_return.overdue_end_debt"},
-        {"text":"Кредиторская задолженность на начало отчетного года всего","value":"sales_return.total_begin_debt"},
-        {"text":"Кредиторская задолженность на начало отчетного года, в том числе просроченная","value":"sales_return.overdue_begin_debt"},
-        {"text":"Чистые активы на конец отчетного периода","value":"coefficients.end_net_assets"},
-        {"text":"Чистые активы на начало отчетного периода","value":"coefficients.begin_net_assets"},
-        {"text":"Баланс на 31 декабря 2020 года","value":"cattle.current_end_balance"},
-        {"text":"Баланс на 31 декабря 2019 года","value":"cattle.prev_end_balance"}];
+    let options2 = [{"text":"Основные средства","value":"${sessionScope.sameYnnCompanies.get(i).fixedAssets.fixedAssets}"},
+        {"text":"Долгосрочные кредиты и займы","value":"${sessionScope.sameYnnCompanies.get(i).fixedAssets.loansBorrowings}"},
+        {"text":"ИТОГО по разделу IV","value":"${sessionScope.sameYnnCompanies.get(i).fixedAssets.total4}"},
+        {"text":"Краткосрочная кредиторская задолженность","value":"${sessionScope.sameYnnCompanies.get(i).fixedAssets.shorttermDebt}"},
+        {"text":"ИТОГО по разделу V","value":"${sessionScope.sameYnnCompanies.get(i).fixedAssets.total5}"},
+        {"text":"Выручка от реализации товаров, продукции, работ, услуг","value":"${sessionScope.sameYnnCompanies.get(i).fixedAssets.salesRevenue}"},
+        {"text":"Чистая прибыль","value":"${sessionScope.sameYnnCompanies.get(i).fixedAssets.profit}"},
+        {"text":"Рентабельность продаж, %","value":"${sessionScope.sameYnnCompanies.get(i).salesReturn.sales}"},
+        {"text":"На выплаты дивидендов и др. доходов от участия в уставном капитале организации (За январь-декабрь 2020 года)","value":"${sessionScope.sameYnnCompanies.get(i).salesReturn.currentDividendPayments}"},
+        {"text":"На выплаты дивидендов и др. доходов от участия в уставном капитале организации (За январь-декабрь 2019 года)","value":"${sessionScope.sameYnnCompanies.get(i).salesReturn.prevDividendPayments}"},
+        {"text":"Кредиторская задолженность на конец отчетного периода всего","value":"${sessionScope.sameYnnCompanies.get(i).salesReturn.totalEndDebt}"},
+        {"text":"Кредиторская задолженность на конец отчетного периода, в том числе просроченная","value":"${sessionScope.sameYnnCompanies.get(i).salesReturn.overdueEndDebt}"},
+        {"text":"Кредиторская задолженность на начало отчетного года всего","value":"${sessionScope.sameYnnCompanies.get(i).salesReturn.totalBeginDebt}"},
+        {"text":"Кредиторская задолженность на начало отчетного года, в том числе просроченная","value":"${sessionScope.sameYnnCompanies.get(i).salesReturn.overdueBeginDebt}"},
+        {"text":"Чистые активы на конец отчетного периода","value":"${sessionScope.sameYnnCompanies.get(i).coefficients.endNetAssets}"},
+        {"text":"Чистые активы на начало отчетного периода","value":"${sessionScope.sameYnnCompanies.get(i).coefficients.beginNetAssets}"},
+        {"text":"Баланс на 31 декабря 2020 года","value":"${sessionScope.sameYnnCompanies.get(i).cattle.currentEndBalance}"},
+        {"text":"Баланс на 31 декабря 2019 года","value":"${sessionScope.sameYnnCompanies.get(i).cattle.prevEndBalance}"}];
 
-    let options3 = [{"text": "Коэффициент обеспеченности собственными оборотными средствами", "value": "coefficients.own_security"},
-        {"text": "Коэффициент текущей ликвидности", "value": "coefficients.current_liquidity"},
-        {"text": "Коэффициент обеспеченности финансовых обязательств активами", "value": "coefficients.financial_security"},
-        {"text": "Коэффициент абсолютной ликвидности", "value": "coefficients.absolute_liquidity"}];
+    let options3 = [{"text": "Коэффициент обеспеченности собственными оборотными средствами", "value": "${sessionScope.sameYnnCompanies.get(i).coefficients.ownSecurity}"},
+        {"text": "Коэффициент текущей ликвидности", "value": "${sessionScope.sameYnnCompanies.get(i).coefficients.currentLiquidity}"},
+        {"text": "Коэффициент обеспеченности финансовых обязательств активами", "value": "${sessionScope.sameYnnCompanies.get(i).coefficients.financialSecurity}"},
+        {"text": "Коэффициент абсолютной ликвидности", "value": "${sessionScope.sameYnnCompanies.get(i).coefficients.absoluteLiquidity}"}];
 
-    let options4 = [{"text":"Среднесписочная численность работников, человек* (всего, включая наемный персонал в колхозах)","value":"staff.column_index=107 AND staff.average_number"},
-        {"text":"Среднесписочная численность работников, человек* (персонал основной деят. занятый в с/х производстве)","value":"staff.column_index=109 AND staff.average_number"},
-        {"text":"Среднесписочная численность работников, человек* (рабочие)","value":"staff.column_index=111 AND staff.average_number"},
-        {"text":"Среднесписочная численность работников, человек* (служащие)","value":"staff.column_index=113 AND staff.average_number"},
-        {"text":"Среднесписочная численность работников, человек* (руководители)","value":"staff.column_index=115 AND staff.average_number"},
-        {"text":"Среднесписочная численность работников, человек* (специалисты)","value":"staff.column_index=117 AND staff.average_number"},
-        {"text":"Фонд ЗП работников, вкл. совместителей млн. руб. (всего, вкл. наемный персонал в колхозах)","value":"staff.column_index=107 AND staff.salary_fund"},
-        {"text":"Фонд ЗП работников, вкл. совместителей млн. руб. (персонал основной деят. занятый в с/х производстве)","value":"staff.column_index=109 AND staff.salary_fund"},
-        {"text":"Фонд ЗП работников, вкл. совместителей млн. руб. (рабочие)","value":"staff.column_index=111 AND staff.salary_fund"},
-        {"text":"Фонд ЗП работников, вкл. совместителей млн. руб. (служащие)","value":"staff.column_index=113 AND staff.salary_fund"},
-        {"text":"Фонд ЗП работников, вкл. совместителей млн. руб. (руководители)","value":"staff.column_index=115 AND staff.salary_fund"},
-        {"text":"Фонд ЗП работников, вкл. совместителей млн. руб. (специалисты)","value":"staff.column_index=117 AND staff.salary_fund"}];
-
-
-    let options5 = [{"text":"Полная себестоимость проданной продукции растениеводства","value":"crop_production.column_index = 123 AND crop_production.full_cost_price"},
-        {"text":"Полная себестоимость проданной продукции животноводства","value":"crop_production.column_index = 127 AND crop_production.full_cost_price"},
-        {"text":"Полная себестоимость проданной продукции итого","value":"crop_production.column_index = 129 AND crop_production.full_cost_price"},
-        {"text":"Выручено с продажи с продажи продукции растениеводства","value":"crop_production.column_index = 123 AND crop_production.bailed_out"},
-        {"text":"Выручено с продажи с продажи продукции животноводства","value":"crop_production.column_index = 127 AND crop_production.bailed_out"},
-        {"text":"Выручено с продажи с продажи продукции итого","value":"crop_production.column_index = 129 AND crop_production.bailed_out"}];
-
-    let options6 = [{"text":"Затраты на оплату труда с отчислениями на социальные нужды","value":"expenses.labor_cost"},
-        {"text":"Матеpиальные затpаты, вошедшие в себестоимость пpодукции","value":"expenses.material_costs"},
-        {"text":"Коpма (всего)","value":"expenses.feed"},
-        {"text":"Корма покупные","value":"expenses.purchased_feed"},
-        {"text":"Амоpтизация основных сpедств и нематериальных активов","value":"expenses.deprecation"},
-        {"text":"Страховые платежи","value":"expenses.insurance_payments"},
-        {"text":"Пpочие затpаты","value":"expenses.other_costs"},
-        {"text":"Итого затpат","value":"expenses.total_costs"},
-        {"text":"Затраты по закладке и выращиванию молодых многолетних насаждений","value":"expenses.planting_costs"}];
+    let options4 = [{"text":"Среднесписочная численность работников, человек* (всего, включая наемный персонал в колхозах)","value":"${sessionScope.sameYnnCompanies.get(i).staff.get(0).averageNumber}"},
+        {"text":"Среднесписочная численность работников, человек* (персонал основной деят. занятый в с/х производстве)","value":"${sessionScope.sameYnnCompanies.get(i).staff.get(1).averageNumber}"},
+        {"text":"Среднесписочная численность работников, человек* (рабочие)","value":"${sessionScope.sameYnnCompanies.get(i).staff.get(2).averageNumber}"},
+        {"text":"Среднесписочная численность работников, человек* (служащие)","value":"${sessionScope.sameYnnCompanies.get(i).staff.get(3).averageNumber}"},
+        {"text":"Среднесписочная численность работников, человек* (руководители)","value":"${sessionScope.sameYnnCompanies.get(i).staff.get(4).averageNumber}"},
+        {"text":"Среднесписочная численность работников, человек* (специалисты)","value":"${sessionScope.sameYnnCompanies.get(i).staff.get(5).averageNumber}"},
+        {"text":"Фонд ЗП работников, вкл. совместителей млн. руб. (всего, вкл. наемный персонал в колхозах)","value":"${sessionScope.sameYnnCompanies.get(i).staff.get(0).salaryFund}"},
+        {"text":"Фонд ЗП работников, вкл. совместителей млн. руб. (персонал основной деят. занятый в с/х производстве)","value":"${sessionScope.sameYnnCompanies.get(i).staff.get(1).salaryFund}"},
+        {"text":"Фонд ЗП работников, вкл. совместителей млн. руб. (рабочие)","value":"${sessionScope.sameYnnCompanies.get(i).staff.get(2).salaryFund}"},
+        {"text":"Фонд ЗП работников, вкл. совместителей млн. руб. (служащие)","value":"${sessionScope.sameYnnCompanies.get(i).staff.get(3).salaryFund}"},
+        {"text":"Фонд ЗП работников, вкл. совместителей млн. руб. (руководители)","value":"${sessionScope.sameYnnCompanies.get(i).staff.get(4).salaryFund}"},
+        {"text":"Фонд ЗП работников, вкл. совместителей млн. руб. (специалисты)","value":"${sessionScope.sameYnnCompanies.get(i).staff.get(5).salaryFund}"}];
 
 
-    let options7 = [{"text":"Сбор зеpна в физической массе после доpаботки, всего","value":"grounds.products_index=140 AND grounds.total_products"},
-        {"text":"Сбор зеpна в физической массе после доpаботки, с 1 га","value":"grounds.products_index=140 AND grounds.hectare_products"},
-        {"text":"Себестоимость единицы продукции (зерно)","value":"grounds.products_index=140 AND grounds.production_cost"},
-        {"text":"Сбор картофеля, всего","value":"grounds.products_index=143 AND grounds.total_products"},
-        {"text":"Сбор картофеля, с 1 га","value":"grounds.products_index=143 AND grounds.hectare_products"},
-        {"text":"Себестоимость единицы продукции (картофель)","value":"grounds.products_index=143 AND grounds.production_cost"},
-        {"text":"Всего сельскохозяйственных угодий (гектары)","value":"grounds.products_index=140 AND grounds.hectare"},
-        {"text":"Всего сельскохозяйственных угодий (баллогектары га)","value":"grounds.products_index=140 AND grounds.ballogectars"},
-        {"text":"Пашня (гектары)","value":"grounds.products_index=143 AND grounds.hectare"},
-        {"text":"Пашня (баллогектары га)","value":"grounds.products_index=143 AND grounds.ballogectars"},
-        {"text":"КРС. Молочного направления основное стадо молочного скота","value":"dairy_products.cattle"},
-        {"text":"Молоко тонн (Выход продукции количество)","value":"dairy_products.output_dairy_products"},
-        {"text":"Молоко тонн (Себестоимость единицы продукции)","value":"dairy_products.cost_dairy_products"},
-        {"text":"Пpиpост тонн (Выход продукции количество)","value":"dairy_products.production_growth"},
-        {"text":"Пpиpост тонн (Себестоимость единицы продукции)","value":"dairy_products.production_cost_growth"},
-        {"text":"Сpеднегодовой удой молока от одной коpовы","value":"cattle.milk_yield"},
-        {"text":"Сpеднесуточный пpиpост кpупного pогатого скота - всего","value":"cattle.average_daily_increase"},
-        {"text":"Коровы и быки-производители(кроме рабочего скота). Расход кормов на единицу продукции, кормо-единиц","value":"cattle.cattle_producers"},
-        {"text":"Крупный рогатый скот на выpащивании и откоpме всего. Расход кормов на единицу продукции, кормо-единиц","value":"cattle.cattle_cultivation"}];
+    let options5 = [{"text":"Полная себестоимость проданной продукции растениеводства","value":"${sessionScope.sameYnnCompanies.get(i).cropProductions.get(0).fullCostPrice}"},
+        {"text":"Полная себестоимость проданной продукции животноводства","value":""},
+        {"text":"Полная себестоимость проданной продукции итого","value":""},
+        {"text":"Выручено с продажи с продажи продукции растениеводства","value":"${sessionScope.sameYnnCompanies.get(i).cropProductions.get(0).bailedOut}"},
+        {"text":"Выручено с продажи с продажи продукции животноводства","value":""},
+        {"text":"Выручено с продажи с продажи продукции итого","value":""}];
+
+    let options6 = [{"text":"Затраты на оплату труда с отчислениями на социальные нужды","value":"${sessionScope.sameYnnCompanies.get(i).expenses.laborCost}"},
+        {"text":"Матеpиальные затpаты, вошедшие в себестоимость пpодукции","value":"${sessionScope.sameYnnCompanies.get(i).expenses.materialCosts}"},
+        {"text":"Коpма (всего)","value":"${sessionScope.sameYnnCompanies.get(i).expenses.feed}"},
+        {"text":"Корма покупные","value":"${sessionScope.sameYnnCompanies.get(i).expenses.purchasedFeed}"},
+        {"text":"Амоpтизация основных сpедств и нематериальных активов","value":"${sessionScope.sameYnnCompanies.get(i).expenses.deprecation}"},
+        {"text":"Страховые платежи","value":"${sessionScope.sameYnnCompanies.get(i).expenses.insurancePayments}"},
+        {"text":"Пpочие затpаты","value":"${sessionScope.sameYnnCompanies.get(i).expenses.otherCosts}"},
+        {"text":"Итого затpат","value":"${sessionScope.sameYnnCompanies.get(i).expenses.totalCosts}"},
+        {"text":"Затраты по закладке и выращиванию молодых многолетних насаждений","value":"${sessionScope.sameYnnCompanies.get(i).expenses.plantingCosts}"}];
+
+
+    let options7 = [{"text":"Сбор зеpна в физической массе после доpаботки, всего","value":"${sessionScope.sameYnnCompanies.get(i).grounds.get(0).totalProducts}"},
+        {"text":"Сбор зеpна в физической массе после доpаботки, с 1 га","value":"${sessionScope.sameYnnCompanies.get(i).grounds.get(0).hectareProducts}"},
+        {"text":"Себестоимость единицы продукции (зерно)","value":"${sessionScope.sameYnnCompanies.get(i).grounds.get(0).productionCost}"},
+        {"text":"Сбор картофеля, всего","value":"${sessionScope.sameYnnCompanies.get(i).grounds.get(1).totalProducts}"},
+        {"text":"Сбор картофеля, с 1 га","value":"${sessionScope.sameYnnCompanies.get(i).grounds.get(1).hectareProducts}"},
+        {"text":"Себестоимость единицы продукции (картофель)","value":"${sessionScope.sameYnnCompanies.get(i).grounds.get(1).productionCost}"},
+        {"text":"Всего сельскохозяйственных угодий (гектары)","value":"${sessionScope.sameYnnCompanies.get(i).grounds.get(0).hectare}"},
+        {"text":"Всего сельскохозяйственных угодий (баллогектары га)","value":"${sessionScope.sameYnnCompanies.get(i).grounds.get(0).ballogectars}"},
+        {"text":"Пашня (гектары)","value":"${sessionScope.sameYnnCompanies.get(i).grounds.get(1).hectare}"},
+        {"text":"Пашня (баллогектары га)","value":"${sessionScope.sameYnnCompanies.get(i).grounds.get(1).ballogectars}"},
+        {"text":"КРС. Молочного направления основное стадо молочного скота","value":"${sessionScope.sameYnnCompanies.get(i).dairyProducts.cattle}"},
+        {"text":"Молоко тонн (Выход продукции количество)","value":"${sessionScope.sameYnnCompanies.get(i).dairyProducts.outputDairyProducts}"},
+        {"text":"Молоко тонн (Себестоимость единицы продукции)","value":"${sessionScope.sameYnnCompanies.get(i).dairyProducts.costDairyProducts}"},
+        {"text":"Пpиpост тонн (Выход продукции количество)","value":"${sessionScope.sameYnnCompanies.get(i).dairyProducts.productionGrowth}"},
+        {"text":"Пpиpост тонн (Себестоимость единицы продукции)","value":"${sessionScope.sameYnnCompanies.get(i).dairyProducts.productionCostGrowth}"},
+        {"text":"Сpеднегодовой удой молока от одной коpовы","value":"${sessionScope.sameYnnCompanies.get(i).cattle.milkYield}"},
+        {"text":"Сpеднесуточный пpиpост кpупного pогатого скота - всего","value":"${sessionScope.sameYnnCompanies.get(i).cattle.averageDailyIncrease}"},
+        {"text":"Коровы и быки-производители(кроме рабочего скота). Расход кормов на единицу продукции, кормо-единиц","value":"${sessionScope.sameYnnCompanies.get(i).cattle.cattleProducers}"},
+        {"text":"Крупный рогатый скот на выpащивании и откоpме всего. Расход кормов на единицу продукции, кормо-единиц","value":"${sessionScope.sameYnnCompanies.get(i).cattle.cattleCultivation}"}];
 
     var staffinfo = document.getElementsByClassName('country');
 
@@ -1121,38 +1125,33 @@
     }
 
 
-    Highcharts.chart('container_for_staffLabel', {
-        chart: {type: 'pie'},
-        title: {text: "${averageNumber}"},
-        accessibility: {announceNewData: {enabled: true}, point: {valueSuffix: 'чел.'}},
-        plotOptions: {series: {dataLabels: {enabled: true, format: '{point.name}: {point.y:.0f} чел.'}}},
-        tooltip: {
-            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f} чел.</b><br/>'
-        },
-
-        series: [
-            {
-                name: "${averageNumber}", colorByPoint: true,
-                data: [
-                    {name: "Рабочие", y: Number(staffinfo.item(6).innerHTML), drilldown: null},
-                    {name: "Служащие", y: Number(staffinfo.item(8).innerHTML), drilldown: "Служащие"},
-                ].filter(function(d) {return d["y"]>0})
+    const dynamicChart = Highcharts.chart('container_for_dynamic', {
+        chart: {type: 'column'},
+        title: {text: 'Динамика показателя'},
+        xAxis: {type: 'category', labels: {rotation: -45, style: {fontSize: '13px', fontFamily: 'Verdana, sans-serif'}}},
+        yAxis: {min: 0, title: {text: ' '}},
+        legend: {enabled: false},
+        tooltip: {pointFormat: 'Значение в <b>{point.x:.1f} году: {point.y:.1f}</b>'},
+        series: [{
+            name: 'Population',
+            data: [],
+            dataLabels: {enabled: true, rotation: -90, color: '#FFFFFF', align: 'right', format: '{point.y:.1f}', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {fontSize: '13px', fontFamily: 'Verdana, sans-serif'}
             }
-        ],
-        drilldown: {
-            series: [
-                {
-                    name: "Служащие", id: "Служащие",
-                    data: [
-                        ["Руководители", Number(staffinfo.item(10).innerHTML)],
-                        ["Специалисты", Number(staffinfo.item(12).innerHTML)],
-                        ["Другие", Number(staffinfo.item(8).innerHTML)-(Number(staffinfo.item(10).innerHTML)+Number(staffinfo.item(12).innerHTML))]
-                    ].filter(function(d) {return d[1]>0})
-                }
-            ]
+        }]
+    });
+
+    document.getElementById('dynamicparam').addEventListener('click', (event) => {
+        // Get the selected value
+        //dynamicChart.setData([]);
+        const selectedValue = event.target.value;
+
+        for (let i = 0; i < ${sessionScope.sameYnnCompanies.size()}; i++){
+            dynamicChart.series[i].setData([{x:${sessionScope.sameYnnCompanies.get(i).year.toString()}, y:Number(selectedValue)}]);
         }
     });
+
     Highcharts.chart('container_for_expensesLabel', {
         chart: {type: 'pie'},
         title: {text: "${expensesLabel}"},

@@ -16,9 +16,11 @@ public class CompanyDao extends AbstractDao<Integer, Company> {
     private static final String GET_ALL = "SELECT * FROM company";
     private static final String DELETE_ALL = "DELETE FROM company";
     private static final String GET_ALL_YNN = "SELECT ynn FROM company";
-    private static final String GET_COMPANY = "SELECT * FROM company WHERE ynn=:ynn";
-    private static final String FILTER_BY_AREA = "SELECT company.* FROM company_db.company LEFT JOIN address ON company.ynn = address.ynn where area=:area";
-    private static final String FILTER_BY_DISTRICT = "SELECT company.* FROM company_db.company LEFT JOIN address ON company.ynn = address.ynn where district=:district";
+    private static final String GET_ALL_IDS = "SELECT com_id FROM company";
+    private static final String GET_COMPANY = "SELECT * FROM company WHERE com_id=:com_id";
+    private static final String GET_COMPANIES_WITH_SAME_YNN = "SELECT * FROM company WHERE ynn=:ynn ORDER BY year ASC";
+    private static final String FILTER_BY_AREA = "SELECT company.* FROM new_db.company LEFT JOIN address ON company.com_id = address.com_id where area=:area";
+    private static final String FILTER_BY_DISTRICT = "SELECT company.* FROM new_db.company LEFT JOIN address ON company.com_id = address.com_id where district=:district";
     private static final String FILTER_BY_ABBREVIATION = "SELECT * FROM company where name like ";
     private static final String SEARCH_BY_NAME = "SELECT * FROM company where name or full_name like ";
     private static final String GET_BETWEEN_ID = "SELECT * FROM company_db.company where id between :first_id and :second_id";
@@ -50,7 +52,6 @@ public class CompanyDao extends AbstractDao<Integer, Company> {
         try {
             Query query = session.createNativeQuery(sql_query);
             Double doubleResult = null;
-            System.out.println();
             if (query.list().get(0) instanceof Integer){
                 List<Integer> result = query.list();
                 return Double.valueOf(result.get(0));
@@ -91,20 +92,30 @@ public class CompanyDao extends AbstractDao<Integer, Company> {
     }
 
     @Override
-    public void delete(Integer id) throws DaoException {
+    public void delete(Integer com_id) throws DaoException {
         try {
-            Company company = session.find(Company.class, id);
+            Company company = session.find(Company.class, com_id);
             session.remove(company);
         } catch (Exception ex) {
             throw new DaoException(ex);
         }
     }
 
-    public Company getCompany(Integer ynn) throws DaoException {
+    public Company getCompany(Integer com_id) throws DaoException {
         try {
             Query query = session.createNativeQuery(GET_COMPANY).addEntity(Company.class);
-            query.setParameter("ynn", ynn);
+            query.setParameter("com_id", com_id);
             return (Company) query.getSingleResult();
+        } catch (Exception ex) {
+            throw new DaoException(ex);
+        }
+    }
+
+    public List<Company> getCompaniesInfoWithSameYnn(Integer ynn) throws DaoException {
+        try {
+            Query query = session.createNativeQuery(GET_COMPANIES_WITH_SAME_YNN).addEntity(Company.class);
+            query.setParameter("ynn", ynn);
+            return query.list();
         } catch (Exception ex) {
             throw new DaoException(ex);
         }
@@ -113,7 +124,7 @@ public class CompanyDao extends AbstractDao<Integer, Company> {
     public List<Company> getSortedById() throws DaoException {
         try {
             Criteria criteria = session.createCriteria(Company.class, "company");
-            criteria.addOrder(Order.asc("id"));
+            criteria.addOrder(Order.asc("com_id"));
             return criteria.list();
         } catch (Exception ex) {
             throw new DaoException(ex);
@@ -124,28 +135,32 @@ public class CompanyDao extends AbstractDao<Integer, Company> {
     public String specialJoins(String createQuery, String[] parameters, String[] statuses){
         for (int i=0; i<parameters.length; i++){
             if (parameters[i]!=null && (statuses[i].equals("min") || statuses[i].equals("max") || statuses[i].equals("average")) && !parameters[i].substring(0, parameters[i].indexOf(".")).equals("company")){
-                createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) + " on company.ynn = " + parameters[i].substring(0, parameters[i].indexOf(".")) + ".ynn ";
+                createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) + " on company.com_id = " + parameters[i].substring(0, parameters[i].indexOf(".")) + ".com_id ";
             }
         }
         return createQuery + " where ";
     }
-    public String standartJoins(String createQuery, String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, boolean has_minmax, String innerJoinConnector){
+    public String standartJoins(String createQuery, String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, String[] area_value, String[] district_value, boolean has_minmax, String innerJoinConnector){
         for (int i=0;i<parameters.length;i++){
             if (!(statuses[i].equals("min") || statuses[i].equals("max") || statuses[i].equals("average")) && has_minmax && !innerJoinConnector.substring(innerJoinConnector.indexOf(" on "), innerJoinConnector.indexOf(".")).equals(parameters[i].substring(0, parameters[i].indexOf("."))) && !createQuery.contains("join " + parameters[i].substring(0, parameters[i].indexOf("."))+" on"))
-                createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) + innerJoinConnector + parameters[i].substring(0, parameters[i].indexOf(".")) + ".ynn ";
+                createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) + innerJoinConnector + parameters[i].substring(0, parameters[i].indexOf(".")) + ".com_id ";
             if (!has_minmax && !parameters[i].substring(0, parameters[i].indexOf(".")).equals("company") && !createQuery.contains("join " + parameters[i].substring(0, parameters[i].indexOf("."))+" on")){
-                if (parameters[i]!=null && (text_values[i]!="" || (statuses[i].equals("sort") && types[0]!=null) || ((statuses[i].equals("morethan") || statuses[i].equals("lessthan") || statuses[i].equals("equal")) && values[i]!="") || statuses[i].equals("isnull")))
-                    createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) + " on company.ynn = " + parameters[i].substring(0, parameters[i].indexOf(".")) + ".ynn ";
+                if (parameters[i]!=null && (text_values[i]!="" || area_value!=null || district_value!=null || (statuses[i].equals("sort") && types[0]!=null) || ((statuses[i].equals("morethan") || statuses[i].equals("lessthan") || statuses[i].equals("equal")) && values[i]!="") || statuses[i].equals("isnull")))
+                    createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) + " on company.com_id = " + parameters[i].substring(0, parameters[i].indexOf(".")) + ".com_id ";
             }
         }
         return createQuery + " where ";//возможно, where тут будет мешать
     }
 
-    public String commonSQLgen(String createQuery, String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values){
+    public String commonSQLgen(String createQuery, String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, String[] area_value, String[] district_value){
         for (int i=0; i<parameters.length; i++){
             if (parameters[i]!=null){
                 if (text_values[i]!="")
                     createQuery = createQuery + parameters[i] + " like '%" + text_values[i] + "%' and ";
+                if (parameters[i].equals("address.area") && area_value!=null)
+                    createQuery = createQuery + parameters[i] + " like '%" + area_value[0] + "%' and ";
+                if (parameters[i].equals("address.district") && district_value!=null)
+                    createQuery = createQuery + parameters[i] + " like '%" + district_value[0] + "%' and ";
                 if (statuses[i].equals("morethan") && values[i]!="")
                     createQuery = createQuery + parameters[i] + " > " + values[i] + " and ";
                 if (statuses[i].equals("lessthan") && values[i]!="")
@@ -174,7 +189,7 @@ public class CompanyDao extends AbstractDao<Integer, Company> {
         return createQuery;
     }
 
-    public List<Company> getAdvancedSearchResultList(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, int operationsSum) throws DaoException {
+    public List<Company> getAdvancedSearchResultList(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, String[] area_value, String[] district_value, int operationsSum) throws DaoException {
         try {
             String createQuery = "SELECT company.* FROM company ";
             boolean has_minmax = false;
@@ -183,7 +198,7 @@ public class CompanyDao extends AbstractDao<Integer, Company> {
                 if (parameters[i]!=null && (statuses[i].equals("min") || statuses[i].equals("max"))){
                     has_minmax = true;
                     createQuery = specialJoins(createQuery, parameters, statuses);
-                    innerJoinConnector = " on " + parameters[i].substring(0, parameters[i].indexOf(".")) + ".ynn = ";
+                    innerJoinConnector = " on " + parameters[i].substring(0, parameters[i].indexOf(".")) + ".com_id = ";
                     if (parameters[i].contains(" AND ")){
                         String[] res = parameters[i].split(" AND ",2);
                         if (parameters[i]!=null && statuses.equals("min"))
@@ -199,8 +214,8 @@ public class CompanyDao extends AbstractDao<Integer, Company> {
                     }
                 }
             }
-            createQuery = standartJoins(createQuery, parameters, statuses, types, values, text_values, has_minmax, innerJoinConnector);
-            createQuery = commonSQLgen(createQuery, parameters, statuses, types, values, text_values);
+            createQuery = standartJoins(createQuery, parameters, statuses, types, values, text_values, area_value, district_value, has_minmax, innerJoinConnector);
+            createQuery = commonSQLgen(createQuery, parameters, statuses, types, values, text_values, area_value, district_value);
             if (createQuery.substring(createQuery.length()-4, createQuery.length()).equals("and "))
                 createQuery = createQuery.substring(0, createQuery.length()-4);
             if (createQuery.substring(createQuery.length()-6, createQuery.length()).equals("where "))
@@ -217,7 +232,7 @@ public class CompanyDao extends AbstractDao<Integer, Company> {
     }
 
 
-    public Double getAdvancedSearchResult(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, int operationsSum) throws DaoException {
+    public Double getAdvancedSearchResult(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, String[] area_values, String[] district_values, int operationsSum) throws DaoException {
         try {
             int average_ind = -1;
             boolean and_flag = false;
@@ -237,7 +252,7 @@ public class CompanyDao extends AbstractDao<Integer, Company> {
             }
             else createQuery = "SELECT  AVG("+ parameters[average_ind] + ") FROM "+
                     parameters[average_ind].substring(0, parameters[average_ind].indexOf(".")) + " ";
-            String innerJoinConnector = " on " + parameters[average_ind].substring(0, parameters[average_ind].indexOf(".")) + ".ynn = ";
+            String innerJoinConnector = " on " + parameters[average_ind].substring(0, parameters[average_ind].indexOf(".")) + ".com_id = ";
             //продумать условия
             for (int i=0;i<parameters.length;i++){
                 if (!(statuses[i].equals("average")) && !innerJoinConnector.substring(innerJoinConnector.indexOf(" on "),
@@ -245,31 +260,29 @@ public class CompanyDao extends AbstractDao<Integer, Company> {
                         !createQuery.contains("join " + parameters[i].substring(0, parameters[i].indexOf("."))+" on") &&
                         !parameters[average_ind].substring(0, parameters[average_ind].indexOf(".")).equals(parameters[i].substring(0, parameters[i].indexOf("."))))
                     createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) +
-                            innerJoinConnector + parameters[i].substring(0, parameters[i].indexOf(".")) + ".ynn ";
+                            innerJoinConnector + parameters[i].substring(0, parameters[i].indexOf(".")) + ".com_id ";
                 if (!parameters[i].substring(0, parameters[i].indexOf(".")).equals(parameters[average_ind].substring(0, parameters[average_ind].indexOf("."))) &&
                         !createQuery.contains("join " + parameters[i].substring(0, parameters[i].indexOf("."))+" on")){
-                    if (parameters[i]!=null && (text_values[i]!="" || (statuses[i].equals("sort") && types[0]!=null) ||
+                    if (parameters[i]!=null && (text_values[i]!="" || area_values!=null || district_values!=null || (statuses[i].equals("sort") && types[0]!=null) ||
                             ((statuses[i].equals("morethan") || statuses[i].equals("lessthan") || statuses[i].equals("equal")) &&
                                     values[i]!="") || statuses[i].equals("isnull")))
                         createQuery = createQuery + "join " + parameters[i].substring(0, parameters[i].indexOf(".")) + " on " +
-                                parameters[average_ind].substring(0, parameters[average_ind].indexOf(".")) + ".ynn = " +
-                                parameters[i].substring(0, parameters[i].indexOf(".")) + ".ynn ";
+                                parameters[average_ind].substring(0, parameters[average_ind].indexOf(".")) + ".com_id = " +
+                                parameters[i].substring(0, parameters[i].indexOf(".")) + ".com_id ";
                 }
             }
             createQuery = createQuery + " where ";
             if (and_flag)
                 createQuery = createQuery + res[0] + " and ";
-            createQuery = commonSQLgen(createQuery, parameters, statuses, types, values, text_values);
+            createQuery = commonSQLgen(createQuery, parameters, statuses, types, values, text_values, area_values, district_values);
             if (createQuery.substring(createQuery.length()-4, createQuery.length()).equals("and "))
                 createQuery = createQuery.substring(0, createQuery.length()-4);
             if (createQuery.substring(createQuery.length()-6, createQuery.length()).equals("where "))
                 createQuery = createQuery.substring(0, createQuery.length()-6);
             //createQuery = createQuery + " COLLATE utf8mb4_general_ci ";
             System.out.println(createQuery);
-            Query query = session.createNativeQuery(createQuery);
-            List<BigDecimal> result = query.list();
-            //System.out.println(result.toString());
-            return result.get(0).doubleValue();
+            Double doubleResult = getQuerySelectResult(createQuery);
+            return doubleResult;
         } catch (Exception ex) {
             throw new DaoException(ex);
         }
@@ -329,6 +342,14 @@ public class CompanyDao extends AbstractDao<Integer, Company> {
     public List<Integer> getAllYnn() throws DaoException {
         try {
             return session.createNativeQuery(GET_ALL_YNN).list();
+        } catch (Exception ex) {
+            throw new DaoException(ex);
+        }
+    }
+
+    public List<Integer> getAllCompanyIds() throws DaoException {
+        try {
+            return session.createNativeQuery(GET_ALL_IDS).list();
         } catch (Exception ex) {
             throw new DaoException(ex);
         }

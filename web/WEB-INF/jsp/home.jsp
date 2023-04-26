@@ -72,7 +72,7 @@
             <div class="col-md-6 offset-md-3">
                 <c:choose>
                     <%--My modification--%>
-                    <c:when test="${sessionScope.advSearchCompanies ne null || sessionScope.advSearchResult ne null}">
+                    <c:when test="${(sessionScope.advSearchCompanies ne null || sessionScope.advSearchResult ne null) && sessionScope.companiesList==null}">
                         <h2>Результаты запроса:</h2>
                     </c:when>
                     <%--My modification--%>
@@ -231,7 +231,31 @@
                                                                     </select>
                                                                 </h5>
                                                             </li>
+
+                                                            <li id="searchbyarea1" hidden>
+                                                                <h5>Область:
+                                                                    <select class="form-control" name="area" id="areasearch1">
+                                                                        <option selected disabled value="-">Выберите область...</option>
+                                                                        <c:forEach var="areaforssearch" items="${sessionScope.locationMap.keySet()}">
+                                                                            <option value ="${areaforssearch}">${areaforssearch}</option>
+                                                                        </c:forEach>
+                                                                    </select>
+                                                                </h5>
+                                                            </li>
+
+                                                            <li id="searchbydistrict1" hidden>
+                                                                <h5>Район:
+                                                                    <select class="form-control" name="district" id="districtsearch1">
+                                                                        <option selected disabled value="-">Выберите район...</option>
+                                                                        <c:forEach var="districtforssearch" items="${sessionScope.orderedDistricts}">
+                                                                            <option value ="${districtforssearch}">${districtforssearch}</option>
+                                                                        </c:forEach>
+                                                                    </select>
+                                                                </h5>
+                                                            </li>
+
                                                             <li id="textvalueli1" hidden><h5>Текстовое значение: <input class="form-control" id="textvalue1" type="text" size="30" name="text_value" placeholder="Текст"></h5></li>
+
                                                             <li id="typeli1" hidden>
                                                                 <h5>Тип:
                                                                     <select class="form-control" name="type" id="type1">
@@ -284,6 +308,29 @@
                                                                     </select>
                                                                 </h5>
                                                             </li>
+
+                                                            <li id="searchbyarea2" hidden>
+                                                                <h5>Область:
+                                                                    <select class="form-control" name="area" id="areasearch2">
+                                                                        <option selected disabled value="-">Выберите область...</option>
+                                                                        <c:forEach var="areaforssearch" items="${sessionScope.locationMap.keySet()}">
+                                                                            <option value ="${areaforssearch}">${areaforssearch}</option>
+                                                                        </c:forEach>
+                                                                    </select>
+                                                                </h5>
+                                                            </li>
+
+                                                            <li id="searchbydistrict2" hidden>
+                                                                <h5>Район:
+                                                                    <select class="form-control" name="district" id="districtsearch2">
+                                                                        <option selected disabled value="-">Выберите район...</option>
+                                                                        <c:forEach var="districtforssearch" items="${sessionScope.orderedDistricts}">
+                                                                            <option value ="${districtforssearch}">${districtforssearch}</option>
+                                                                        </c:forEach>
+                                                                    </select>
+                                                                </h5>
+                                                            </li>
+
                                                             <li id="textvalueli2" hidden><h5>Текстовое значение: <input class="form-control" id="textvalue2" type="text" size="30" name="text_value" placeholder="Текст"></h5></li>
                                                             <li id="typeli2" hidden>
                                                                 <h5>Тип:
@@ -337,6 +384,29 @@
                                                                     </select>
                                                                 </h5>
                                                             </li>
+
+                                                            <li id="searchbyarea3" hidden>
+                                                                <h5>Область:
+                                                                    <select class="form-control" name="area" id="areasearch3">
+                                                                        <option selected disabled value="-">Выберите область...</option>
+                                                                        <c:forEach var="areaforssearch" items="${sessionScope.locationMap.keySet()}">
+                                                                            <option value ="${areaforssearch}">${areaforssearch}</option>
+                                                                        </c:forEach>
+                                                                    </select>
+                                                                </h5>
+                                                            </li>
+
+                                                            <li id="searchbydistrict3" hidden>
+                                                                <h5>Район:
+                                                                    <select class="form-control" name="district" id="districtsearch3">
+                                                                        <option selected disabled value="-">Выберите район...</option>
+                                                                        <c:forEach var="districtforssearch" items="${sessionScope.orderedDistricts}">
+                                                                            <option value ="${districtforssearch}">${districtforssearch}</option>
+                                                                        </c:forEach>
+                                                                    </select>
+                                                                </h5>
+                                                            </li>
+
                                                             <li id="textvalueli3" hidden><h5>Текстовое значение: <input class="form-control" id="textvalue3" type="text" size="30" name="text_value" placeholder="Текст"></h5></li>
                                                             <li id="typeli3" hidden>
                                                                 <h5>Тип:
@@ -385,30 +455,30 @@
                             <c:forEach var="company" items="${sessionScope.companiesList}">
                                 <tr class="table-row">
                                     <td class="serial"><a
-                                            href="Controller?command=go_to_company_page&companyYnn=${company.ynn}">
+                                            href="Controller?command=go_to_company_page&companyId=${company.com_id}">
                                         <h5>${company.ynn}</h5></a>
                                     </td>
                                     <td class="serial"><a
-                                            href="Controller?command=go_to_company_page&companyYnn=${company.ynn}">
+                                            href="Controller?command=go_to_company_page&companyId=${company.com_id}">
                                         <h5>${company.okpo}</h5></a>
                                     </td>
                                     <td class="country"><a
-                                            href="Controller?command=go_to_company_page&companyYnn=${company.ynn}">
+                                            href="Controller?command=go_to_company_page&companyId=${company.com_id}">
                                         <h5>${company.name}</h5></a>
                                     </td>
                                     <td class="percentage"><a
-                                            href="Controller?command=go_to_company_page&companyYnn=${company.ynn}">
+                                            href="Controller?command=go_to_company_page&companyId=${company.com_id}">
                                         <h5>${company.fullName}</h5></a>
                                     </td>
                                     <c:if test="${sessionScope.user.role.value eq 1 or sessionScope.user.role.value eq 2}">
                                         <td class="visit">
                                             <button type="button">
-                                                <a href="Controller?command=go_to_edit_company_page&editCompanyYnn=${company.ynn}"
+                                                <a href="Controller?command=go_to_edit_company_page&editCompanyId=${company.com_id}"
                                                    style="color: #0b2e13">
                                                     <em class="fa fa-edit fa-1x"></em></a></button>
                                             <form action="Controller" method="post" style="display: inherit">
                                                 <input type="hidden" name="command" value="delete_company">
-                                                <input type="hidden" name="deleteCompanyYnn" value="${company.ynn}">
+                                                <input type="hidden" name="deleteCompanyId" value="${company.com_id}">
                                                 <div class="serial">
                                                     <button type="submit">
                                                         <em class="fa fa-close fa-1x"></em>
@@ -493,30 +563,30 @@
                             <c:forEach var="company" items="${sessionScope.filterCompanies}">
                                 <tr class="table-row">
                                     <td class="serial"><a
-                                            href="Controller?command=go_to_company_page&companyYnn=${company.ynn}">
+                                            href="Controller?command=go_to_company_page&companyId=${company.com_id}">
                                         <h5>${company.ynn}</h5></a>
                                     </td>
                                     <td class="serial"><a
-                                            href="Controller?command=go_to_company_page&companyYnn=${company.ynn}">
+                                            href="Controller?command=go_to_company_page&companyId=${company.com_id}">
                                         <h5>${company.okpo}</h5></a>
                                     </td>
                                     <td class="country"><a
-                                            href="Controller?command=go_to_company_page&companyYnn=${company.ynn}">
+                                            href="Controller?command=go_to_company_page&companyId=${company.com_id}">
                                         <h5>${company.name}</h5></a>
                                     </td>
                                     <td class="percentage"><a
-                                            href="Controller?command=go_to_company_page&companyYnn=${company.ynn}">
+                                            href="Controller?command=go_to_company_page&companyId=${company.com_id}">
                                         <h5>${company.fullName}</h5></a>
                                     </td>
                                     <c:if test="${sessionScope.user.role.value eq 1 or sessionScope.user.role.value eq 2}">
                                         <td class="visit">
                                             <button type="button">
-                                                <a href="Controller?command=go_to_edit_company_page&editCompanyYnn=${company.ynn}"
+                                                <a href="Controller?command=go_to_edit_company_page&editCompanyId=${company.com_id}"
                                                    style="color: #0b2e13">
                                                     <em class="fa fa-edit fa-1x"></em></a></button>
                                             <form action="Controller" method="post" style="display: inherit">
                                                 <input type="hidden" name="command" value="delete_company">
-                                                <input type="hidden" name="deleteCompanyYnn" value="${company.ynn}">
+                                                <input type="hidden" name="deleteCompanyId" value="${company.com_id}">
                                                 <div class="serial">
                                                     <button type="submit">
                                                         <em class="fa fa-close fa-1x"></em>
@@ -584,30 +654,30 @@
                             <c:forEach var="company" items="${sessionScope.advSearchCompanies}">
                                 <tr class="table-row">
                                     <td class="serial"><a
-                                            href="Controller?command=go_to_company_page&companyYnn=${company.ynn}">
+                                            href="Controller?command=go_to_company_page&companyId=${company.com_id}">
                                         <h5>${company.ynn}</h5></a>
                                     </td>
                                     <td class="serial"><a
-                                            href="Controller?command=go_to_company_page&companyYnn=${company.ynn}">
+                                            href="Controller?command=go_to_company_page&companyId=${company.com_id}">
                                         <h5>${company.okpo}</h5></a>
                                     </td>
                                     <td class="country"><a
-                                            href="Controller?command=go_to_company_page&companyYnn=${company.ynn}">
+                                            href="Controller?command=go_to_company_page&companyId=${company.com_id}">
                                         <h5>${company.name}</h5></a>
                                     </td>
                                     <td class="percentage"><a
-                                            href="Controller?command=go_to_company_page&companyYnn=${company.ynn}">
+                                            href="Controller?command=go_to_company_page&companyId=${company.com_id}">
                                         <h5>${company.fullName}</h5></a>
                                     </td>
                                     <c:if test="${sessionScope.user.role.value eq 1 or sessionScope.user.role.value eq 2}">
                                         <td class="visit">
                                             <button type="button">
-                                                <a href="Controller?command=go_to_edit_company_page&editCompanyYnn=${company.ynn}"
+                                                <a href="Controller?command=go_to_edit_company_page&editCompanyId=${company.com_id}"
                                                    style="color: #0b2e13">
                                                     <em class="fa fa-edit fa-1x"></em></a></button>
                                             <form action="Controller" method="post" style="display: inherit">
                                                 <input type="hidden" name="command" value="delete_company">
-                                                <input type="hidden" name="deleteCompanyYnn" value="${company.ynn}">
+                                                <input type="hidden" name="deleteCompanyId" value="${company.com_id}">
                                                 <div class="serial">
                                                     <button type="submit">
                                                         <em class="fa fa-close fa-1x"></em>
@@ -677,6 +747,16 @@
     var textval1 = document.getElementById('textvalue1');
     var textval2 = document.getElementById('textvalue2');
     var textval3 = document.getElementById('textvalue3');
+
+    var areasearch1 = document.getElementById('searchbyarea1');
+    var districtsearch1 = document.getElementById('searchbydistrict1');
+
+    var areasearch2 = document.getElementById('searchbyarea2');
+    var districtsearch2 = document.getElementById('searchbydistrict2');
+
+    var areasearch3 = document.getElementById('searchbyarea3');
+    var districtsearch3 = document.getElementById('searchbydistrict3');
+
     //В parameters2 разобраться с чистой прибылью
 
     let options0 = [{"text":"Наименование","value":"company.name"},
@@ -1270,6 +1350,87 @@
     };
     */
 
+    param1.onclick = function (event){
+        textval1.value='';
+        if (param1.value=='address.district' && category1.value=='0'){
+            document.getElementById('textvalueli1').hidden=true;
+            areasearch1.hidden=true;
+            districtsearch1.hidden=false;
+        }
+        else {
+            if (param1.value=='address.area' && category1.value=='0'){
+                document.getElementById('textvalueli1').hidden=true;
+                areasearch1.hidden=false;
+                districtsearch1.hidden=true;
+            }
+            else {
+                if (category1.value=='0'){
+                    document.getElementById('textvalueli1').hidden=false;
+                    areasearch1.hidden=true;
+                    districtsearch1.hidden=true;
+                }
+                else {
+                    document.getElementById('textvalueli1').hidden=true;
+                    areasearch1.hidden=true;
+                    districtsearch1.hidden=true;
+                }
+            }
+        }
+    }
+    param2.onclick = function (event){
+        textval2.value='';
+        if (param2.value=='address.district' && category2.value=='0'){
+            document.getElementById('textvalueli2').hidden=true;
+            areasearch2.hidden=true;
+            districtsearch2.hidden=false;
+        }
+        else {
+            if (param2.value=='address.area' && category2.value=='0'){
+                document.getElementById('textvalueli2').hidden=true;
+                areasearch2.hidden=false;
+                districtsearch2.hidden=true;
+            }
+            else {
+                if (category2.value=='0'){
+                    document.getElementById('textvalueli2').hidden=false;
+                    areasearch2.hidden=true;
+                    districtsearch2.hidden=true;
+                }
+                else {
+                    document.getElementById('textvalueli2').hidden=false;
+                    areasearch2.hidden=true;
+                    districtsearch2.hidden=true;
+                }
+            }
+        }
+    }
+    param3.onclick = function (event){
+        textval3.value='';
+        if (param3.value=='address.district'  && category3.value=='0'){
+            document.getElementById('textvalueli3').hidden=true;
+            areasearch3.hidden=true;
+            districtsearch3.hidden=false;
+        }
+        else {
+            if (param3.value=='address.area'  && category3.value=='0'){
+                document.getElementById('textvalueli3').hidden=true;
+                areasearch3.hidden=false;
+                districtsearch3.hidden=true;
+            }
+            else {
+                if (category3.value=='0') {
+                    document.getElementById('textvalueli3').hidden=false;
+                    areasearch3.hidden=true;
+                    districtsearch3.hidden=true;
+                }
+                else {
+                    document.getElementById('textvalueli3').hidden=true;
+                    areasearch3.hidden=true;
+                    districtsearch3.hidden=true;
+                }
+            }
+        }
+    }
 
     category1.onclick = function (event){
         textval1.value='';
@@ -1293,7 +1454,9 @@
         }
         if (category1.value=='1'){
             document.getElementById("statusli1").hidden=false;
-            document.getElementById("textvalueli1").hidden=true;
+            document.getElementById('textvalueli1').hidden=true;
+            areasearch1.hidden=true;
+            districtsearch1.hidden=true;
             param1.innerHTML='';
             for(var i = 0; i < options1.length; i++) {
                 var opt = options1[i];
@@ -1305,7 +1468,9 @@
         }
         if (category1.value=='2'){
             document.getElementById("statusli1").hidden=false;
-            document.getElementById("textvalueli1").hidden=true;
+            document.getElementById('textvalueli1').hidden=true;
+            areasearch1.hidden=true;
+            districtsearch1.hidden=true;
             param1.innerHTML='';
             for(var i = 0; i < options2.length; i++) {
                 var opt = options2[i];
@@ -1317,7 +1482,9 @@
         }
         if (category1.value=='3'){
             document.getElementById("statusli1").hidden=false;
-            document.getElementById("textvalueli1").hidden=true;
+            document.getElementById('textvalueli1').hidden=true;
+            areasearch1.hidden=true;
+            districtsearch1.hidden=true;
             param1.innerHTML='';
             for(var i = 0; i < options3.length; i++) {
                 var opt = options3[i];
@@ -1329,7 +1496,9 @@
         }
         if (category1.value=='4'){
             document.getElementById("statusli1").hidden=false;
-            document.getElementById("textvalueli1").hidden=true;
+            document.getElementById('textvalueli1').hidden=true;
+            areasearch1.hidden=true;
+            districtsearch1.hidden=true;
             param1.innerHTML='';
             for(var i = 0; i < options4.length; i++) {
                 var opt = options4[i];
@@ -1341,7 +1510,9 @@
         }
         if (category1.value=='5'){
             document.getElementById("statusli1").hidden=false;
-            document.getElementById("textvalueli1").hidden=true;
+            document.getElementById('textvalueli1').hidden=true;
+            areasearch1.hidden=true;
+            districtsearch1.hidden=true;
             param1.innerHTML='';
             for(var i = 0; i < options5.length; i++) {
                 var opt = options5[i];
@@ -1353,7 +1524,9 @@
         }
         if (category1.value=='6'){
             document.getElementById("statusli1").hidden=false;
-            document.getElementById("textvalueli1").hidden=true;
+            document.getElementById('textvalueli1').hidden=true;
+            areasearch1.hidden=true;
+            districtsearch1.hidden=true;
             param1.innerHTML='';
             for(var i = 0; i < options6.length; i++) {
                 var opt = options6[i];
@@ -1365,7 +1538,9 @@
         }
         if (category1.value=='7'){
             document.getElementById("statusli1").hidden=false;
-            document.getElementById("textvalueli1").hidden=true;
+            document.getElementById('textvalueli1').hidden=true;
+            areasearch1.hidden=true;
+            districtsearch1.hidden=true;
             param1.innerHTML='';
             for(var i = 0; i < options7.length; i++) {
                 var opt = options7[i];
@@ -1397,6 +1572,8 @@
         if (category2.value=='1'){
             document.getElementById("statusli2").hidden=false;
             document.getElementById("textvalueli2").hidden=true;
+            areasearch2.hidden=true;
+            districtsearch2.hidden=true;
             param2.innerHTML='';
             for(var i = 0; i < options1.length; i++) {
                 var opt = options1[i];
@@ -1409,6 +1586,8 @@
         if (category2.value=='2'){
             document.getElementById("statusli2").hidden=false;
             document.getElementById("textvalueli2").hidden=true;
+            areasearch2.hidden=true;
+            districtsearch2.hidden=true;
             param2.innerHTML='';
             for(var i = 0; i < options2.length; i++) {
                 var opt = options2[i];
@@ -1421,6 +1600,8 @@
         if (category2.value=='3'){
             document.getElementById("statusli2").hidden=false;
             document.getElementById("textvalueli2").hidden=true;
+            areasearch2.hidden=true;
+            districtsearch2.hidden=true;
             param2.innerHTML='';
             for(var i = 0; i < options3.length; i++) {
                 var opt = options3[i];
@@ -1433,6 +1614,8 @@
         if (category2.value=='4'){
             document.getElementById("statusli2").hidden=false;
             document.getElementById("textvalueli2").hidden=true;
+            areasearch2.hidden=true;
+            districtsearch2.hidden=true;
             param2.innerHTML='';
             for(var i = 0; i < options4.length; i++) {
                 var opt = options4[i];
@@ -1445,6 +1628,8 @@
         if (category2.value=='5'){
             document.getElementById("statusli2").hidden=false;
             document.getElementById("textvalueli2").hidden=true;
+            areasearch2.hidden=true;
+            districtsearch2.hidden=true;
             param2.innerHTML='';
             for(var i = 0; i < options5.length; i++) {
                 var opt = options5[i];
@@ -1457,6 +1642,8 @@
         if (category2.value=='6'){
             document.getElementById("statusli2").hidden=false;
             document.getElementById("textvalueli2").hidden=true;
+            areasearch2.hidden=true;
+            districtsearch2.hidden=true;
             param2.innerHTML='';
             for(var i = 0; i < options6.length; i++) {
                 var opt = options6[i];
@@ -1469,6 +1656,8 @@
         if (category2.value=='7'){
             document.getElementById("statusli2").hidden=false;
             document.getElementById("textvalueli2").hidden=true;
+            areasearch2.hidden=true;
+            districtsearch2.hidden=true;
             param2.innerHTML='';
             for(var i = 0; i < options7.length; i++) {
                 var opt = options7[i];
@@ -1500,6 +1689,8 @@
         if (category3.value=='1'){
             document.getElementById("statusli3").hidden=false;
             document.getElementById("textvalueli3").hidden=true;
+            areasearch3.hidden=true;
+            districtsearch3.hidden=true;
             param3.innerHTML='';
             for(var i = 0; i < options1.length; i++) {
                 var opt = options1[i];
@@ -1512,6 +1703,8 @@
         if (category3.value=='2'){
             document.getElementById("statusli3").hidden=false;
             document.getElementById("textvalueli3").hidden=true;
+            areasearch3.hidden=true;
+            districtsearch3.hidden=true;
             param3.innerHTML='';
             for(var i = 0; i < options2.length; i++) {
                 var opt = options2[i];
@@ -1524,6 +1717,8 @@
         if (category3.value=='3'){
             document.getElementById("statusli3").hidden=false;
             document.getElementById("textvalueli3").hidden=true;
+            areasearch3.hidden=true;
+            districtsearch3.hidden=true;
             param3.innerHTML='';
             for(var i = 0; i < options3.length; i++) {
                 var opt = options3[i];
@@ -1536,6 +1731,8 @@
         if (category3.value=='4'){
             document.getElementById("statusli3").hidden=false;
             document.getElementById("textvalueli3").hidden=true;
+            areasearch3.hidden=true;
+            districtsearch3.hidden=true;
             param3.innerHTML='';
             for(var i = 0; i < options4.length; i++) {
                 var opt = options4[i];
@@ -1548,6 +1745,8 @@
         if (category3.value=='5'){
             document.getElementById("statusli3").hidden=false;
             document.getElementById("textvalueli3").hidden=true;
+            areasearch3.hidden=true;
+            districtsearch3.hidden=true;
             param3.innerHTML='';
             for(var i = 0; i < options5.length; i++) {
                 var opt = options5[i];
@@ -1560,6 +1759,8 @@
         if (category3.value=='6'){
             document.getElementById("statusli3").hidden=false;
             document.getElementById("textvalueli3").hidden=true;
+            areasearch3.hidden=true;
+            districtsearch3.hidden=true;
             param3.innerHTML='';
             for(var i = 0; i < options6.length; i++) {
                 var opt = options6[i];
@@ -1572,6 +1773,8 @@
         if (category3.value=='7'){
             document.getElementById("statusli3").hidden=false;
             document.getElementById("textvalueli3").hidden=true;
+            areasearch3.hidden=true;
+            districtsearch3.hidden=true;
             param3.innerHTML='';
             for(var i = 0; i < options7.length; i++) {
                 var opt = options7[i];

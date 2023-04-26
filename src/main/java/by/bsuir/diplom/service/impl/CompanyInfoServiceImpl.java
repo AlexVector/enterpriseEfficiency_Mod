@@ -31,15 +31,15 @@ public class CompanyInfoServiceImpl extends SessionUtil implements CompanyInfoSe
     }
 
     @Override
-    public void delete(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
-            throw new ServiceException("Wrong ynn for delete company info");
+    public void delete(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
+            throw new ServiceException("Wrong company id for delete company info");
         }
         CompanyInfoDao companyInfoDao = DaoFactory.getInstance().getCompanyInfoDao();
         try {
             openTransactionSession();
             companyInfoDao.setSession(getSession());
-            companyInfoDao.delete(ynn);
+            companyInfoDao.delete(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -69,8 +69,8 @@ public class CompanyInfoServiceImpl extends SessionUtil implements CompanyInfoSe
     }
 
     @Override
-    public CompanyInfo getCompanyInfo(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
+    public CompanyInfo getCompanyInfo(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
             throw new ServiceException("Impossible to get company info!");
         }
         CompanyInfo companyInfo;
@@ -78,7 +78,7 @@ public class CompanyInfoServiceImpl extends SessionUtil implements CompanyInfoSe
         try {
             openTransactionSession();
             companyInfoDao.setSession(getSession());
-            companyInfo = companyInfoDao.getCompanyInfo(ynn);
+            companyInfo = companyInfoDao.getCompanyInfo(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();

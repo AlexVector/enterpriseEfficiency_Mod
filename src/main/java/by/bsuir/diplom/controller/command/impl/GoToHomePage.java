@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,11 @@ public class GoToHomePage implements Command {
             for(String area : areasList){
                 map.put(area, addressService.getDistrict(area));
             }
+            //My modification
+            List<String> orderedDistricts = addressService.getAllDistricts();
+            session.setAttribute("orderedDistricts", orderedDistricts);
+            //My modification
+
             session.setAttribute("locationMap", map);
             session.removeAttribute("companiesIndicators");
             session.removeAttribute("enterpriseIndicators");

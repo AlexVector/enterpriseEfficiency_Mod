@@ -8,7 +8,7 @@ import java.util.List;
 
 public class FixedAssetsDao extends AbstractDao<Integer, FixedAssets>{
     private static final String GET_ALL = "SELECT * FROM fixed_assets";
-    private static final String GET_FIXED_ASSETS = "SELECT * FROM company_db.fixed_assets WHERE ynn=:ynn";
+    private static final String GET_FIXED_ASSETS = "SELECT * FROM new_db.fixed_assets WHERE com_id=:com_id";
 
     @Override
     public List<FixedAssets> getAll() throws DaoException {
@@ -29,10 +29,10 @@ public class FixedAssetsDao extends AbstractDao<Integer, FixedAssets>{
         }
     }
 
-    public FixedAssets getFixedAssets(Integer ynn) throws DaoException {
+    public FixedAssets getFixedAssets(Integer com_id) throws DaoException {
         try {
             Query query = session.createNativeQuery(GET_FIXED_ASSETS).addEntity(FixedAssets.class);
-            query.setParameter("ynn", ynn);
+            query.setParameter("com_id", com_id);
             return (FixedAssets) query.getSingleResult();
         } catch (Exception ex) {
             throw new DaoException(ex);

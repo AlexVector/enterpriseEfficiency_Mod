@@ -8,9 +8,10 @@ import java.util.List;
 
 public class AddressDao extends AbstractDao<Integer, Address> {
     private static final String GET_ALL = "SELECT * FROM address";
-    private static final String GET_ADDRESS = "SELECT * FROM company_db.address WHERE ynn=:ynn";
-    private static final String GET_AREAS = "SELECT DISTINCT area FROM company_db.address";
-    private static final String GET_DISTRICT = "SELECT DISTINCT district FROM company_db.address WHERE area=:area";
+    private static final String GET_ADDRESS = "SELECT * FROM new_db.address WHERE com_id=:com_id";
+    private static final String GET_AREAS = "SELECT DISTINCT area FROM new_db.address";
+    private static final String GET_DISTRICT = "SELECT DISTINCT district FROM new_db.address WHERE area=:area";
+    private static final String GET_ALL_DISTRICTS = "SELECT DISTINCT district FROM new_db.address ORDER BY district ASC";
 
     @Override
     public List<Address> getAll() throws DaoException {
@@ -31,10 +32,10 @@ public class AddressDao extends AbstractDao<Integer, Address> {
         }
     }
 
-    public Address getAddress(Integer ynn) throws DaoException {
+    public Address getAddress(Integer com_id) throws DaoException {
         try {
             Query query = session.createNativeQuery(GET_ADDRESS).addEntity(Address.class);
-            query.setParameter("ynn", ynn);
+            query.setParameter("com_id", com_id);
             return (Address) query.getSingleResult();
         } catch (Exception ex) {
             throw new DaoException(ex);
@@ -54,6 +55,14 @@ public class AddressDao extends AbstractDao<Integer, Address> {
             Query query = session.createNativeQuery(GET_DISTRICT);
             query.setParameter("area", area);
             return query.list();
+        } catch (Exception ex) {
+            throw new DaoException(ex);
+        }
+    }
+
+    public List<String> getAllDistricts() throws DaoException {
+        try {
+            return session.createNativeQuery(GET_ALL_DISTRICTS).list();
         } catch (Exception ex) {
             throw new DaoException(ex);
         }

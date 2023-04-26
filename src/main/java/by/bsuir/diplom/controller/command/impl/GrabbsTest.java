@@ -207,11 +207,11 @@ public class GrabbsTest extends SessionUtil implements Command {
         if (parameter.contains(" AND ")){
             String[] res = parameter.split(" AND ",2);
             sql_query = "SELECT company.* FROM company JOIN " + res[1].substring(0, res[1].indexOf(".")) +
-                    " ON company.ynn = " + res[1].substring(0, res[1].indexOf(".")) + ".ynn WHERE " + res[0] +
+                    " ON company.com_id = " + res[1].substring(0, res[1].indexOf(".")) + ".com_id WHERE " + res[0] +
                     " AND " + res[1] + "=(SELECT MAX(" + res[1] + ") FROM " + res[1].substring(0, res[1].indexOf(".")) + ")";
         }
         else sql_query = "SELECT company.* FROM company JOIN " + parameter.substring(0, parameter.indexOf(".")) +
-                " ON company.ynn = " + parameter.substring(0, parameter.indexOf(".")) + ".ynn WHERE " + parameter +
+                " ON company.com_id = " + parameter.substring(0, parameter.indexOf(".")) + ".com_id WHERE " + parameter +
                 "=(SELECT MAX(" + parameter + ") FROM " + parameter.substring(0, parameter.indexOf(".")) + ")";
         List<Company> find_result_company = null;
         try {
@@ -231,10 +231,10 @@ public class GrabbsTest extends SessionUtil implements Command {
         if (parameter.contains(" AND ")){
             String[] res = parameter.split(" AND ",2);
             sql_query = "SELECT company.* FROM company JOIN " + res[1].substring(0, res[1].indexOf(".")) +
-                    " ON company.ynn = " + res[1].substring(0, res[1].indexOf(".")) + ".ynn WHERE " + res[0] + " ORDER BY " + res[1] + "  DESC";
+                    " ON company.com_id = " + res[1].substring(0, res[1].indexOf(".")) + ".com_id WHERE " + res[0] + " ORDER BY " + res[1] + "  DESC";
         }
         else sql_query = "SELECT company.* FROM company JOIN " + parameter.substring(0, parameter.indexOf(".")) +
-                " ON company.ynn = " + parameter.substring(0, parameter.indexOf(".")) + ".ynn ORDER BY " + parameter + "  DESC";
+                " ON company.com_id = " + parameter.substring(0, parameter.indexOf(".")) + ".com_id ORDER BY " + parameter + "  DESC";
         List<Company> find_result_company = null;
         try {
             find_result_company = companyDao.getQueryCompany(sql_query);
@@ -296,10 +296,10 @@ public class GrabbsTest extends SessionUtil implements Command {
         if (parameter.contains(" AND ")){
             String[] res = parameter.split(" AND ",2);
             sql_query = "SELECT company.* FROM company JOIN " + res[1].substring(0, res[1].indexOf(".")) +
-                    " ON company.ynn = " + res[1].substring(0, res[1].indexOf(".")) + ".ynn WHERE " + res[0] + " AND " + res[1] + " IS NULL";
+                    " ON company.com_id = " + res[1].substring(0, res[1].indexOf(".")) + ".com_id WHERE " + res[0] + " AND " + res[1] + " IS NULL";
         }
         else sql_query = "SELECT company.* FROM company JOIN " + parameter.substring(0, parameter.indexOf(".")) +
-                " ON company.ynn = " + parameter.substring(0, parameter.indexOf(".")) + ".ynn WHERE " + parameter + " IS NULL";
+                " ON company.com_id = " + parameter.substring(0, parameter.indexOf(".")) + ".com_id WHERE " + parameter + " IS NULL";
         List<Company> find_result_company = null;
         try {
             find_result_company = companyDao.getQueryCompany(sql_query);

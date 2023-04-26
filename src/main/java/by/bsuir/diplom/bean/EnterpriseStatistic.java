@@ -4,11 +4,11 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @javax.persistence.Entity
-@Table(name = "enterprise_statistic", schema = "company_db")
+@Table(name = "enterprise_statistic", schema = "new_db")
 public class EnterpriseStatistic extends Entity {
 
     @ManyToOne
-    @JoinColumn(name = "ynn", referencedColumnName = "ynn", foreignKey = @ForeignKey(name = "statistic_FK"))
+    @JoinColumn(name = "com_id", referencedColumnName = "com_id", foreignKey = @ForeignKey(name = "statistic_FK"))
     private Company company;
 
     @Column(name = "column_index", nullable = false)
@@ -26,13 +26,13 @@ public class EnterpriseStatistic extends Entity {
     public EnterpriseStatistic() {
     }
 
-    public EnterpriseStatistic(Integer ynn, Integer index) {
-        this.company = new Company(ynn);
+    public EnterpriseStatistic(Integer com_id, Integer index) {
+        this.company = new Company(com_id);
         this.index = index;
     }
 
-    public EnterpriseStatistic(Integer ynn, Integer index, Integer numberOfEnterprises, Integer amountAuthorizedCapital, Integer shareStateOwnership) {
-        this.company = new Company(ynn);
+    public EnterpriseStatistic(Integer id, Integer index, Integer numberOfEnterprises, Integer amountAuthorizedCapital, Integer shareStateOwnership) {
+        this.company = new Company(id);
         this.index = index;
         this.numberOfEnterprises = numberOfEnterprises;
         this.amountAuthorizedCapital = amountAuthorizedCapital;
@@ -96,7 +96,7 @@ public class EnterpriseStatistic extends Entity {
     @Override
     public String toString() {
         return "EnterpriseStatistic{" +
-                "ynn=" + company.getYnn() +
+                "com_id=" + company.getCom_id() +
                 ", index=" + index +
                 ", numberOfEnterprises=" + numberOfEnterprises +
                 ", amountAuthorizedCapital=" + amountAuthorizedCapital +

@@ -19,7 +19,7 @@ import java.io.IOException;
 
 public class GoToEditCompanyPage implements Command {
     private static final Logger userLogger = LogManager.getLogger(GoToEditCompanyPage.class);
-    private static final String EDIT_COMPANY = "editCompanyYnn";
+    private static final String EDIT_COMPANY = "editCompanyId";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response, File uploadFilePath) throws ServletException, IOException {
@@ -33,12 +33,12 @@ public class GoToEditCompanyPage implements Command {
         if (request.getParameter("message") != null) {
             request.setAttribute("message", request.getParameter("message"));
         }
-        Integer editCompanyYnn = Integer.valueOf(request.getParameter(EDIT_COMPANY));
+        Integer editCompanyId = Integer.valueOf(request.getParameter(EDIT_COMPANY));
 
         CompanyService companyService = ServiceProvider.getInstance().getCompanyService();
 
         try {
-            Company company = companyService.getCompany(editCompanyYnn);
+            Company company = companyService.getCompany(editCompanyId);
             session.setAttribute("editCompany", company);
 
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/editCompanyPage.jsp");

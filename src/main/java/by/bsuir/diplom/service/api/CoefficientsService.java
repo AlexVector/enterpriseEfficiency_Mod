@@ -11,10 +11,10 @@ public interface CoefficientsService {
     /**
      * Method for deleting coefficients
      *
-     * @param ynn ynn of coefficients
+     * @param com_id of coefficients
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    void delete(Integer ynn) throws ServiceException;
+    void delete(Integer com_id) throws ServiceException;
 
     /**
      * Method for validating data before edit coefficients in database
@@ -27,9 +27,9 @@ public interface CoefficientsService {
     /**
      * Method for getting coefficients info
      *
-     * @param ynn coefficients ynn
+     * @param com_id coefficients com_id
      * @return object of {@code Coefficients} with needed info
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    Coefficients getCoefficients(Integer ynn) throws ServiceException;
+    Coefficients getCoefficients(Integer com_id) throws ServiceException;
 }

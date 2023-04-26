@@ -11,10 +11,10 @@ public interface DairyProductsService {
     /**
      * Method for deleting dairy products
      *
-     * @param ynn ynn of dairy products
+     * @param com_id of dairy products
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    void delete(Integer ynn) throws ServiceException;
+    void delete(Integer com_id) throws ServiceException;
 
     /**
      * Method for validating data before edit dairy products in database
@@ -27,9 +27,9 @@ public interface DairyProductsService {
     /**
      * Method for getting dairy products info
      *
-     * @param ynn dairy products ynn
+     * @param com_id dairy products com_id
      * @return object of {@code DairyProducts} with needed info
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    DairyProducts getDairyProducts(Integer ynn) throws ServiceException;
+    DairyProducts getDairyProducts(Integer com_id) throws ServiceException;
 }

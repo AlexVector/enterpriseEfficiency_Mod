@@ -9,15 +9,15 @@ import java.util.List;
 
 public class GroundsDao extends AbstractDao<Integer, Grounds>{
     private static final String GET_ALL = "SELECT * FROM grounds";
-    private static final String GET_GROUND = "SELECT * FROM grounds WHERE ynn=:ynn";
+    private static final String GET_GROUND = "SELECT * FROM grounds WHERE com_id=:com_id";
 
     //my mod
-    private static final String GET_GROUND_TO_EXPORT = "select * from grounds inner join company c on grounds.ynn = c.ynn where c.ynn=:ynn order by grounds.products_index";
+    private static final String GET_GROUND_TO_EXPORT = "select * from grounds inner join company c on grounds.com_id = c.com_id where c.com_id=:com_id order by grounds.products_index";
 
-    public List<Grounds> getGroundsToExport(Integer ynn) throws DaoException{
+    public List<Grounds> getGroundsToExport(Integer com_id) throws DaoException{
         try{
             Query query = session.createNativeQuery(GET_GROUND_TO_EXPORT).addEntity(Grounds.class);
-            query.setParameter("ynn", ynn);
+            query.setParameter("com_id", com_id);
             return query.list();
         } catch (Exception ex){
             throw new DaoException(ex);
@@ -43,10 +43,10 @@ public class GroundsDao extends AbstractDao<Integer, Grounds>{
         }
     }
 
-    public List<Grounds> getGround(Integer ynn) throws DaoException {
+    public List<Grounds> getGround(Integer com_id) throws DaoException {
         try {
             Query query = session.createNativeQuery(GET_GROUND).addEntity(Grounds.class);
-            query.setParameter("ynn", ynn);
+            query.setParameter("com_id", com_id);
             return query.list();
         } catch (Exception ex) {
             throw new DaoException(ex);

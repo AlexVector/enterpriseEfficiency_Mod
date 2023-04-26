@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CoefficientsDao extends AbstractDao<Integer, Coefficients> {
     private static final String GET_ALL = "SELECT * FROM coefficients";
-    private static final String GET_COEFFICIENTS = "SELECT * FROM company_db.coefficients WHERE ynn=:ynn";
+    private static final String GET_COEFFICIENTS = "SELECT * FROM new_db.coefficients WHERE com_id=:com_id";
 
     @Override
     public List<Coefficients> getAll() throws DaoException {
@@ -29,10 +29,10 @@ public class CoefficientsDao extends AbstractDao<Integer, Coefficients> {
         }
     }
 
-    public Coefficients getCoefficients(Integer ynn) throws DaoException {
+    public Coefficients getCoefficients(Integer com_id) throws DaoException {
         try {
             Query query = session.createNativeQuery(GET_COEFFICIENTS).addEntity(Coefficients.class);
-            query.setParameter("ynn", ynn);
+            query.setParameter("com_id", com_id);
             return (Coefficients) query.getSingleResult();
         } catch (Exception ex) {
             throw new DaoException(ex);

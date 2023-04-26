@@ -4,11 +4,11 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @javax.persistence.Entity
-@Table(name = "staff", schema = "company_db")
+@Table(name = "staff", schema = "new_db")
 public class Staff extends Entity{
 
     @ManyToOne
-    @JoinColumn(name = "ynn", referencedColumnName = "ynn", foreignKey = @ForeignKey(name = "staff_FK"))
+    @JoinColumn(name = "com_id", referencedColumnName = "com_id", foreignKey = @ForeignKey(name = "staff_FK"))
     private Company company;
 
     @Column(name = "column_index", nullable = false)
@@ -23,25 +23,26 @@ public class Staff extends Entity{
     public Staff() {
     }
 
-    public Staff(Integer ynn, Integer index) {
-        this.company = new Company(ynn);
+    public Staff(Integer com_id, Integer index) {
+        this.company = new Company(com_id);
         this.index = index;
     }
 
-    public Staff(Integer ynn, Integer index, Integer averageNumber, Double salaryFund) {
-        this.company = new Company(ynn);
+    public Staff(Integer com_id, Integer index, Integer averageNumber, Double salaryFund) {
+        this.company = new Company(com_id);
         this.index = index;
         this.averageNumber = averageNumber;
         this.salaryFund = salaryFund;
     }
 
-    public Staff(Integer id, Integer ynn, Integer index, Integer averageNumber, Double salaryFund) {
-        super(id);
-        this.company = new Company(ynn);
+    public Staff(Integer sid, Integer com_id, Integer index, Integer averageNumber, Double salaryFund) {
+        super(sid);
+        this.company = new Company(com_id);
         this.index = index;
         this.averageNumber = averageNumber;
         this.salaryFund = salaryFund;
     }
+
 
     public Company getCompany() {
         return company;
@@ -92,7 +93,7 @@ public class Staff extends Entity{
     @Override
     public String toString() {
         return "Staff{" +
-                "ynn=" + company.getYnn() +
+                "com_id=" + company.getCom_id() +
                 ", index=" + index +
                 ", averageNumber=" + averageNumber +
                 ", salaryFund=" + salaryFund +

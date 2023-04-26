@@ -11,10 +11,10 @@ public interface ExpensesService {
     /**
      * Method for deleting expenses
      *
-     * @param ynn ynn of expenses
+     * @param com_id of expenses
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    void delete(Integer ynn) throws ServiceException;
+    void delete(Integer com_id) throws ServiceException;
 
     /**
      * Method for validating data before edit expenses in database
@@ -27,9 +27,9 @@ public interface ExpensesService {
     /**
      * Method for getting expenses info
      *
-     * @param ynn expenses ynn
+     * @param com_id expenses com_id
      * @return object of {@code Expenses} with needed info
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    Expenses getExpenses(Integer ynn) throws ServiceException;
+    Expenses getExpenses(Integer com_id) throws ServiceException;
 }

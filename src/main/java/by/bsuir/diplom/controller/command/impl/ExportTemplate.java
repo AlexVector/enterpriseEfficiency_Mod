@@ -128,7 +128,7 @@ public class ExportTemplate extends SessionUtil {
 
             Integer staffCells = null;
             try {
-                staffList = staffService.getStaffToExport(toExport.get(i).getYnn());
+                staffList = staffService.getStaffToExport(toExport.get(i).getCom_id());
             } catch (ServiceException e) {e.printStackTrace();}
             staffCells = staffList.get(0).getIndex();
             if (staffCells==null)
@@ -148,7 +148,7 @@ public class ExportTemplate extends SessionUtil {
 
 
             try {
-                cropprodList = cropProductionService.getCropProductionToExport(toExport.get(i).getYnn());
+                cropprodList = cropProductionService.getCropProductionToExport(toExport.get(i).getCom_id());
             } catch (ServiceException e) {e.printStackTrace();}
             Integer cropProdCells = cropprodList.get(0).getIndex();
 
@@ -184,7 +184,7 @@ public class ExportTemplate extends SessionUtil {
             Integer groundsProdCells = null;
             Integer groundsHectareCells = null;
             try {
-                groundsList = groundsService.getGroundsToExport(toExport.get(i).getYnn());
+                groundsList = groundsService.getGroundsToExport(toExport.get(i).getCom_id());
             } catch (ServiceException e) {e.printStackTrace();}
             groundsProdCells = groundsList.get(0).getProductsIndex();
             groundsHectareCells = groundsList.get(0).getHectareIndex();

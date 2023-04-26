@@ -13,10 +13,10 @@ public interface CompanyService {
     /**
      * Method for deleting company
      *
-     * @param ynn ynn of company
+     * @param com_id of company
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    void delete(Integer ynn) throws ServiceException;
+    void delete(Integer com_id) throws ServiceException;
 
     /**
      * Method for validating data before edit company in database
@@ -29,11 +29,13 @@ public interface CompanyService {
     /**
      * Method for getting company info
      *
-     * @param ynn company ynn
+     * @param com_id company com_id
      * @return object of {@code Company} with needed info
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    Company getCompany(Integer ynn) throws ServiceException;
+    Company getCompany(Integer com_id) throws ServiceException;
+
+    List<Company> getListOfSameCompanies(Integer ynn) throws ServiceException;
 
     void setCompanyInfo(Company company) throws ServiceException;
 
@@ -43,7 +45,7 @@ public interface CompanyService {
 
     List<Company> calcIndicators() throws ServiceException;
 
-    List<String> calcCorrelation(Integer ynn) throws ServiceException;
+    List<String> calcCorrelation(Integer com_id) throws ServiceException;
 
     List<Company> sortById() throws ServiceException;
 
@@ -51,6 +53,6 @@ public interface CompanyService {
 
     List<Company> searchByName(String text) throws ServiceException;
 
-    Double getAdvancedSearchResult(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, int operationsCounter) throws DaoException;
-    List<Company> getAdvancedSearchResultList(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, int operationsCounter) throws DaoException;
+    Double getAdvancedSearchResult(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, String[] area_value, String[] district_value, int operationsCounter) throws DaoException;
+    List<Company> getAdvancedSearchResultList(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, String[] area_value, String[] district_value, int operationsCounter) throws DaoException;
 }

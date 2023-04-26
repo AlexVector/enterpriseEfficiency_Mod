@@ -11,10 +11,10 @@ public interface CattleService {
     /**
      * Method for deleting cattle
      *
-     * @param ynn ynn of cattle
+     * @param com_id of cattle
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    void delete(Integer ynn) throws ServiceException;
+    void delete(Integer com_id) throws ServiceException;
 
     /**
      * Method for validating data before edit cattle in database
@@ -27,9 +27,9 @@ public interface CattleService {
     /**
      * Method for getting cattle info
      *
-     * @param ynn cattle ynn
+     * @param com_id cattle com_id
      * @return object of {@code Cattle} with needed info
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    Cattle getCattle(Integer ynn) throws ServiceException;
+    Cattle getCattle(Integer com_id) throws ServiceException;
 }

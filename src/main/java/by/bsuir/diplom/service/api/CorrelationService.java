@@ -12,10 +12,10 @@ public interface CorrelationService {
     /**
      * Method for deleting correlation
      *
-     * @param ynn ynn of correlation
+     * @param com_id of correlation
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    void delete(Integer ynn) throws ServiceException;
+    void delete(Integer com_id) throws ServiceException;
 
     /**
      * Method for validating data before add correlation in database
@@ -36,9 +36,9 @@ public interface CorrelationService {
     /**
      * Method for getting correlation info
      *
-     * @param ynn correlation ynn
+     * @param com_id correlation com_id
      * @return object of {@code Correlation} with needed info
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    Correlation getCorrelation(Integer ynn) throws ServiceException;
+    Correlation getCorrelation(Integer com_id) throws ServiceException;
 }

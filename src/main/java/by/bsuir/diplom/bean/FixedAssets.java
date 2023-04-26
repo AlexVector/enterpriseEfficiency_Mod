@@ -5,12 +5,12 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @javax.persistence.Entity
-@Table(name = "fixed_assets", schema = "company_db")
+@Table(name = "fixed_assets", schema = "new_db")
 public class FixedAssets implements Serializable {
 
     @Id
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ynn")
+    @JoinColumn(name = "com_id")
     private Company company;
 
     @Column(name = "fixed_assets", nullable = true)
@@ -37,15 +37,15 @@ public class FixedAssets implements Serializable {
     public FixedAssets() {
     }
 
-    public FixedAssets(Integer ynn, Integer shorttermDebt, Integer total5, Integer salesRevenue) {
-        this.company = new Company(ynn);
+    public FixedAssets(Integer com_id, Integer shorttermDebt, Integer total5, Integer salesRevenue) {
+        this.company = new Company(com_id);
         this.shorttermDebt = shorttermDebt;
         this.total5 = total5;
         this.salesRevenue = salesRevenue;
     }
 
-    public FixedAssets(Integer ynn, Integer fixedAssets, Integer loansBorrowings, Integer total4, Integer shorttermDebt, Integer total5, Integer salesRevenue, Integer profit) {
-        this.company = new Company(ynn);
+    public FixedAssets(Integer com_id, Integer fixedAssets, Integer loansBorrowings, Integer total4, Integer shorttermDebt, Integer total5, Integer salesRevenue, Integer profit) {
+        this.company = new Company(com_id);
         this.fixedAssets = fixedAssets;
         this.loansBorrowings = loansBorrowings;
         this.total4 = total4;
@@ -135,7 +135,7 @@ public class FixedAssets implements Serializable {
     @Override
     public String toString() {
         return "FixedAssets{" +
-                "ynn=" + company.getYnn() +
+                "com_id=" + company.getCom_id() +
                 ", fixedAssets=" + fixedAssets +
                 ", loansBorrowings=" + loansBorrowings +
                 ", total4=" + total4 +

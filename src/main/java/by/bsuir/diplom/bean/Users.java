@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @javax.persistence.Entity
-@Table(name = "users", schema = "company_db")
+@Table(name = "users", schema = "new_db")
 public class Users extends Entity{
 
     @Column(name = "email", nullable = false, length = 254)

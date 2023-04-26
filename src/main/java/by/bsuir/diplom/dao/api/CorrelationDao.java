@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CorrelationDao extends AbstractDao<Integer, Correlation> {
     private static final String GET_ALL = "SELECT * FROM correlation";
-    private static final String GET_CORRELATION = "SELECT * FROM correlation WHERE ynn=:ynn";
+    private static final String GET_CORRELATION = "SELECT * FROM correlation WHERE com_id=:com_id";
 
     @Override
     public List<Correlation> getAll() throws DaoException {
@@ -29,10 +29,10 @@ public class CorrelationDao extends AbstractDao<Integer, Correlation> {
         }
     }
 
-    public Correlation getCorrelation(Integer ynn) throws DaoException {
+    public Correlation getCorrelation(Integer com_id) throws DaoException {
         try {
             Query query = session.createNativeQuery(GET_CORRELATION).addEntity(Correlation.class);
-            query.setParameter("ynn", ynn);
+            query.setParameter("com_id", com_id);
             if (query.getSingleResult() == null) {
                 return null;
             } else {

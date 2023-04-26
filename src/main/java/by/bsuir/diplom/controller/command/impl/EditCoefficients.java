@@ -32,7 +32,7 @@ public class EditCoefficients implements Command {
             editAbsoluteLiquidity = Double.valueOf(request.getParameter("editAbsoluteLiquidity"));
         }
 
-        Coefficients coefficients = new Coefficients(company.getYnn(), editOwnSecurity, editCurrentLiquidity,
+        Coefficients coefficients = new Coefficients(company.getCom_id(), editOwnSecurity, editCurrentLiquidity,
                 editFinancialSecurity, editAbsoluteLiquidity, company.getCoefficients().getEndNetAssets(),
                 company.getCoefficients().getBeginNetAssets(), company.getCoefficients().getProfitability(),
                 company.getCoefficients().getProfitabilityWithoutSupport());
@@ -40,10 +40,10 @@ public class EditCoefficients implements Command {
         try {
             coefficientsService.edit(coefficients);
             session.removeAttribute("editCompany");
-            response.sendRedirect("Controller?command=go_to_edit_company_page&editCompanyYnn=" + company.getYnn() + "&message=message.editCoefficients.complete");
+            response.sendRedirect("Controller?command=go_to_edit_company_page&editCompanyId=" + company.getCom_id() + "&message=message.editCoefficients.complete");
         } catch (ServiceException e) {
             userLogger.error(e);
-            response.sendRedirect("Controller?command=go_to_edit_company_page&editCompanyYnn=" + company.getYnn() + "&message=message.edit.unsuccessfully");
+            response.sendRedirect("Controller?command=go_to_edit_company_page&editCompanyId=" + company.getCom_id() + "&message=message.edit.unsuccessfully");
         }
     }
 }

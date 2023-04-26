@@ -50,15 +50,15 @@ public class CompanyServiceImpl extends SessionUtil implements CompanyService {
     }
 
     @Override
-    public void delete(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
-            throw new ServiceException("Wrong ynn for delete company");
+    public void delete(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
+            throw new ServiceException("Wrong company id for delete company");
         }
         CompanyDao companyDao = DaoFactory.getInstance().getCompanyDao();
         try {
             openTransactionSession();
             companyDao.setSession(getSession());
-            companyDao.delete(ynn);
+            companyDao.delete(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -88,9 +88,9 @@ public class CompanyServiceImpl extends SessionUtil implements CompanyService {
     }
 
     @Override
-    public Company getCompany(Integer ynn) throws ServiceException {
+    public Company getCompany(Integer com_id) throws ServiceException {
         DataCalculation dataCalculation = new DataCalculation();
-        if (ynn == null || ynn < 1) {
+        if (com_id == null || com_id < 1) {
             throw new ServiceException("Impossible to get company info!");
         }
         Company company;
@@ -98,7 +98,7 @@ public class CompanyServiceImpl extends SessionUtil implements CompanyService {
         try {
             openTransactionSession();
             companyDao.setSession(getSession());
-            company = companyDao.getCompany(ynn);
+            company = companyDao.getCompany(com_id);
             setCompanyInfo(company);
             dataCalculation.calcIndicators(company);
             commitTransactionSession();
@@ -109,6 +109,32 @@ public class CompanyServiceImpl extends SessionUtil implements CompanyService {
             closeSession();
         }
         return company;
+    }
+
+    @Override
+    public List<Company> getListOfSameCompanies(Integer ynn) throws ServiceException {
+        DataCalculation dataCalculation = new DataCalculation();
+        if (ynn == null || ynn < 1) {
+            throw new ServiceException("Impossible to get company info!");
+        }
+        List<Company> companyDynamicList;
+        CompanyDao companyDao = DaoFactory.getInstance().getCompanyDao();
+        try {
+            openTransactionSession();
+            companyDao.setSession(getSession());
+            companyDynamicList = companyDao.getCompaniesInfoWithSameYnn(ynn);
+            for (Company company: companyDynamicList){
+                setCompanyInfo(company);
+                dataCalculation.calcIndicators(company);
+            }
+            commitTransactionSession();
+        } catch (DaoException e) {
+            rollbackTransactionSession();
+            throw new ServiceException(e);
+        } finally {
+            closeSession();
+        }
+        return companyDynamicList;
     }
 
     @Override
@@ -143,17 +169,18 @@ public class CompanyServiceImpl extends SessionUtil implements CompanyService {
             groundsDao.setSession(getSession());
             dairyProductsDao.setSession(getSession());
             cattleDao.setSession(getSession());
-            company.setAddress(addressDao.getAddress(company.getYnn()));
-            company.setCattle(cattleDao.getCattle(company.getYnn()));
-            company.setCoefficients(coefficientsDao.getCoefficients(company.getYnn()));
-            company.setCompanyInfo(companyInfoDao.getCompanyInfo(company.getYnn()));
-            company.setCropProductions(cropProductionDao.getCropProduction(company.getYnn()));
-            company.setDairyProducts(dairyProductsDao.getDairyProducts(company.getYnn()));
-            company.setExpenses(expensesDao.getExpenses(company.getYnn()));
-            company.setFixedAssets(fixedAssetsDao.getFixedAssets(company.getYnn()));
-            company.setGrounds(groundsDao.getGround(company.getYnn()));
-            company.setSalesReturn(salesReturnDao.getSalesReturn(company.getYnn()));
-            company.setStaff(staffDao.getStaff(company.getYnn()));
+            company.setAddress(addressDao.getAddress(company.getCom_id()));
+            company.setCattle(cattleDao.getCattle(company.getCom_id()));
+            company.setCoefficients(coefficientsDao.getCoefficients(company.getCom_id()));
+            company.setCompanyInfo(companyInfoDao.getCompanyInfo(company.getCom_id()));
+            //could mot execute query on crop_production
+            company.setCropProductions(cropProductionDao.getCropProduction(company.getCom_id()));
+            company.setDairyProducts(dairyProductsDao.getDairyProducts(company.getCom_id()));
+            company.setExpenses(expensesDao.getExpenses(company.getCom_id()));
+            company.setFixedAssets(fixedAssetsDao.getFixedAssets(company.getCom_id()));
+            company.setGrounds(groundsDao.getGround(company.getCom_id()));
+            company.setSalesReturn(salesReturnDao.getSalesReturn(company.getCom_id()));
+            company.setStaff(staffDao.getStaff(company.getCom_id()));
             if (!flag) {
                 dataCalculation.calcIndicators(company);
                 commitTransactionSession();
@@ -217,13 +244,13 @@ public class CompanyServiceImpl extends SessionUtil implements CompanyService {
     }
     //My modification
     @Override
-    public List<Company> getAdvancedSearchResultList(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, int operationsCounter) throws DaoException {
+    public List<Company> getAdvancedSearchResultList(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, String[] area_value, String[] district_value, int operationsCounter) throws DaoException {
         List<Company> list = null;
         CompanyDao companyDao = DaoFactory.getInstance().getCompanyDao();
         try {
             openTransactionSession();
             companyDao.setSession(getSession());
-            list = companyDao.getAdvancedSearchResultList(parameters, statuses, types, values, text_values, operationsCounter);
+            list = companyDao.getAdvancedSearchResultList(parameters, statuses, types, values, text_values, area_value, district_value, operationsCounter);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -234,13 +261,13 @@ public class CompanyServiceImpl extends SessionUtil implements CompanyService {
     }
 
     @Override
-    public Double getAdvancedSearchResult(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, int operationsCounter) throws DaoException {
+    public Double getAdvancedSearchResult(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, String[] area_value, String[] district_value, int operationsCounter) throws DaoException {
         Double result = null;
         CompanyDao companyDao = DaoFactory.getInstance().getCompanyDao();
         try {
             openTransactionSession();
             companyDao.setSession(getSession());
-            result = companyDao.getAdvancedSearchResult(parameters, statuses, types, values, text_values, operationsCounter);
+            result = companyDao.getAdvancedSearchResult(parameters, statuses, types, values, text_values, area_value, district_value, operationsCounter);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -276,12 +303,12 @@ public class CompanyServiceImpl extends SessionUtil implements CompanyService {
     @Override
     public List<Company> calcIndicators() throws ServiceException {
         List<Company> list = new ArrayList<>();
-        List<Integer> ynnList;
+        List<Integer> companyIdList;
         CompanyDao companyDao = DaoFactory.getInstance().getCompanyDao();
         try {
             openTransactionSession();
             companyDao.setSession(getSession());
-            ynnList = companyDao.getAllYnn();
+            companyIdList = companyDao.getAllCompanyIds();
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -289,18 +316,18 @@ public class CompanyServiceImpl extends SessionUtil implements CompanyService {
         } finally {
             closeSession();
         }
-        for (Integer ynn : ynnList) {
+        for (Integer ynn : companyIdList) {
             list.add(getCompany(ynn));
         }
         return list;
     }
 
     @Override
-    public List<String> calcCorrelation(Integer ynn) throws ServiceException {
-        Company company = getCompany(ynn);
+    public List<String> calcCorrelation(Integer com_id) throws ServiceException {
+        Company company = getCompany(com_id);
         CorrelationService correlationService = new CorrelationServiceImpl();
         DataCalculation dataCalculation = new DataCalculation();
-        Correlation companyCorrelation = correlationService.getCorrelation(ynn);
+        Correlation companyCorrelation = correlationService.getCorrelation(com_id);
         if (companyCorrelation == null) {
             dataCalculation.calcCorrelation(company);
         }

@@ -14,13 +14,13 @@ import java.util.List;
 
 public class GroundsServiceImpl extends SessionUtil implements GroundsService {
     @Override
-    public List<Grounds> getGroundsToExport(Integer ynn) throws ServiceException {
+    public List<Grounds> getGroundsToExport(Integer com_id) throws ServiceException {
         List<Grounds> list;
         GroundsDao groundsDao = DaoFactory.getInstance().getGroundsDao();
         try {
             openTransactionSession();
             groundsDao.setSession(getSession());
-            list = groundsDao.getGroundsToExport(ynn);
+            list = groundsDao.getGroundsToExport(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -50,15 +50,15 @@ public class GroundsServiceImpl extends SessionUtil implements GroundsService {
     }
 
     @Override
-    public void delete(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
-            throw new ServiceException("Wrong ynn for delete grounds");
+    public void delete(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
+            throw new ServiceException("Wrong company id for delete grounds");
         }
         GroundsDao groundsDao = DaoFactory.getInstance().getGroundsDao();
         try {
             openTransactionSession();
             groundsDao.setSession(getSession());
-            groundsDao.delete(ynn);
+            groundsDao.delete(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -88,8 +88,8 @@ public class GroundsServiceImpl extends SessionUtil implements GroundsService {
     }
 
     @Override
-    public List<Grounds> getGrounds(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
+    public List<Grounds> getGrounds(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
             throw new ServiceException("Impossible to get grounds info!");
         }
         List<Grounds> grounds;
@@ -97,7 +97,7 @@ public class GroundsServiceImpl extends SessionUtil implements GroundsService {
         try {
             openTransactionSession();
             groundsDao.setSession(getSession());
-            grounds = groundsDao.getGround(ynn);
+            grounds = groundsDao.getGround(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();

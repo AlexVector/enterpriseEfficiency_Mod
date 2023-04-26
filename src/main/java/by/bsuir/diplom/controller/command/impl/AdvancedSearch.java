@@ -118,11 +118,13 @@ public class AdvancedSearch implements Command {
             new OptionDataKeeper("Крупный рогатый скот на выpащивании и откоpме всего. Расход кормов на единицу продукции", "cattle.cattle_cultivation", "", "кормо-единиц")
     };
 
-    public int[] searchTypesCounter(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values){
+    public int[] searchTypesCounter(String[] parameters, String[] statuses, String[] types, String[] values, String[] text_values, String[] area_value, String[] district_value){
         int[] operationCounter = new int[4];
         if (parameters!=null){
             for (int i=0; i<parameters.length; i++){
                 if (text_values[i]!="") operationCounter[0]++;
+                if (parameters[i].equals("address.area") && area_value!=null) operationCounter[0]++;
+                if (parameters[i].equals("address.district") && district_value!=null) operationCounter[0]++;
                 if (statuses!=null && statuses[i].equals("sort") && types!=null) operationCounter[1]++;
                 if (statuses!=null && (statuses[i].equals("lessthan") || statuses[i].equals("morethan") || statuses[i].equals("equal"))&& values!=null && values[i]!="") operationCounter[2]++;
                 if (statuses!=null && (statuses[i].equals("min") || statuses[i].equals("max") || statuses[i].equals("isnull") || statuses[i].equals("average"))) operationCounter[3]++;
@@ -136,6 +138,8 @@ public class AdvancedSearch implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response, File uploadFilePath) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
+        String[] area_value = request.getParameterValues("area");
+        String[] district_value = request.getParameterValues("district");
         String[] text_values = request.getParameterValues("text_value");
         String[] categories = request.getParameterValues("category");
         String[] parameters = request.getParameterValues("parameter");
@@ -144,7 +148,7 @@ public class AdvancedSearch implements Command {
         String[] values = request.getParameterValues("val");
 
         int[] operationsCounter = new int[4];
-        operationsCounter = searchTypesCounter(parameters,statuses,types,values,text_values);
+        operationsCounter = searchTypesCounter(parameters,statuses,types,values,text_values, area_value, district_value);
         int operationsSum = 0;
         for (int i=0; i<operationsCounter.length; i++)
             operationsSum = operationsSum + operationsCounter[i];
@@ -169,9 +173,8 @@ public class AdvancedSearch implements Command {
             CompanyService companyService = ServiceProvider.getInstance().getCompanyService();
             session.removeAttribute("companiesList");
             try {
-
                 if (has_avg){
-                    Double advSearchResult = companyService.getAdvancedSearchResult(parameters,statuses,types,values,text_values,operationsSum);
+                    Double advSearchResult = companyService.getAdvancedSearchResult(parameters,statuses,types,values,text_values,area_value,district_value,operationsSum);
                     String textAnswer = "Среднее значение параметра ";
                     int avg_ind_in_optioDataKeeper = -1;
                     for (int i = 0; i < optionDataKeeper.length; i++){
@@ -191,24 +194,28 @@ public class AdvancedSearch implements Command {
                                         thisODKIndex = j;
                                 }
                                 textAnswer = textAnswer + "\"" + optionDataKeeper[thisODKIndex].getRusParameterName() + "\" ";
-                                if (statuses[i].equals("morethan") && text_values[i].equals(""))
+                                if (statuses[i].equals("morethan") && text_values[i].equals("") && !parameters[i].equals("address.area") && !parameters[i].equals("address.district"))
                                     textAnswer = textAnswer + "больше чем " + values[i] + " " + optionDataKeeper[thisODKIndex].getParameterFormat();
                                 if (statuses[i].equals("lessthan"))
                                     textAnswer = textAnswer + "меньше чем " + values[i] + " " + optionDataKeeper[thisODKIndex].getParameterFormat();
                                 if (statuses[i].equals("equal"))
                                     textAnswer = textAnswer + "равен " + values[i] + " " + optionDataKeeper[thisODKIndex].getParameterFormat();
-                                if (!text_values[i].equals(""))
+                                if (!text_values[i].equals("") && !parameters[i].equals("address.area") && !parameters[i].equals("address.district"))
                                     textAnswer = textAnswer + optionDataKeeper[thisODKIndex].getParameterPrefix() + " \"" + text_values[i] + "\" " + optionDataKeeper[thisODKIndex].getParameterFormat();
+                                if (text_values[i].equals("") && parameters[i].equals("address.area") && area_value!=null)
+                                    textAnswer = textAnswer + optionDataKeeper[thisODKIndex].getParameterPrefix() + " \"" + area_value[0] + "\" " + optionDataKeeper[thisODKIndex].getParameterFormat();
+                                if (text_values[i].equals("") && parameters[i].equals("address.district") && district_value!=null)
+                                    textAnswer = textAnswer + optionDataKeeper[thisODKIndex].getParameterPrefix() + " \"" + district_value[0] + "\" " + optionDataKeeper[thisODKIndex].getParameterFormat();
                             }
                         }
                     }
-                    textAnswer = textAnswer + " составляет " + advSearchResult + " " + optionDataKeeper[avg_ind_in_optioDataKeeper].getParameterFormat();
+                    textAnswer = textAnswer + " составляет " + String.format("%.2f", advSearchResult) + " " + optionDataKeeper[avg_ind_in_optioDataKeeper].getParameterFormat();
                     //Map<String, Double> advSearchResult =
                     session.setAttribute("advSearchResult", textAnswer);
                     session.removeAttribute("advSearchCompanies");
                 }
                 else {
-                    List<Company> advSearchCompanies = companyService.getAdvancedSearchResultList(parameters,statuses,types,values,text_values,operationsSum);
+                    List<Company> advSearchCompanies = companyService.getAdvancedSearchResultList(parameters,statuses,types,values,text_values,area_value,district_value,operationsSum);
                     session.setAttribute("advSearchCompanies", advSearchCompanies);
                     session.removeAttribute("advSearchResult");
                 }

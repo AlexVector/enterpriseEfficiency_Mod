@@ -13,10 +13,10 @@ public interface CropProductionService {
     /**
      * Method for deleting crop production
      *
-     * @param ynn ynn of crop production
+     * @param com_id of crop production
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    void delete(Integer ynn) throws ServiceException;
+    void delete(Integer com_id) throws ServiceException;
 
     /**
      * Method for validating data before edit crop production in database
@@ -29,11 +29,11 @@ public interface CropProductionService {
     /**
      * Method for getting crop production info
      *
-     * @param ynn crop production ynn
+     * @param com_id crop production com_id
      * @return object of {@code CropProduction} with needed info
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    List<CropProduction> getCropProduction(Integer ynn) throws ServiceException;
+    List<CropProduction> getCropProduction(Integer com_id) throws ServiceException;
 
-    CropProduction getIndicators(Integer ynn) throws ServiceException;
+    CropProduction getIndicators(Integer com_id) throws ServiceException;
 }

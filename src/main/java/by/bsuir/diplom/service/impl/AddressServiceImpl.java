@@ -30,15 +30,15 @@ public class AddressServiceImpl extends SessionUtil implements AddressService {
     }
 
     @Override
-    public void delete(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
-            throw new ServiceException("Wrong ynn for delete address");
+    public void delete(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
+            throw new ServiceException("Wrong company id for delete address");
         }
         AddressDao addressDao = DaoFactory.getInstance().getAddressDao();
         try {
             openTransactionSession();
             addressDao.setSession(getSession());
-            addressDao.delete(ynn);
+            addressDao.delete(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -68,8 +68,8 @@ public class AddressServiceImpl extends SessionUtil implements AddressService {
     }
 
     @Override
-    public Address getAddress(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
+    public Address getAddress(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
             throw new ServiceException("Impossible to get address info!");
         }
         Address address;
@@ -77,7 +77,7 @@ public class AddressServiceImpl extends SessionUtil implements AddressService {
         try {
             openTransactionSession();
             addressDao.setSession(getSession());
-            address = addressDao.getAddress(ynn);
+            address = addressDao.getAddress(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -117,6 +117,24 @@ public class AddressServiceImpl extends SessionUtil implements AddressService {
             openTransactionSession();
             addressDao.setSession(getSession());
             list = addressDao.getDistrict(area);
+            commitTransactionSession();
+        } catch (DaoException e) {
+            rollbackTransactionSession();
+            throw new ServiceException(e);
+        } finally {
+            closeSession();
+        }
+        return list;
+    }
+
+    @Override
+    public List<String> getAllDistricts() throws ServiceException {
+        List<String> list;
+        AddressDao addressDao = DaoFactory.getInstance().getAddressDao();
+        try {
+            openTransactionSession();
+            addressDao.setSession(getSession());
+            list = addressDao.getAllDistricts();
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();

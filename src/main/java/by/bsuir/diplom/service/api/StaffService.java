@@ -14,10 +14,10 @@ public interface StaffService {
     /**
      * Method for deleting staff
      *
-     * @param ynn ynn of staff
+     * @param com_id of staff
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    void delete(Integer ynn) throws ServiceException;
+    void delete(Integer com_id) throws ServiceException;
 
     /**
      * Method for validating data before edit staff in database
@@ -30,9 +30,9 @@ public interface StaffService {
     /**
      * Method for getting staff info
      *
-     * @param ynn staff ynn
+     * @param com_id staff com_id
      * @return object of {@code Staff} with needed info
      * @throws ServiceException when the error occurred on the dao layer or when validate data
      */
-    List<Staff> getStaff(Integer ynn) throws ServiceException;
+    List<Staff> getStaff(Integer com_id) throws ServiceException;
 }

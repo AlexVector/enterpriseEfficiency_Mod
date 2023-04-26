@@ -49,15 +49,15 @@ public class CorrelationServiceImpl extends SessionUtil implements CorrelationSe
     }
 
     @Override
-    public void delete(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
+    public void delete(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
             throw new ServiceException("Wrong ynn for delete correlation");
         }
         CorrelationDao correlationDao = DaoFactory.getInstance().getCorrelationDao();
         try {
             openTransactionSession();
             correlationDao.setSession(getSession());
-            correlationDao.delete(ynn);
+            correlationDao.delete(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();
@@ -87,8 +87,8 @@ public class CorrelationServiceImpl extends SessionUtil implements CorrelationSe
     }
 
     @Override
-    public Correlation getCorrelation(Integer ynn) throws ServiceException {
-        if (ynn == null || ynn < 1) {
+    public Correlation getCorrelation(Integer com_id) throws ServiceException {
+        if (com_id == null || com_id < 1) {
             throw new ServiceException("Impossible to get correlation info!");
         }
         Correlation correlation;
@@ -96,7 +96,7 @@ public class CorrelationServiceImpl extends SessionUtil implements CorrelationSe
         try {
             openTransactionSession();
             correlationDao.setSession(getSession());
-            correlation = correlationDao.getCorrelation(ynn);
+            correlation = correlationDao.getCorrelation(com_id);
             commitTransactionSession();
         } catch (DaoException e) {
             rollbackTransactionSession();

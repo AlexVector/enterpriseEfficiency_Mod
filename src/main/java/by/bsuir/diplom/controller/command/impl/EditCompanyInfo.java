@@ -42,7 +42,7 @@ public class EditCompanyInfo implements Command {
 
         Address newAddress = new Address(company.getYnn(), editLocation, editArea, editDistrict);
         CompanyInfo newCompanyInfo = new CompanyInfo(company.getYnn(), editIndustryCode, editIndustryName, editDepartmentName, editAssociationName, editOwnershipType);
-        Company newCompany = new Company(company.getYnn(), company.getId(), company.getOkpo(), editName, editFullName, company.getYear(), company.getPeriod(), editActivityType);
+        Company newCompany = new Company(company.getYnn(), company.getCom_id(), company.getOkpo(), editName, editFullName, company.getYear(), company.getPeriod(), editActivityType);
 
         CompanyService companyService = ServiceProvider.getInstance().getCompanyService();
         CompanyInfoService companyInfoService = ServiceProvider.getInstance().getCompanyInfoService();
